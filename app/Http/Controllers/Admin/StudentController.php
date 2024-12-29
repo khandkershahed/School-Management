@@ -5,23 +5,26 @@ namespace App\Http\Controllers\Admin;
 use Exception;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Imports\StudentsImport;
+use App\Models\EducationMedium;
 use App\Http\Controllers\Controller;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
 use App\Notifications\WelcomeNotification;
 use Illuminate\Support\Facades\Notification;
 
-class ClientsController extends Controller
+class StudentController extends Controller
 {
     /**
      * Display a listing of the resource.
-     */ 
+     */
     public function index()
     {
         $data = [
-            'clients' => User::latest('id')->get(),
+            'students' => User::with('medium')->latest('id')->get(),
         ];
 
-        return view("admin.pages.clients.index",$data);
+        return view("admin.pages.students.index", $data);
     }
 
     /**
@@ -29,7 +32,10 @@ class ClientsController extends Controller
      */
     public function create()
     {
-        return view("admin.pages.clients.create");
+        $data = [
+            'mediums' => EducationMedium::get(),
+        ];
+        return view("admin.pages.students.create", $data);
     }
 
     /**
@@ -38,8 +44,7 @@ class ClientsController extends Controller
     public function store(Request $request)
     {
         try {
-
-            $code = generateCode(User::class, 'AMSC');
+            $code = generateCode(User::class, 'SHK');
             // upload thumbnail and set the name
             $files = [
                 'image' => $request->file('image'),
@@ -47,7 +52,7 @@ class ClientsController extends Controller
             $uploadedFiles = [];
             foreach ($files as $key => $file) {
                 if (!empty($file)) {
-                    $filePath = 'clients/' . $key;
+                    $filePath = 'students/' . $key;
                     $uploadedFiles[$key] = customUpload($file, $filePath);
                     if ($uploadedFiles[$key]['status'] === 0) {
                         return redirect()->back()->with('error', $uploadedFiles[$key]['error_message']);
@@ -60,18 +65,17 @@ class ClientsController extends Controller
 
             // create client
             $userSchema = User::create([
-                'name'                      => $request->name,
-                'client_id'                 => $code,
-                'email'                     => $request->email,
-                'phone'                     => $request->phone,
-                'company_name'              => $request->company_name,
-                'tax_registration_number'   => $request->tax_registration_number,
-                // 'type'                      => $request->supplierType,
-                'address'                   => $request->address,
-                'status'                    => $request->status,
-                'isSendEmail'               => $request->isSendEmail,
-                'isSendSMS'                 => $request->isSendSMS,
-                'image'                     => $uploadedFiles['image']['status'] == 1 ? $uploadedFiles['image']['file_path'] : null,
+                'medium_id'        => $request->medium_id,
+                'student_id'       => $code,
+                'name'             => $request->name,
+                'roll'             => $request->roll,
+                'class'            => $request->class,
+                'section'          => $request->section,
+                'guardian_name'    => $request->guardian_name,
+                'guardian_contact' => $request->guardian_contact,
+                'address'          => $request->address,
+                'status'           => $request->status,
+                'image'            => $uploadedFiles['image']['status'] == 1 ? $uploadedFiles['image']['file_path'] : null,
             ]);
 
             //send welcome notification
@@ -86,8 +90,8 @@ class ClientsController extends Controller
                 //handle email error here if necessary
                 throw new Exception($e);
             }
-            redirectWithSuccess('Client added successfully');
-            return redirect()->route('admin.clients.index');
+            redirectWithSuccess('Student added successfully');
+            return redirect()->route('admin.students.index');
         } catch (Exception $e) {
             redirectWithError($e->getMessage());
             return redirect()->back()->withInput();
@@ -101,10 +105,10 @@ class ClientsController extends Controller
     {
         try {
             $data = [
-                'client' => User::where('slug', $slug)->first(),
+                'student' => User::where('slug', $slug)->first(),
             ];
 
-            return view("admin.pages.clients.show",$data);
+            return view("admin.pages.students.show",$data);
         } catch (Exception $e) {
             redirectWithError($e->getMessage());
             return redirect()->back();
@@ -118,10 +122,10 @@ class ClientsController extends Controller
     {
         try {
             $data = [
-                'client' => User::where('slug', $id)->first(),
+                'student' => User::where('slug', $id)->first(),
             ];
 
-            return view("admin.pages.clients.edit",$data);
+            return view("admin.pages.students.edit",$data);
         } catch (Exception $e) {
             redirectWithError($e->getMessage());
             return redirect()->back();
@@ -136,8 +140,8 @@ class ClientsController extends Controller
         $client = User::where('id', $id)->first();
         $this->validate($request, [
             'name'          => 'required|string|max:255',
-            'phone'         => 'required|string|max:20|min:3',
-            'email'         => 'nullable|email|max:255|min:3|unique:users,email,' . $client->id,
+            // 'phone'         => 'required|string|max:20|min:3',
+            // 'email'         => 'nullable|email|max:255|min:3|unique:users,email,' . $client->id,
             'company_name'  => 'nullable|string|max:100|min:2',
             'address'       => 'nullable|string|max:255',
         ]);
@@ -149,7 +153,7 @@ class ClientsController extends Controller
             $uploadedFiles = [];
             foreach ($files as $key => $file) {
                 if (!empty($file)) {
-                    $filePath = 'clients/' . $key;
+                    $filePath = 'students/' . $key;
                     $oldFile = $client->$key ?? null;
 
                     if ($oldFile) {
@@ -167,21 +171,21 @@ class ClientsController extends Controller
 
             // create client
             $client->update([
-                'name'                      => $request->name,
-                'email'                     => $request->email,
-                'phone'                     => $request->phone,
-                'company_name'              => $request->company_name,
-                'tax_registration_number'   => $request->tax_registration_number,
-                // 'type'                      => $request->supplierType,
-                'address'                   => $request->address,
-                'status'                    => $request->status,
-                'isSendEmail'               => $request->isSendEmail,
-                'isSendSMS'                 => $request->isSendSMS,
-                'image'                     => $uploadedFiles['image']['status'] == 1 ? $uploadedFiles['image']['file_path'] : null,
+                'medium_id'        => $request->medium_id,
+                // 'student_id'       => $code,
+                'name'             => $request->name,
+                'roll'             => $request->roll,
+                'class'            => $request->class,
+                'section'          => $request->section,
+                'guardian_name'    => $request->guardian_name,
+                'guardian_contact' => $request->guardian_contact,
+                'address'          => $request->address,
+                'status'           => $request->status,
+                'image'            => $uploadedFiles['image']['status'] == 1 ? $uploadedFiles['image']['file_path'] : null,
             ]);
 
-            redirectWithSuccess('Client Updated successfully');
-            return redirect()->route('admin.clients.index');
+            redirectWithSuccess('Stident Data Updated successfully');
+            return redirect()->route('admin.students.index');
         } catch (Exception $e) {
             redirectWithError($e->getMessage());
             return redirect()->back()->withInput();
@@ -206,5 +210,24 @@ class ClientsController extends Controller
             }
         }
         $client->delete();
+    }
+
+    public function import(Request $request)
+    {
+        // Validate the uploaded file
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv', // Ensure the file is an Excel file
+        ]);
+
+        // Get the uploaded file
+        $file = $request->file('file');
+
+        // Import the file using the import class
+        Excel::import(new StudentsImport, $file);
+
+        // Redirect back with success message
+        redirectWithSuccess('Stident Data Imported successfully');
+            return redirect()->route('admin.students.index');
+
     }
 }

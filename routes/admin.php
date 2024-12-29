@@ -23,6 +23,7 @@ use App\Http\Controllers\Admin\ExpenseController;
 use App\Http\Controllers\Admin\PayrollController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CatalogueController;
 use App\Http\Controllers\Admin\AssetsTypeController;
@@ -66,6 +67,8 @@ use App\Http\Controllers\Admin\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Admin\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Admin\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Admin\Auth\EmailVerificationNotificationController;
+use App\Http\Controllers\Admin\FeeController;
+use App\Http\Controllers\Admin\StudentFeeController;
 
 Route::get('/', function () {
     return redirect()->route('admin.login');
@@ -157,26 +160,9 @@ Route::middleware('auth:admin')->name('admin.')->group(function () {
             'terms-condition'      => TermsAndConditionController::class,
             'privacy-policy'       => PrivacyPolicyController::class,
             'deal-banner'          => DealBannerController::class,
-            'income'               => IncomeController::class,
-            'expense'              => ExpenseController::class,
-            'balance-adjustment'   => BalanceAdjustmentController::class,
-            'balance-transfer'     => BalanceTransferController::class,
-            'transaction-history'  => TransactionHistoryController::class,
-
-            'client-invoice'      => ClientInvoiceController::class,
-            'client-non-invoice'  => ClientNonInvoiceController::class,
 
 
 
-
-            'payroll'             => PayrollController::class,
-            'account'             => AccountController::class,
-            'income-category'     => IncomeCategoryController::class,
-            'income-subcategory'  => IncomeSubCategoryController::class,
-            'expense-category'    => ExpenseCategoryController::class,
-            'expense-subcategory' => ExpenseSubCategoryController::class,
-            'assets'              => AssetsController::class,
-            'assets-type'         => AssetsTypeController::class,
         ],
         ['except' => ['show']]
     );
@@ -191,10 +177,13 @@ Route::middleware('auth:admin')->name('admin.')->group(function () {
             'brands'                => BrandController::class, //done
             'contacts'              => ContactController::class,
             'product'               => ProductController::class,
-            'clients'               => ClientsController::class,
+            'students'              => StudentController::class,
+            'fees'                  => FeeController::class,
+            'student-fee'           => StudentFeeController::class,
             'banner'                => PageBannerController::class,
         ],
     );
+    Route::post('students/import', [StudentController::class, 'import'])->name('students.import');
 
     Route::controller(StockManagementController::class)->group(function () {
         Route::get('/stock-management', 'index')->name('stock-management.index');

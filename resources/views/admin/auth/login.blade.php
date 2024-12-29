@@ -8,9 +8,9 @@
             width: 100%;
         }
 
-        .input-group {
+        /* .input-group {
             width: 400px;
-        }
+        } */
 
         .icons-eye {
             right: -30px !important;
@@ -24,7 +24,7 @@
     </style>
     <div class="container-fluid">
         <div class="row d-flex align-items-center">
-            <div class="col-xl-6 col-lg-6 d-lg-block d-sm-none" style="background-color: #fff;">
+            <div class="col-xl-6 col-lg-6 d-none d-lg-block ">
                 <div>
                     <img class="img-fluid w-100" src="{{ asset('images/animated-banner.gif') }}" alt=""
                         style="width: 600px;">
@@ -33,7 +33,7 @@
             <div class="col-xl-6 col-lg-6 d-flex jutify-content-center align-items-center" style="">
                 <div class="d-flex justify-content-center flex-column align-items-center w-100">
                     <a href="{{ route('admin.dashboard') }}" class="brand-link">
-                        <img src="{{ !empty($site->site_black_logo) && file_exists(public_path('storage/webSetting/' . $site->site_black_logo)) ? asset('storage/webSetting/' . $site->site_black_logo) : asset('images/logo-color.png') }}"
+                        <img src="{{ !empty($site->site_black_logo) && file_exists(public_path('storage/webSetting/' . $site->site_black_logo)) ? asset('storage/webSetting/' . $site->site_black_logo) : asset('images/logo_color_no_bg.png') }}"
                             alt="AdminLTE Logo" class="brand-image" style="width: 200px;" />
                     </a>
                     <div>

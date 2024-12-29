@@ -37,9 +37,7 @@
 
     <!-- CSS Stylesheets -->
     <link rel="stylesheet" href="{{ asset('admin/assets/css/bootstrap.min.css') }}">
-    {{-- <link rel="stylesheet" href="{{ asset('admin/assets/css/overlayscrollbars.css') }}"> --}}
     <link rel="stylesheet" href="{{ asset('admin/assets/css/icons/bootstrap-icons@1.11.0.css') }}">
-    {{-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" /> --}}
     <!-- Select2 -->
     <link rel="stylesheet" href="{{ asset('admin/assets/plugins/select2/css/select2.min.css') }}">
     <link rel="stylesheet"
@@ -51,6 +49,9 @@
     <link rel="stylesheet" href="{{ asset('admin/assets/css/toastr.css') }}">
     <link rel="stylesheet" href="{{ asset('admin/assets/css/adminlte.css') }}">
     <link rel="stylesheet" href="{{ asset('admin/assets/css/custom.css') }}">
+    <link rel="stylesheet" href="{{ asset('admin/assets/css/jquerydatatable.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('admin/assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}"> --}}
+    {{-- <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css"> --}}
 </head>
 
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary" onload="myFunction()">

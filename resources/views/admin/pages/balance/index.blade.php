@@ -1,5 +1,5 @@
 <x-admin-app-layout :title="'Accounts List'">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    
     <div class="app-content">
         <div class="container-fluid mt-3">
             <div class="row">

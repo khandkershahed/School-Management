@@ -1,5 +1,4 @@
-<x-admin-app-layout :title="'Clients'">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+<x-admin-app-layout :title="'Student Lists'">
     <div class="app-content">
         <div class="container-fluid mt-3">
             <div class="row">
@@ -8,23 +7,23 @@
                         <div class="card-header p-3 bg-custom text-white">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
-                                    <h4 class="mb-0">Manage Clients</h4>
+                                    <h4 class="mb-0">Manage Student Lists</h4>
                                 </div>
                                 <div class="btn-group" role="group" aria-label="Basic outlined example">
-                                    <button type="button" class="btn btn-outline-light toltip"
+                                    <button type="button" data-bs-toggle="modal" data-bs-target="#excelImport" class="btn btn-outline-light toltip"
                                         data-tooltip="Import Excel">
                                         <i class="fa-solid fa-file-csv"></i>
                                     </button>
-                                    <a href="{{ route('admin.clients.pdf') }}" class="btn btn-outline-light toltip"
+                                    {{-- <a href="#" class="btn btn-outline-light toltip"
                                         data-tooltip="Download PDF">
                                         <i class="fa-solid fa-file-pdf"></i>
-                                    </a>
+                                    </a> --}}
                                     <button type="button" class="btn btn-outline-light toltip"
                                         data-tooltip="Print Table">
                                         <i class="fa-solid fa-print"></i>
                                         <span class="tooltiptext">Print</span>
                                     </button>
-                                    <a href="{{ route('admin.clients.create') }}" class="btn btn-outline-light toltip"
+                                    <a href="{{ route('admin.students.create') }}" class="btn btn-outline-light toltip"
                                         data-tooltip="Create New"> Create
                                         <i class="fa-solid fa-plus"></i>
                                     </a>
@@ -48,7 +47,8 @@
                                             <th width="15%" class="text-center">Name</th>
                                             <th width="15%" class="text-center">Medium</th>
                                             <th width="15%" class="text-center">Class</th>
-                                            <th width="15%" class="text-center">Section </th>
+                                            {{-- <th width="15%" class="text-center">Section </th> --}}
+                                            <th width="15%" class="text-center">Roll </th>
                                             <th width="5%" class="text-center">Status</th>
                                             <th width="10%" class="text-end">Action</th>
                                         </tr>
@@ -59,27 +59,27 @@
                                                 <td class="text-center">{{ $loop->iteration }}</td>
                                                 <td class="text-center">{{ $student->student_id }}</td>
                                                 <td class="text-center">
-                                                    <a href="{{ route('admin.clients.show',$student->slug) }}">{{ $student->name }}</a>
+                                                    <a href="{{ route('admin.students.show',$student->slug) }}">{{ $student->name }}</a>
                                                 </td>
-                                                <td class="text-center">{{ $student->phone }}</td>
-                                                <td class="text-center">{{ $student->email }}</td>
-                                                <td class="text-center">{{ $student->company_name }}</td>
+                                                <td class="text-center">{{ optional($student->medium)->name }}</td>
+                                                <td class="text-center">{{ $student->class }}</td>
+                                                <td class="text-center">{{ $student->roll }}</td>
                                                 <td class="text-center">
                                                     <span
                                                         class="badge {{ $student->status == 'active' ? 'bg-success' : 'bg-danger' }}">
                                                         {{ $student->status == 'active' ? 'Active' : 'InActive' }}</span>
                                                 </td>
                                                 <td class="text-end">
-                                                    <a href="{{ route('admin.clients.edit',$student->slug) }}" class="btn btn-sm btn-primary toltip mb-2"
+                                                    <a href="{{ route('admin.students.edit',$student->slug) }}" class="btn btn-sm btn-primary toltip mb-2"
                                                         data-tooltip="Edit">
                                                         <i class="fa-solid fa-pen"></i>
                                                     </a>
-                                                    <a href="{{ route('admin.clients.show',$student->slug) }}"
+                                                    {{-- <a href="{{ route('admin.students.show',$student->slug) }}"
                                                         class="btn btn-sm btn-warning text-white toltip mb-2"
                                                         data-tooltip="View">
                                                         <i class="fa-solid fa-expand"></i>
-                                                    </a>
-                                                    <a href="{{ route('admin.clients.destroy',$student->id) }}" class="btn btn-sm btn-danger toltip mb-2 delete"
+                                                    </a> --}}
+                                                    <a href="{{ route('admin.students.destroy',$student->id) }}" class="btn btn-sm btn-danger toltip mb-2 delete"
                                                         data-tooltip="Delete">
                                                         <i class="fa-solid fa-trash"></i>
                                                     </a>
@@ -95,6 +95,31 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="excelImport" tabindex="-1" aria-labelledby="excelImportLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-dark text-white">
+                    <h5 class="modal-title" id="excelImportLabel">Import Excel</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="{{ route('admin.students.import') }}"
+                        enctype="multipart/form-data">
+                        @csrf
+                        <div class="mb-3">
+                            <x-admin.label for="name" class="form-label">Select Excel File (.xlsx,.xls,.csv only):</x-admin.label>
+                            <x-admin.file-input class="form-control form-control-solid" :value="old('file')"
+                                id="file" name="file" required></x-admin.file-input>
+                        </div>
+                        <x-admin.button type="submit" class="btn btn-white">Submit</x-admin.button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     @push('scripts')
         <script>
             // Multi Select Date Picker

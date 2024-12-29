@@ -5,7 +5,7 @@
                 <div class="col-lg-3 col-6">
                     <div class="small-box py-3">
                         <div class="inner">
-                            <h3></h3>
+                            <h3>{{ $total_student }}</h3>
                             <p>Total Students</p>
                         </div>
                         <svg class="small-box-icon" fill="currentColor" viewBox="0 0 24 24"
@@ -16,7 +16,7 @@
                         </svg>
                     </div>
                 </div>
-                <div class="col-lg-3 col-6">
+                {{-- <div class="col-lg-3 col-6">
                     <div class="small-box py-3">
                         <div class="inner">
                             <h3>53<sup class="fs-5">%</sup></h3>
@@ -61,15 +61,11 @@
                         </svg>
 
                     </div>
-                </div>
+                </div> --}}
             </div>
             <!-- /.row (main row) -->
         </div>
     </div>
-
-
-
-
 
     @push('scripts')
     @endpush

@@ -134,6 +134,11 @@ class User extends Authenticatable
      /**
       * Get the non invoice dues
       */
+     public function medium()
+     {
+         return $this->belongsTo(EducationMedium::class, 'medium_id');
+     }
+     
      public function clientNonInvoiceDues()
      {
          return $this->hasMany(NonInvoicePayment::class, 'client_id')->where('type', 0);
