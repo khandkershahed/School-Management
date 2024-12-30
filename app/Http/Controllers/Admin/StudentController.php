@@ -45,7 +45,7 @@ class StudentController extends Controller
     {
         try {
             $code = generateCode(User::class, 'SHK');
-            // upload thumbnail and set the name
+            
             $files = [
                 'image' => $request->file('image'),
             ];

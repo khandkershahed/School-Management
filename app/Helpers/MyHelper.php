@@ -132,15 +132,28 @@ if (!function_exists('generateCode')) {
         // Get the latest record from the specified model
         $lastRecord = $model::latest()->first();
         $code = 1;
+
+        // Check for the highest existing code and increment it
         if ($lastRecord) {
-            // Extract numeric part from the last code and increment it
-            $lastNumericCode = intval(str_replace($prefix . '-', '', $lastRecord->code));
+            $lastNumericCode = intval(str_replace($prefix . '-', '', $lastRecord->student_id)); // Fix: Access correct column name
             $code = $lastNumericCode + 1;
         }
-        // Combine the prefix with the incremented code
-        return $prefix . '-' . $code;
+
+        // Generate a unique code
+        $newCode = $prefix . '-' . $code;
+
+        // Check if the generated code already exists
+        while ($model::where('student_id', $newCode)->exists()) {
+            $code++;
+            $newCode = $prefix . '-' . $code;
+        }
+
+        // Return the unique code
+        return $newCode;
     }
 }
+
+
 if (!function_exists('redirectWithSuccess')) {
     function redirectWithSuccess(string $message)
     {

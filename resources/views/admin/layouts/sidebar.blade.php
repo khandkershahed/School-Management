@@ -128,131 +128,131 @@
                         //     ],
                         // ],
 
-                        [
-                            'title' => 'Employees',
-                            'icon' => 'fa-solid fa-users text-info',
-                            'routes' => [
-                                'admin.employeee-department.index',
-                                'admin.employeee-department.create',
-                                'admin.employeee-department.edit',
-                                'admin.employee.index',
-                                'admin.employee.create',
-                                'admin.employee.edit',
-                            ],
-                            'subMenu' => [
-                                [
-                                    'title' => 'Departments',
-                                    'routes' => ['admin.employeee-department.index'],
-                                    'route' => 'admin.employeee-department.index',
-                                ],
-                                [
-                                    'title' => 'Employee List',
-                                    'routes' => ['admin.employee.index'],
-                                    'route' => 'admin.employee.index',
-                                ],
-                            ],
-                        ],
+                        // [
+                        //     'title' => 'Employees',
+                        //     'icon' => 'fa-solid fa-users text-info',
+                        //     'routes' => [
+                        //         'admin.employeee-department.index',
+                        //         'admin.employeee-department.create',
+                        //         'admin.employeee-department.edit',
+                        //         'admin.employee.index',
+                        //         'admin.employee.create',
+                        //         'admin.employee.edit',
+                        //     ],
+                        //     'subMenu' => [
+                        //         [
+                        //             'title' => 'Departments',
+                        //             'routes' => ['admin.employeee-department.index'],
+                        //             'route' => 'admin.employeee-department.index',
+                        //         ],
+                        //         [
+                        //             'title' => 'Employee List',
+                        //             'routes' => ['admin.employee.index'],
+                        //             'route' => 'admin.employee.index',
+                        //         ],
+                        //     ],
+                        // ],
 
-                        [
-                            'title' => 'Reports',
-                            'icon' => 'fa-solid fa-file text-info',
-                            'routes' => [
-                                'admin.balance-sheet.index',
-                                'admin.balance-sheet.create',
-                                'admin.balance-sheet.edit',
-                                'admin.today-report.index',
-                                'admin.today-report.create',
-                                'admin.today-report.edit',
-                                'admin.summary-report.index',
-                                'admin.summary-report.create',
-                                'admin.summary-report.edit',
-                                'admin.expense-report.index',
-                                'admin.expense-report.create',
-                                'admin.expense-report.edit',
-                                'admin.client-receivable.index',
-                                'admin.client-receivable.create',
-                                'admin.client-receivable.edit',
-                                'admin.client-payable.index',
-                                'admin.client-payable.create',
-                                'admin.client-payable.edit',
-                                'admin.sales-user.index',
-                                'admin.sales-user.create',
-                                'admin.sales-user.edit',
-                                'admin.collection-report.index',
-                                'admin.collection-report.create',
-                                'admin.collection-report.edit',
-                            ],
-                            'subMenu' => [
-                                [
-                                    'title' => 'Balance Sheet',
-                                    'routes' => [
-                                        'admin.balance-sheet.index',
-                                        'admin.balance-sheet.create',
-                                        'admin.balance-sheet.edit',
-                                    ],
-                                    'route' => 'admin.balance-sheet.index',
-                                ],
-                                [
-                                    'title' => 'Today Report',
-                                    'routes' => [
-                                        'admin.today-report.index',
-                                        'admin.today-report.create',
-                                        'admin.today-report.edit',
-                                    ],
-                                    'route' => 'admin.today-report.index',
-                                ],
-                                [
-                                    'title' => 'Summary Report',
-                                    'routes' => [
-                                        'admin.summary-report.index',
-                                        'admin.summary-report.create',
-                                        'admin.summary-report.edit',
-                                    ],
-                                    'route' => 'admin.summary-report.index',
-                                ],
-                                [
-                                    'title' => 'Expense Report',
-                                    'routes' => ['admin.expense-report.index'],
-                                    'route' => 'admin.expense-report.index',
-                                ],
-                                // [
-                                //     'title' => 'Client Receivable Report',
-                                //     'routes' => [
-                                //         'admin.client-receivable.index',
-                                //         'admin.client-receivable.create',
-                                //         'admin.client-receivable.edit',
-                                //     ],
-                                //     'route' => 'admin.client-receivable.index',
-                                // ],
-                                // [
-                                //     'title' => 'Client Payable Report',
-                                //     'routes' => [
-                                //         'admin.client-payable.index',
-                                //         'admin.client-payable.create',
-                                //         'admin.client-payable.edit',
-                                //     ],
-                                //     'route' => 'admin.client-payable.index',
-                                // ],
-                                // [
-                                //     'title' => 'Sales By User Report',
-                                //     'routes' => [
-                                //         'admin.sales-user.index',
-                                //         'admin.sales-user.create',
-                                //         'admin.sales-user.edit',
-                                //     ],
-                                //     'route' => 'admin.sales-user.index',
-                                // ],
-                                // [
-                                //     'title' => 'Collection By User Report',
-                                //     'routes' => [
-                                //         'admin.collection-report.index',
-                                //         'admin.collection-report.create',
-                                //         'admin.collection-report.edit',
-                                //     ],
-                                //     'route' => 'admin.collection-report.index',
-                                // ],
-                            ],
-                        ],
+                        // [
+                        //     'title' => 'Reports',
+                        //     'icon' => 'fa-solid fa-file text-info',
+                        //     'routes' => [
+                        //         'admin.balance-sheet.index',
+                        //         'admin.balance-sheet.create',
+                        //         'admin.balance-sheet.edit',
+                        //         'admin.today-report.index',
+                        //         'admin.today-report.create',
+                        //         'admin.today-report.edit',
+                        //         'admin.summary-report.index',
+                        //         'admin.summary-report.create',
+                        //         'admin.summary-report.edit',
+                        //         'admin.expense-report.index',
+                        //         'admin.expense-report.create',
+                        //         'admin.expense-report.edit',
+                        //         'admin.client-receivable.index',
+                        //         'admin.client-receivable.create',
+                        //         'admin.client-receivable.edit',
+                        //         'admin.client-payable.index',
+                        //         'admin.client-payable.create',
+                        //         'admin.client-payable.edit',
+                        //         'admin.sales-user.index',
+                        //         'admin.sales-user.create',
+                        //         'admin.sales-user.edit',
+                        //         'admin.collection-report.index',
+                        //         'admin.collection-report.create',
+                        //         'admin.collection-report.edit',
+                        //     ],
+                        //     'subMenu' => [
+                        //         [
+                        //             'title' => 'Balance Sheet',
+                        //             'routes' => [
+                        //                 'admin.balance-sheet.index',
+                        //                 'admin.balance-sheet.create',
+                        //                 'admin.balance-sheet.edit',
+                        //             ],
+                        //             'route' => 'admin.balance-sheet.index',
+                        //         ],
+                        //         [
+                        //             'title' => 'Today Report',
+                        //             'routes' => [
+                        //                 'admin.today-report.index',
+                        //                 'admin.today-report.create',
+                        //                 'admin.today-report.edit',
+                        //             ],
+                        //             'route' => 'admin.today-report.index',
+                        //         ],
+                        //         [
+                        //             'title' => 'Summary Report',
+                        //             'routes' => [
+                        //                 'admin.summary-report.index',
+                        //                 'admin.summary-report.create',
+                        //                 'admin.summary-report.edit',
+                        //             ],
+                        //             'route' => 'admin.summary-report.index',
+                        //         ],
+                        //         [
+                        //             'title' => 'Expense Report',
+                        //             'routes' => ['admin.expense-report.index'],
+                        //             'route' => 'admin.expense-report.index',
+                        //         ],
+                        //         // [
+                        //         //     'title' => 'Client Receivable Report',
+                        //         //     'routes' => [
+                        //         //         'admin.client-receivable.index',
+                        //         //         'admin.client-receivable.create',
+                        //         //         'admin.client-receivable.edit',
+                        //         //     ],
+                        //         //     'route' => 'admin.client-receivable.index',
+                        //         // ],
+                        //         // [
+                        //         //     'title' => 'Client Payable Report',
+                        //         //     'routes' => [
+                        //         //         'admin.client-payable.index',
+                        //         //         'admin.client-payable.create',
+                        //         //         'admin.client-payable.edit',
+                        //         //     ],
+                        //         //     'route' => 'admin.client-payable.index',
+                        //         // ],
+                        //         // [
+                        //         //     'title' => 'Sales By User Report',
+                        //         //     'routes' => [
+                        //         //         'admin.sales-user.index',
+                        //         //         'admin.sales-user.create',
+                        //         //         'admin.sales-user.edit',
+                        //         //     ],
+                        //         //     'route' => 'admin.sales-user.index',
+                        //         // ],
+                        //         // [
+                        //         //     'title' => 'Collection By User Report',
+                        //         //     'routes' => [
+                        //         //         'admin.collection-report.index',
+                        //         //         'admin.collection-report.create',
+                        //         //         'admin.collection-report.edit',
+                        //         //     ],
+                        //         //     'route' => 'admin.collection-report.index',
+                        //         // ],
+                        //     ],
+                        // ],
 
                         [
                             'title' => 'Setup',
