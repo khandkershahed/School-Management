@@ -13,7 +13,7 @@
             <tr>
                 <td align="center" valign="center" style="text-align:center; padding: 10px 40px">
                     <a href="{{ route('home') }}" rel="noopener" target="_blank">
-                        <img alt="Logo" src="{{ asset('frontend/img/logo.png') }}" width="100px" />
+                        <img alt="Logo" src="{{ asset('images/logo_color_no_bg.png') }}" width="100px" />
                     </a>
                 </td>
             </tr>

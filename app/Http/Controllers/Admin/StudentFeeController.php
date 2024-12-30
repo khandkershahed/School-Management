@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\EducationMedium;
+use App\Http\Controllers\Controller;
 
 class StudentFeeController extends Controller
 {
@@ -12,7 +14,12 @@ class StudentFeeController extends Controller
      */
     public function index()
     {
-        //
+        $data = [
+            'mediums' => EducationMedium::get(),
+            'student' => User::with('medium')->latest('id')->get(),
+        ];
+
+        return view("admin.pages.studentFee.index", $data);
     }
 
     /**

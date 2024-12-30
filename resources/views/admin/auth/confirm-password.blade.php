@@ -6,7 +6,7 @@
         <div class="d-flex flex-center flex-column flex-column-fluid p-10 pb-lg-20">
             <!--begin::Logo-->
             <a href="{{ route('home') }}" class="mb-12">
-                <img alt="Logo" src="{{ asset('frontend/img/logo.png') }}" class="h-40px" />
+                <img alt="Logo" src="{{ asset('images/logo_color_no_bg.png') }}" class="h-40px" />
             </a>
             <!--end::Logo-->
             <!--begin::Wrapper-->

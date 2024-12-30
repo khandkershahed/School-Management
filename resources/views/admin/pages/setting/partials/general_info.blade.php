@@ -108,12 +108,12 @@
         </div>
         <div class="col-lg-4">
             <div class="mb-3">
-                <x-admin.label for="site_logo_black"
+                <x-admin.label for="site_black_logo"
                     class="form-label">{{ __('Site Logo Colorful (For White Background)') }}
                 </x-admin.label>
 
-                <x-admin.file-input id="site_logo_black" name="site_logo_black" :source="asset('storage/' . optional($setting)->site_logo_black)"
-                    :value="old('site_logo_black', optional($setting)->site_logo_black)"></x-admin.file-input>
+                <x-admin.file-input id="site_black_logo" name="site_black_logo" :source="asset('storage/' . optional($setting)->site_black_logo)"
+                    :value="old('site_black_logo', optional($setting)->site_black_logo)"></x-admin.file-input>
             </div>
         </div>
         <div class="col-lg-4">

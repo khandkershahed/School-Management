@@ -5,7 +5,7 @@
         <div class="d-flex flex-column flex-column-fluid text-center p-10 py-lg-15">
             <!--begin::Logo-->
             <a href="{{ route('home') }}" class="mb-10 pt-lg-10">
-                <img alt="Logo" src="{{ !empty(optional($setting)->site_logo_black) ? asset('storage/' . optional($setting)->site_logo_black) : asset('frontend/img/logo.png') }}" class="h-40px mb-5" />
+                <img alt="Logo" src="{{ !empty(optional($setting)->site_black_logo) ? asset('storage/' . optional($setting)->site_black_logo) : asset('images/logo_color_no_bg.png') }}" class="h-40px mb-5" />
             </a>
             <!--end::Logo-->
             @if (session('status') == 'verification-link-sent')

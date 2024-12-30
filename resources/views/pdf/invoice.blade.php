@@ -67,9 +67,9 @@
                     <div class="col-lg-6">
                         <div class="pb-5">
                             <img class="text-right" width="150px"
-                                src="{{ !empty(optional($setting)->site_logo_black) ? asset('storage/' . optional($setting)->site_logo_black) : asset('frontend/img/logo.png') }}"
+                                src="{{ !empty(optional($setting)->site_black_logo) ? asset('storage/' . optional($setting)->site_black_logo) : asset('images/logo_color_no_bg.png') }}"
                                 alt=""
-                                onerror="this.onerror=null;this.src='https://neezpackages.com/frontend/img/logo.png';">
+                                onerror="this.onerror=null;this.src='https://neezpackages.com/images/logo_color_no_bg.png';">
                         </div>
                     </div>
                     <div class="col-lg-6">

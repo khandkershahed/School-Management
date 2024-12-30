@@ -50,7 +50,7 @@
                             <div class="pb-5">
                                 <a href="{{ route('home') }}" class="">
                                     <img class="img-fluid home-logo"
-                                        src="{{ !empty(optional($setting)->site_logo_black) ? asset('storage/' . optional($setting)->site_logo_black) : asset('frontend/img/logo.png') }}"
+                                        src="{{ !empty(optional($setting)->site_black_logo) ? asset('storage/' . optional($setting)->site_black_logo) : asset('images/logo_color_no_bg.png') }}"
                                         alt="">
                                 </a>
                             </div>
