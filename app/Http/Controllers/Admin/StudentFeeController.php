@@ -99,8 +99,6 @@ class StudentFeeController extends Controller
         } catch (\Exception $e) {
             // Rollback the transaction if any error occurs
             DB::rollBack();
-
-            // Return an error response if something goes wrong
             return redirect()->back()->with('error', $e->getMessage());
         }
     }

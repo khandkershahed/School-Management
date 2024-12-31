@@ -15,12 +15,14 @@
         .container {
             padding: 10px;
             border: 1px solid #000;
-            width: 100%; /* Take full width of the reduced page */
+            width: 100%;
+            /* Take full width of the reduced page */
             margin: auto;
-            font-size: 12px; /* Smaller font size for the smaller page */
+            font-size: 12px;
+            /* Smaller font size for the smaller page */
         }
 
-        .header {
+        /* .header {
             text-align: center;
             margin-bottom: 10px;
         }
@@ -31,6 +33,34 @@
         }
 
         .header h2 {
+            margin: 5px 0;
+            font-size: 12px;
+        } */
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .header .logo {
+            width: 50px;
+            /* Adjust the size of the logo */
+            height: auto;
+        }
+
+        .header .header-text {
+            text-align: center;
+            flex-grow: 1;
+        }
+
+        .header .header-text h1,
+        .header .header-text h2 {
+            margin: 0;
+        }
+
+        .header .header-text p {
             margin: 5px 0;
             font-size: 12px;
         }
@@ -76,10 +106,13 @@
     <div class="container">
         <!-- Header -->
         <div class="header">
-            <h1>SHAMSUL HAQUE KHAN SCHOOL AND COLLEGE</h1>
-            <p>Paradogair, Matuail, Demra Dhaka | +88 016 8044 7289</p>
-            <p>Email: info.shksc@gmail.com | Website: www.shksc.edu.bd/</p>
-            <h2>PAYMENT RECEIPT</h2>
+            <img src="{{ asset('images/logo_color_no_bg.png') }}" alt="Logo" class="logo"> <!-- Add your logo image here -->
+            <div class="header-text">
+                <h1>Shamsul Hoque Khan School and College</h1>
+                <p>Paradogair, Matuail, Demra Dhaka -1362</p>
+                <p>Email: info.shksc@gmail.com| Website: www.shksc.edu.bd/</p>
+                <h2>PAYMENT RECEIPT</h2>
+            </div>
         </div>
 
         <!-- Receipt Info -->
@@ -97,16 +130,16 @@
         <!-- Student Info -->
         <table class="info-table" style="margin-top: 10px;">
             <tr>
-                <td><strong>Name:</strong> {{ ($student)->name }}</td>
-                <td><strong>Roll:</strong> {{ ($student)->roll }}</td>
+                <td><strong>Name:</strong> {{ $student->name }}</td>
+                <td><strong>Roll:</strong> {{ $student->roll }}</td>
             </tr>
             <tr>
-                <td><strong>Section:</strong> {{ ($student->medium)->name }}</td>
-                <td><strong>Class:</strong> {{ ($student)->class }}</td>
+                <td><strong>Section:</strong> {{ $student->medium->name }}</td>
+                <td><strong>Class:</strong> {{ $student->class }}</td>
             </tr>
             <tr>
-                <td><strong>Guardian:</strong> {{ ($student)->guardian_name }}</td>
-                <td><strong>Mobile:</strong> {{ ($student)->guardian_contact }}</td>
+                <td><strong>Guardian Name:</strong> {{ $student->guardian_name }}</td>
+                <td><strong>Guardian Contact Number:</strong> {{ $student->guardian_contact }}</td>
             </tr>
         </table>
 
@@ -132,15 +165,16 @@
 
         <!-- Footer -->
         <div class="footer">
-            <p><strong>In Words:</strong> {{ $amount_in_words }}</p>
-            <p style="text-align: right;"><strong>Total Amount:</strong> {{ $totalAmount }} Taka</p>
+            <p style="margin-top: 10px; margin-bottom: 10px; text-align: center; text-transform: capitalize;"><strong>In
+                    Words:</strong> {{ $amount_in_words }} Taka only</p>
+            <h6 style="text-align: right;"><strong>Total Amount:</strong> {{ $totalAmount }} Taka</h6>
         </div>
 
         <!-- Signature -->
         <div class="signature">
-            <p>Approved By</p>
-            <p>Md. Akram Miah</p>
             <p>Received By</p>
+            <p>Md. Akram Miah</p>
+            {{-- <p>Received By</p> --}}
         </div>
     </div>
 </body>
