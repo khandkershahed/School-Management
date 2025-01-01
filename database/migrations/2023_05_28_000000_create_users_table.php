@@ -21,7 +21,9 @@ return new class extends Migration
             $table->string('gender')->nullable();
             $table->string('year')->nullable();
             $table->unsignedInteger('roll')->nullable();
+            $table->string('medium')->nullable();
             $table->string('class')->nullable();
+            $table->string('group')->nullable();
             $table->string('section')->nullable();
             $table->string('guardian_name')->nullable();
             $table->string('guardian_contact')->nullable();
@@ -29,10 +31,6 @@ return new class extends Migration
             $table->string('status')->nullable();
             $table->rememberToken();
             $table->timestamps();
-            // $table->unsignedBigInteger('medium_id')->nullable();
-            // $table->foreign('class_id')->references('id')->on('classes')->onDelete('cascade');
-            // $table->foreign('section_id')->references('id')->on('sections')->onDelete('cascade');
-            // $table->foreign('medium_id')->references('id')->on('mediums')->onDelete('cascade');
         });
     }
 

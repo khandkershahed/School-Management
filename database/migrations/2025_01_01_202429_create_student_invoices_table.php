@@ -11,15 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('invoices', function (Blueprint $table) {
+        Schema::create('student_invoices', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('student_id')->nullable()->constrained('users')->onDelete('set null')->onUpdate('no action');
             $table->string('invoice_number')->unique();
-            $table->unsignedBigInteger('student_id');
             $table->string('month');
             $table->year('year');
             $table->decimal('total_amount', 10, 2);
             $table->timestamp('generated_at')->useCurrent();
-            $table->foreign('student_id')->references('id')->on('users')->onDelete('cascade');
+            $table->string('invoice');
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('invoices');
+        Schema::dropIfExists('student_invoices');
     }
 };

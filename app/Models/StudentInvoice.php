@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class StudentFee extends Model
+class StudentInvoice extends Model
 {
     use HasFactory;
 
@@ -15,5 +15,4 @@ class StudentFee extends Model
      * @var array
      */
     protected $guarded = [];
-    
 }

@@ -4,7 +4,7 @@
     <div class="col-10">
         <input id="{{ $id ?? 'file-input' }}" type="file"
             class="form-control form-control-solid @error($name)is-invalid @enderror" name="{{ $name }}"
-            accept="image/*" {{ $attributes }} onchange="previewFile(this)" />
+             {{ $attributes }} onchange="previewFile(this)" />
 
         @error($name)
             <div class="invalid-feedback">

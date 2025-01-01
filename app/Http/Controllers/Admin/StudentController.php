@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use Exception;
+use App\Models\Fee;
 use App\Models\User;
+use App\Models\StudentFee;
 use Illuminate\Http\Request;
 use App\Imports\StudentsImport;
 use App\Models\EducationMedium;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
@@ -44,8 +47,11 @@ class StudentController extends Controller
     public function store(Request $request)
     {
         try {
-            $code = generateCode(User::class, 'SHK');
-            
+            $code = strtoupper(substr($request->medium, 0, 1)) .
+                strtoupper(substr($request->group, 0, 1)) .
+                strtoupper($request->section) . '-' .
+                $request->year . $request->class . $request->roll;
+
             $files = [
                 'image' => $request->file('image'),
             ];
@@ -65,16 +71,20 @@ class StudentController extends Controller
 
             // create client
             $userSchema = User::create([
-                'medium_id'        => $request->medium_id,
                 'student_id'       => $code,
                 'name'             => $request->name,
-                'roll'             => $request->roll,
+                'medium'           => $request->medium,
+                'medium_id'        => $request->medium_id,
                 'class'            => $request->class,
                 'section'          => $request->section,
+                'gender'           => $request->gender,
+                'group'            => $request->group,
+                'year'             => $request->year,
+                'roll'             => $request->roll,
                 'guardian_name'    => $request->guardian_name,
                 'guardian_contact' => $request->guardian_contact,
-                'address'          => $request->address,
                 'status'           => $request->status,
+                'address'          => $request->address,
                 'image'            => $uploadedFiles['image']['status'] == 1 ? $uploadedFiles['image']['file_path'] : null,
             ]);
 
@@ -104,11 +114,33 @@ class StudentController extends Controller
     public function show(string $slug)
     {
         try {
+            $student = User::with('invoices', 'waivers', 'paidFees')->where('slug', $slug)->first();
+            $fees = Fee::where('medium', $student->medium)
+                ->whereJsonContains('class', $student->class)
+                ->where('status', 'active')
+                ->get();
+
+            // Retrieve any waivers for the student
+            $waivers = $student->waivers;
+
+            // Create a lookup for the waivers to easily access by fee ID
+            $waiversLookup = $waivers->keyBy('fee_id');
+
+            // Get the paid fees for the student (these should not show in the due fees section)
+            $paidFees = StudentFee::where('student_id', $student->id)
+                ->where('status', 'Paid')
+                ->pluck('fee_id'); // Get only the fee IDs of the paid fees
+
+            // Exclude the paid fees from the list of available fees for the due fees section
+            $dueFees = $fees->whereNotIn('id', $paidFees);
             $data = [
-                'student' => User::where('slug', $slug)->first(),
+                'student'       => $student,
+                'dueFees'       => $dueFees,
+                'waiversLookup' => $waiversLookup,
+                'fees'          => $fees,
             ];
 
-            return view("admin.pages.students.show",$data);
+            return view("admin.pages.students.show", $data);
         } catch (Exception $e) {
             redirectWithError($e->getMessage());
             return redirect()->back();
@@ -125,7 +157,7 @@ class StudentController extends Controller
                 'student' => User::where('slug', $id)->first(),
             ];
 
-            return view("admin.pages.students.edit",$data);
+            return view("admin.pages.students.edit", $data);
         } catch (Exception $e) {
             redirectWithError($e->getMessage());
             return redirect()->back();
@@ -171,20 +203,23 @@ class StudentController extends Controller
 
             // create client
             $client->update([
-                'medium_id'        => $request->medium_id,
-                // 'student_id'       => $code,
                 'name'             => $request->name,
-                'roll'             => $request->roll,
+                'medium'           => $request->medium,
+                'medium_id'        => $request->medium_id,
                 'class'            => $request->class,
                 'section'          => $request->section,
+                'gender'           => $request->gender,
+                'group'            => $request->group,
+                'year'             => $request->year,
+                'roll'             => $request->roll,
                 'guardian_name'    => $request->guardian_name,
                 'guardian_contact' => $request->guardian_contact,
-                'address'          => $request->address,
                 'status'           => $request->status,
-                'image'            => $uploadedFiles['image']['status'] == 1 ? $uploadedFiles['image']['file_path'] : null,
+                'address'          => $request->address,
+                'image'            => $uploadedFiles['image']['status'] == 1 ? $uploadedFiles['image']['file_path'] : $client->image,
             ]);
 
-            redirectWithSuccess('Stident Data Updated successfully');
+            redirectWithSuccess('Student Data Updated successfully');
             return redirect()->route('admin.students.index');
         } catch (Exception $e) {
             redirectWithError($e->getMessage());
@@ -226,8 +261,7 @@ class StudentController extends Controller
         Excel::import(new StudentsImport, $file);
 
         // Redirect back with success message
-        redirectWithSuccess('Stident Data Imported successfully');
-            return redirect()->route('admin.students.index');
-
+        redirectWithSuccess('Student Data Imported successfully');
+        return redirect()->route('admin.students.index');
     }
 }

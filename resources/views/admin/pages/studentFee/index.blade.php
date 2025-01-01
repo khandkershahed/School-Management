@@ -14,51 +14,60 @@
                         <div class="card-body">
                             <form id="filterForm" enctype="multipart/form-data">
                                 <div class="row">
-                                    <div class="col-lg-4 col-md-6">
+                                    <div class="col-lg-3 col-md-6">
                                         <div class="mb-3">
-                                            <x-admin.label for="name" class="form-label">Name <span
-                                                    class="text-danger">*</span></x-admin.label>
+                                            <x-admin.label for="name" class="form-label">Name </x-admin.label>
                                             <x-admin.input type="text" :value="old('name')" id="name"
-                                                name="name" required></x-admin.input>
+                                                name="name"></x-admin.input>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-6">
+                                        <div class="mb-3">
+                                            <x-admin.label for="student_id" class="form-label">Student ID </x-admin.label>
+                                            <x-admin.input type="text" :value="old('student_id')" id="student_id"
+                                                name="student_id"></x-admin.input>
                                         </div>
                                     </div>
 
                                     <div class="col-lg-3 col-md-6">
                                         <div class="mb-3">
-                                            <x-admin.label for="medium_id" class="form-label">Medium <span
-                                                    class="text-danger">*</span></x-admin.label>
-                                            <x-admin.select-option id="medium_id" name="medium_id" :allowClear="true"
-                                                required>
+                                            <x-admin.label for="medium_id" class="form-label">Medium</x-admin.label>
+                                            <x-admin.select-option id="medium" name="medium" :allowClear="true">
                                                 <option value="">-- Select Medium --</option>
-                                                @foreach ($mediums as $medium)
-                                                    <option value="{{ $medium->id }}"
-                                                        {{ old('medium_id') == $medium->id ? 'selected' : '' }}>
-                                                        {{ $medium->name }}
-                                                    </option>
-                                                @endforeach
+                                                <option value="Bangla" @selected(old('medium') == 'Bangla')>Bangla</option>
+                                                <option value="English" @selected(old('medium') == 'English')>English</option>
+                                                <option value="College" @selected(old('medium') == 'College')>College</option>
                                             </x-admin.select-option>
                                         </div>
                                     </div>
 
                                     <div class="col-lg-2 col-md-6">
                                         <div class="mb-3">
-                                            <x-admin.label for="class" class="form-label">Class <span
-                                                    class="text-danger">*</span></x-admin.label>
-                                            <x-admin.select-option id="class" name="class" :allowClear="true"
-                                                required>
+                                            <x-admin.label for="class" class="form-label">Class </x-admin.label>
+                                            <x-admin.select-option class="form-control-solid" id="class"
+                                                name="class" :allowClear="true" multiple required>
                                                 <option value=""></option>
-                                                @foreach (range(1, 12) as $class)
-                                                    <option value="{{ $class }}" @selected(old('class') == $class)>
-                                                        {{ $class }}</option>
-                                                @endforeach
+                                                <option value="nursery" @selected(old('class') == 'nursery')>Nursery</option>
+                                                <option value="1" @selected(old('class') == '1')>One</option>
+                                                <option value="2" @selected(old('class') == '2')>Two</option>
+                                                <option value="3" @selected(old('class') == '3')>Three</option>
+                                                <option value="4" @selected(old('class') == '4')>Four</option>
+                                                <option value="5" @selected(old('class') == '5')>Five</option>
+                                                <option value="6" @selected(old('class') == '6')>Six</option>
+                                                <option value="7" @selected(old('class') == '7')>Seven</option>
+                                                <option value="8" @selected(old('class') == '8')>Eight</option>
+                                                <option value="9" @selected(old('class') == '9')>Nine</option>
+                                                <option value="10" @selected(old('class') == '10')>Ten</option>
+                                                <option value="11" @selected(old('class') == '11')>First Year</option>
+                                                <option value="12" @selected(old('class') == '12')>Second Year
+                                                </option>
                                             </x-admin.select-option>
                                         </div>
                                     </div>
 
                                     <div class="col-lg-3 col-md-6">
                                         <div class="mb-3">
-                                            <x-admin.label for="roll" class="form-label">Roll <span
-                                                    class="text-danger">*</span></x-admin.label>
+                                            <x-admin.label for="roll" class="form-label">Roll </x-admin.label>
                                             <x-admin.input type="text" :value="old('roll')" id="roll"
                                                 name="roll" required></x-admin.input>
                                         </div>
@@ -113,7 +122,8 @@
                 let paySlipHtml = '';
 
                 if (selectedFees.length > 0) {
-                    paySlipHtml += '<div class="card shadow-none mb-5"><div class="card-body"><h4 class="text-center mb-3">Payment Receipt</h4>';
+                    paySlipHtml +=
+                        '<div class="card shadow-none mb-5"><div class="card-body"><h4 class="text-center mb-3">Payment Receipt</h4>';
 
                     // Start a no-border table to align names and amounts
                     paySlipHtml += '<table class="table table-borderless">';
@@ -136,11 +146,13 @@
 
                     paySlipHtml += '</table>';
                 } else {
-                    paySlipHtml = '<p>No fees selected.</p>';
+                    paySlipHtml = '<div class="d-flex align-items-center justify-content-center"><h4 class="text-danger text-center">No fees selected.</h4></div>';
                 }
 
                 // Update the paySlip div with the generated HTML
                 $('#paySlip').html(paySlipHtml);
+                $('.amount').val(totalAmount);
+
             }
 
             $(document).ready(function() {
@@ -152,20 +164,15 @@
                 e.preventDefault(); // Prevent form submission
                 var formData = $('#filterForm').serialize(); // Serialize the form data
 
-                // Log form data to check if it's being sent correctly
-                // console.log("Sending form data: ", formData);
-
                 $.ajax({
                     url: '{{ route('admin.student.filter') }}', // Your route here
                     method: 'GET',
                     data: formData, // Send serialized form data
                     success: function(response) {
-                        // Log the response from the server for debugging
-                        // console.log("Response received: ", response);
-
-                        // Check if the response is empty
-                        if (response.trim() === '') {
-                            alert('No data found.');
+                        // Check if the response contains an error message
+                        if (response.error) {
+                            // Show the alert if the student is not found
+                            alert(response.error);
                         } else {
                             // Update the container with the new data
                             $('#studentFeeContainer').html(response);

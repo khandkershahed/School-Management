@@ -4,6 +4,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\Admin\FaqController;
+use App\Http\Controllers\Admin\FeeController;
 use App\Http\Controllers\Admin\LogController;
 use App\Http\Controllers\Admin\IconController;
 use App\Http\Controllers\Admin\RoleController;
@@ -18,10 +19,12 @@ use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\StudentController;
+use App\Http\Controllers\Admin\AccountsController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\NewsletterController;
 use App\Http\Controllers\Admin\PageBannerController;
 use App\Http\Controllers\Admin\PermissionController;
+use App\Http\Controllers\Admin\StudentFeeController;
 use App\Http\Controllers\Admin\ActivityLogController;
 use App\Http\Controllers\Admin\FaqCategoryController;
 use App\Http\Controllers\Admin\TodayReportController;
@@ -42,6 +45,7 @@ use App\Http\Controllers\Admin\Auth\NewPasswordController;
 use App\Http\Controllers\Admin\Auth\VerifyEmailController;
 use App\Http\Controllers\Admin\ClientNonInvoiceController;
 use App\Http\Controllers\Admin\CollectionReportController;
+use App\Http\Controllers\Admin\StudentFeeWaiverController;
 use App\Http\Controllers\Admin\BalanceAdjustmentController;
 use App\Http\Controllers\Admin\IncomeSubCategoryController;
 use App\Http\Controllers\Admin\TermsAndConditionController;
@@ -57,8 +61,6 @@ use App\Http\Controllers\Admin\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Admin\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Admin\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Admin\Auth\EmailVerificationNotificationController;
-use App\Http\Controllers\Admin\FeeController;
-use App\Http\Controllers\Admin\StudentFeeController;
 
 Route::get('/', function () {
     return redirect()->route('admin.login');
@@ -143,9 +145,11 @@ Route::middleware('auth:admin')->name('admin.')->group(function () {
             'students'              => StudentController::class,
             'fees'                  => FeeController::class,
             'student-fee'           => StudentFeeController::class,
+            'fee-waiver'            => StudentFeeWaiverController::class,
         ],
     );
     Route::post('students/import', [StudentController::class, 'import'])->name('students.import');
+    Route::get('/admin/fee-reports', [AccountsController::class, 'index'])->name('fee-reports');
 
 
 

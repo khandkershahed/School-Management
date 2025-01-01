@@ -12,17 +12,17 @@
                                 <div class="btn-group" role="group" aria-label="Basic outlined example">
                                     <button type="button" data-bs-toggle="modal" data-bs-target="#excelImport" class="btn btn-outline-light toltip"
                                         data-tooltip="Import Excel">
-                                        <i class="fa-solid fa-file-csv"></i>
+                                        <i class="fa-solid fa-file-csv pe-2"></i> Import Excel
                                     </button>
                                     {{-- <a href="#" class="btn btn-outline-light toltip"
                                         data-tooltip="Download PDF">
                                         <i class="fa-solid fa-file-pdf"></i>
                                     </a> --}}
-                                    <button type="button" class="btn btn-outline-light toltip"
+                                    {{-- <button type="button" class="btn btn-outline-light toltip"
                                         data-tooltip="Print Table">
                                         <i class="fa-solid fa-print"></i>
                                         <span class="tooltiptext">Print</span>
-                                    </button>
+                                    </button> --}}
                                     <a href="{{ route('admin.students.create') }}" class="btn btn-outline-light toltip"
                                         data-tooltip="Create New"> Create
                                         <i class="fa-solid fa-plus"></i>
@@ -61,7 +61,7 @@
                                                 <td class="text-center">
                                                     <a href="{{ route('admin.students.show',$student->slug) }}">{{ $student->name }}</a>
                                                 </td>
-                                                <td class="text-center">{{ optional($student->medium)->name }}</td>
+                                                <td class="text-center">{{ optional($student)->medium }}</td>
                                                 <td class="text-center">{{ $student->class }}</td>
                                                 <td class="text-center">{{ $student->roll }}</td>
                                                 <td class="text-center">
@@ -109,11 +109,11 @@
                         enctype="multipart/form-data">
                         @csrf
                         <div class="mb-3">
-                            <x-admin.label for="name" class="form-label">Select Excel File (.xlsx,.xls,.csv only):</x-admin.label>
+                            <x-admin.label for="name" class="form-label">Select Excel File (.xlsx,.xls,.csv only): ( <a href="{{ asset('images/Demo Excel Student Import.xlsx') }}" download="" class="fw-bold">Download</a> demo format Excel)</x-admin.label>
                             <x-admin.file-input class="form-control form-control-solid" :value="old('file')"
                                 id="file" name="file" required></x-admin.file-input>
                         </div>
-                        <x-admin.button type="submit" class="btn btn-white">Submit</x-admin.button>
+                        <x-admin.button type="submit" class="btn btn-white float-end">Submit</x-admin.button>
                     </form>
                 </div>
             </div>

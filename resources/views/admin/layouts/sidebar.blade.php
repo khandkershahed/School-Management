@@ -26,24 +26,21 @@
                                 'admin.education-medium.edit',
                             ],
                             'subMenu' => [
-                                [
-                                    'title' => 'Education Medium',
-                                    'routes' => [
-                                        'admin.education-medium.index',
-                                        'admin.education-medium.create',
-                                        'admin.education-medium.edit',
-                                    ],
-                                    'route' => 'admin.education-medium.index',
-                                ],
+                                // [
+                                //     'title' => 'Education Medium',
+                                //     'routes' => [
+                                //         'admin.education-medium.index',
+                                //         'admin.education-medium.create',
+                                //         'admin.education-medium.edit',
+                                //     ],
+                                //     'route' => 'admin.education-medium.index',
+                                // ],
                                 [
                                     'title' => 'Students List',
                                     'routes' => [
                                         'admin.students.index',
                                         'admin.students.create',
                                         'admin.students.edit',
-                                        'admin.education-medium.index',
-                                        'admin.education-medium.create',
-                                        'admin.education-medium.edit',
                                     ],
                                     'route' => 'admin.students.index',
                                 ],
@@ -59,6 +56,7 @@
                                 'admin.student-fee.index',
                                 'admin.student-fee.create',
                                 'admin.student-fee.edit',
+                                'admin.fee-waiver.index',
                             ],
                             'subMenu' => [
                                 [
@@ -69,6 +67,15 @@
                                         'admin.fees.edit',
                                     ],
                                     'route' => 'admin.fees.index',
+                                ],
+                                [
+                                    'title' => 'Fee Waiver',
+                                    'routes' => [
+                                        'admin.fee-waiver.index',
+                                        'admin.fee-waiver.create',
+                                        'admin.fee-waiver.edit',
+                                    ],
+                                    'route' => 'admin.fee-waiver.index',
                                 ],
                                 [
                                     'title' => 'Student Fee Collection',
@@ -87,202 +94,21 @@
                             ],
                         ],
 
-                        // [
-                        //     'title' => 'Payments',
-                        //     'icon' => 'fa-solid fa-receipt text-info',
-                        //     'routes' => [
-                        //         'admin.client-invoice.index',
-                        //         'admin.client-invoice.create',
-                        //         'admin.client-invoice.edit',
-                        //         'admin.client-non-invoice.index',
-                        //         'admin.client-non-invoice.create',
-                        //         'admin.client-non-invoice.edit',
-                        //         'admin.payroll.index',
-                        //         'admin.payroll.create',
-                        //         'admin.payroll.edit',
-                        //     ],
-                        //     'subMenu' => [
-                        //         [
-                        //             'title' => 'Client Invoice',
-                        //             'routes' => [
-                        //                 'admin.client-invoice.index',
-                        //                 'admin.client-invoice.create',
-                        //                 'admin.client-invoice.edit',
-                        //             ],
-                        //             'route' => 'admin.client-invoice.index',
-                        //         ],
-                        //         [
-                        //             'title' => 'Client Non Invoice',
-                        //             'routes' => [
-                        //                 'admin.client-non-invoice.index',
-                        //                 'admin.client-non-invoice.create',
-                        //                 'admin.client-non-invoice.edit',
-                        //             ],
-                        //             'route' => 'admin.client-non-invoice.index',
-                        //         ],
-                        //         [
-                        //             'title' => 'Payroll',
-                        //             'routes' => ['admin.payroll.index', 'admin.payroll.create', 'admin.payroll.edit'],
-                        //             'route' => 'admin.payroll.index',
-                        //         ],
-                        //     ],
-                        // ],
 
-                        // [
-                        //     'title' => 'Employees',
-                        //     'icon' => 'fa-solid fa-users text-info',
-                        //     'routes' => [
-                        //         'admin.employeee-department.index',
-                        //         'admin.employeee-department.create',
-                        //         'admin.employeee-department.edit',
-                        //         'admin.employee.index',
-                        //         'admin.employee.create',
-                        //         'admin.employee.edit',
-                        //     ],
-                        //     'subMenu' => [
-                        //         [
-                        //             'title' => 'Departments',
-                        //             'routes' => ['admin.employeee-department.index'],
-                        //             'route' => 'admin.employeee-department.index',
-                        //         ],
-                        //         [
-                        //             'title' => 'Employee List',
-                        //             'routes' => ['admin.employee.index'],
-                        //             'route' => 'admin.employee.index',
-                        //         ],
-                        //     ],
-                        // ],
-
-                        // [
-                        //     'title' => 'Reports',
-                        //     'icon' => 'fa-solid fa-file text-info',
-                        //     'routes' => [
-                        //         'admin.balance-sheet.index',
-                        //         'admin.balance-sheet.create',
-                        //         'admin.balance-sheet.edit',
-                        //         'admin.today-report.index',
-                        //         'admin.today-report.create',
-                        //         'admin.today-report.edit',
-                        //         'admin.summary-report.index',
-                        //         'admin.summary-report.create',
-                        //         'admin.summary-report.edit',
-                        //         'admin.expense-report.index',
-                        //         'admin.expense-report.create',
-                        //         'admin.expense-report.edit',
-                        //         'admin.client-receivable.index',
-                        //         'admin.client-receivable.create',
-                        //         'admin.client-receivable.edit',
-                        //         'admin.client-payable.index',
-                        //         'admin.client-payable.create',
-                        //         'admin.client-payable.edit',
-                        //         'admin.sales-user.index',
-                        //         'admin.sales-user.create',
-                        //         'admin.sales-user.edit',
-                        //         'admin.collection-report.index',
-                        //         'admin.collection-report.create',
-                        //         'admin.collection-report.edit',
-                        //     ],
-                        //     'subMenu' => [
-                        //         [
-                        //             'title' => 'Balance Sheet',
-                        //             'routes' => [
-                        //                 'admin.balance-sheet.index',
-                        //                 'admin.balance-sheet.create',
-                        //                 'admin.balance-sheet.edit',
-                        //             ],
-                        //             'route' => 'admin.balance-sheet.index',
-                        //         ],
-                        //         [
-                        //             'title' => 'Today Report',
-                        //             'routes' => [
-                        //                 'admin.today-report.index',
-                        //                 'admin.today-report.create',
-                        //                 'admin.today-report.edit',
-                        //             ],
-                        //             'route' => 'admin.today-report.index',
-                        //         ],
-                        //         [
-                        //             'title' => 'Summary Report',
-                        //             'routes' => [
-                        //                 'admin.summary-report.index',
-                        //                 'admin.summary-report.create',
-                        //                 'admin.summary-report.edit',
-                        //             ],
-                        //             'route' => 'admin.summary-report.index',
-                        //         ],
-                        //         [
-                        //             'title' => 'Expense Report',
-                        //             'routes' => ['admin.expense-report.index'],
-                        //             'route' => 'admin.expense-report.index',
-                        //         ],
-                        //         // [
-                        //         //     'title' => 'Client Receivable Report',
-                        //         //     'routes' => [
-                        //         //         'admin.client-receivable.index',
-                        //         //         'admin.client-receivable.create',
-                        //         //         'admin.client-receivable.edit',
-                        //         //     ],
-                        //         //     'route' => 'admin.client-receivable.index',
-                        //         // ],
-                        //         // [
-                        //         //     'title' => 'Client Payable Report',
-                        //         //     'routes' => [
-                        //         //         'admin.client-payable.index',
-                        //         //         'admin.client-payable.create',
-                        //         //         'admin.client-payable.edit',
-                        //         //     ],
-                        //         //     'route' => 'admin.client-payable.index',
-                        //         // ],
-                        //         // [
-                        //         //     'title' => 'Sales By User Report',
-                        //         //     'routes' => [
-                        //         //         'admin.sales-user.index',
-                        //         //         'admin.sales-user.create',
-                        //         //         'admin.sales-user.edit',
-                        //         //     ],
-                        //         //     'route' => 'admin.sales-user.index',
-                        //         // ],
-                        //         // [
-                        //         //     'title' => 'Collection By User Report',
-                        //         //     'routes' => [
-                        //         //         'admin.collection-report.index',
-                        //         //         'admin.collection-report.create',
-                        //         //         'admin.collection-report.edit',
-                        //         //     ],
-                        //         //     'route' => 'admin.collection-report.index',
-                        //         // ],
-                        //     ],
-                        // ],
 
                         [
-                            'title' => 'Account Management',
+                            'title' => 'Accounts Management',
                             'icon' => 'fa-solid fa-wallet text-info',
                             'routes' => [
-                                'admin.fees.index',
-                                'admin.fees.create',
-                                'admin.fees.edit',
-                                'admin.student-fee.index',
-                                'admin.student-fee.create',
-                                'admin.student-fee.edit',
+                                'admin.fee-reports',
                             ],
                             'subMenu' => [
                                 [
-                                    'title' => 'All Fees',
+                                    'title' => 'Report Dashboard',
                                     'routes' => [
-                                        'admin.fees.index',
-                                        'admin.fees.create',
-                                        'admin.fees.edit',
+                                        'admin.fee-reports',
                                     ],
-                                    'route' => 'admin.fees.index',
-                                ],
-                                [
-                                    'title' => 'Student Fee Collection',
-                                    'routes' => [
-                                        'admin.student-fee.index',
-                                        'admin.student-fee.create',
-                                        'admin.student-fee.edit',
-                                    ],
-                                    'route' => 'admin.student-fee.index',
+                                    'route' => 'admin.fee-reports',
                                 ],
 
                             ],
@@ -303,22 +129,22 @@
                                     'routes' => ['admin.settings.index'],
                                     'route' => 'admin.settings.index',
                                 ],
-                                [
-                                    'title' => 'Email Setting',
-                                    'routes' => ['admin.email-settings.index'],
-                                    'route' => 'admin.email-settings.index',
-                                ],
+                                // [
+                                //     'title' => 'Email Setting',
+                                //     'routes' => ['admin.email-settings.index'],
+                                //     'route' => 'admin.email-settings.index',
+                                // ],
 
                                 [
                                     'title' => 'Database Backup',
                                     'routes' => ['admin.database.backup'],
                                     'route' => 'admin.database.backup',
                                 ],
-                                [
-                                    'title' => 'Profile Setting',
-                                    // 'routes' => ['admin.email-settings.index'],
-                                    // 'route' => 'admin.email-settings.index',
-                                ],
+                                // [
+                                //     'title' => 'Profile Setting',
+                                //     // 'routes' => ['admin.email-settings.index'],
+                                //     // 'route' => 'admin.email-settings.index',
+                                // ],
                             ],
                         ],
                     ];

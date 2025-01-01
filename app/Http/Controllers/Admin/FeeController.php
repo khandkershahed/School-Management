@@ -7,6 +7,8 @@ use App\Models\Fee;
 use Illuminate\Http\Request;
 use App\Models\EducationMedium;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 
 class FeeController extends Controller
 {
@@ -40,12 +42,39 @@ class FeeController extends Controller
     {
         try {
 
+            $validator = Validator::make($request->all(), [
+                'name'      => 'required|string|max:200',
+                'class'     => 'required',
+                'amount'    => 'required|min:1',
+                'status'    => 'required|in:active,inactive',
+                'medium'    => 'required|string',
+            ], [
+                'name.required'   => 'The name field is required.',
+                'class.required'  => 'The class field is required.',
+                'amount.required' => 'The amount field is required.',
+                'medium.required' => 'The medium field is required.',
+                'status.required' => 'The status field is required.',
+                'name.string'     => 'The name must be a string.',
+                'name.max'        => 'The name may not be greater than :max characters.',
+                'name.unique'     => 'This name has already been taken.',
+                'status.in'       => 'The status must be one of: active, inactive.',
+            ]);
+
+            if ($validator->fails()) {
+                // foreach ($validator->messages()->all() as $message) {
+                //     Session::flash('error', $message);
+                // }
+                Session::flash('error', $validator->messages()->all());
+                return redirect()->back()->withInput();
+            }
             // create client
-            $userSchema = Fee::create([
+            $fee = Fee::create([
                 'name'        => $request->name,
                 'class'       => json_encode($request->class),
                 'description' => $request->description,
                 'amount'      => $request->amount,
+                'status'      => $request->status,
+                'medium'      => $request->medium,
                 'medium_id'   => $request->medium_id,
             ]);
 
@@ -74,7 +103,6 @@ class FeeController extends Controller
     {
         $data = [
             'fee'     => Fee::findOrFail($id),
-            'mediums' => EducationMedium::get(),
         ];
         return view("admin.pages.fees.edit", $data);
     }
@@ -92,6 +120,8 @@ class FeeController extends Controller
                 'class'       => json_encode($request->class),
                 'description' => $request->description,
                 'amount'      => $request->amount,
+                'status'      => $request->status,
+                'medium'      => $request->medium,
                 'medium_id'   => $request->medium_id,
             ]);
 
@@ -110,6 +140,7 @@ class FeeController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $fee =  Fee::findOrFail($id);
+        $fee->delete();
     }
 }

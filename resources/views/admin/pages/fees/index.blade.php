@@ -10,11 +10,6 @@
                                     <h4 class="mb-0">Manage Fees</h4>
                                 </div>
                                 <div class="btn-group" role="group" aria-label="Basic outlined example">
-
-                                    <button type="button" class="btn btn-outline-light toltip"
-                                        data-tooltip="Print Table">
-                                        <i class="fa-solid fa-print"></i>
-                                    </button>
                                     <a href="{{ route('admin.fees.create') }}" class="btn btn-outline-light toltip"
                                         data-tooltip="Create New"> Create
                                         <i class="fa-solid fa-plus"></i>
@@ -43,24 +38,34 @@
                                                 <td class="text-center">{{ $loop->iteration }}</td>
                                                 <td class="text-center">{{ $fee->name }}</td>
                                                 {{-- <td class="text-center">{{ $fee->description }}</td> --}}
-                                                <td class="text-center">{{ optional($fee->medium)->name }}</td>
+                                                <td class="text-center">{{ optional($fee)->medium }}</td>
                                                 <td class="text-center">
-                                                    @if (!empty(optional($fee)->class) && is_array(optional($fee)->class))
-                                                        @foreach (json_decode(optional($fee)->class) as $item)
-                                                            <span class="px-2 bg-success text-white"> {{ $item }}</span>
-                                                        @endforeach
+                                                    @if (!empty(optional($fee)->class))
+                                                        @php
+                                                            $classes = json_decode(optional($fee)->class, true); // Decode JSON if it's stored as a JSON string
+                                                        @endphp
+
+                                                        @if (is_array($classes))
+                                                            @foreach ($classes as $item)
+                                                                <span class="px-2 badge bg-success text-white">
+                                                                    {{ $item }}
+                                                                </span>
+                                                            @endforeach
                                                         @else
-                                                        <span class=""> No class selected</span>
+                                                            <span >No class selected</span>
+                                                        @endif
+                                                    @else
+                                                        <span>No class selected</span>
                                                     @endif
-                                                    {{-- {{  }} --}}
                                                 </td>
                                                 <td class="text-center">{{ number_format($fee->amount, 2) }}</td>
                                                 <td class="text-end">
-                                                    <a href="{{ route('admin.fees.edit', $fee->id) }}" class="btn btn-sm btn-primary toltip mb-2"
-                                                        data-tooltip="Edit">
+                                                    <a href="{{ route('admin.fees.edit', $fee->id) }}"
+                                                        class="btn btn-sm btn-primary toltip mb-2" data-tooltip="Edit">
                                                         <i class="fa-solid fa-pen"></i>
                                                     </a>
-                                                    <a href="{{ route('admin.fees.destroy', $fee->id) }}" class="btn btn-sm btn-danger toltip mb-2 delete"
+                                                    <a href="{{ route('admin.fees.destroy', $fee->id) }}"
+                                                        class="btn btn-sm btn-danger toltip mb-2 delete"
                                                         data-tooltip="Delete">
                                                         <i class="fa-solid fa-trash"></i>
                                                     </a>

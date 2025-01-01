@@ -18,10 +18,10 @@ return new class extends Migration
             $table->json('class')->nullable();
             $table->text('description')->nullable();
             $table->decimal('amount', 10, 2);
+            $table->string('medium');
             $table->foreignId('medium_id')->nullable()->constrained('education_media')->onDelete('set null')->onUpdate('no action');
             $table->foreignId('class_id')->nullable()->constrained('student_classes')->onDelete('set null')->onUpdate('no action');
-            // $table->foreign('class_id')->references('id')->on('classes')->onDelete('cascade');
-            // $table->foreign('medium_id')->references('id')->on('mediums')->onDelete('cascade');
+            $table->string('status');
             $table->timestamps();
         });
     }

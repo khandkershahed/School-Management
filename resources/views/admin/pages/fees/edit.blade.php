@@ -41,17 +41,13 @@
 
                                     <div class="col-lg-3 col-md-6">
                                         <div class="mb-3">
-                                            <x-admin.label for="medium_id" class="form-label">Medium <span
+                                            <x-admin.label for="medium" class="form-label">Medium <span
                                                     class="text-danger">*</span></x-admin.label>
-                                            <x-admin.select-option id="medium_id" name="medium_id" :allowClear="true"
-                                                required>
+                                            <x-admin.select-option id="medium" name="medium" :allowClear="true">
                                                 <option value="">-- Select Medium --</option>
-                                                @foreach ($mediums as $medium)
-                                                    <option value="{{ $medium->id }}"
-                                                        {{ old('medium_id', $fee->medium_id) == $medium->id ? 'selected' : '' }}>
-                                                        {{ $medium->name }}
-                                                    </option>
-                                                @endforeach
+                                                <option value="Bangla" @selected(old('medium', $fee->medium) == 'Bangla')>Bangla</option>
+                                                <option value="English" @selected(old('medium', $fee->medium) == 'English')>English</option>
+                                                <option value="College" @selected(old('medium', $fee->medium) == 'College')>College</option>
                                             </x-admin.select-option>
                                         </div>
                                     </div>
@@ -67,18 +63,20 @@
                                                 name="class[]" :allowClear="true" multiple required>
                                                 <option value=""></option>
                                                 <option value="nursery" @selected(is_array($classes) && in_array('nursery', $classes))>Nursery </option>
-                                                <option value="one" @selected(is_array($classes) && in_array('one', $classes))>One </option>
-                                                <option value="two" @selected(is_array($classes) && in_array('two', $classes))>Two</option>
-                                                <option value="three" @selected(is_array($classes) && in_array('three', $classes))>Three </option>
-                                                <option value="four" @selected(is_array($classes) && in_array('four', $classes))>Four </option>
-                                                <option value="five" @selected(is_array($classes) && in_array('five', $classes))>Five </option>
-                                                <option value="six" @selected(is_array($classes) && in_array('six', $classes))>Six </option>
-                                                <option value="seven" @selected(is_array($classes) && in_array('seven', $classes))>Seven </option>
-                                                <option value="eight" @selected(is_array($classes) && in_array('eight', $classes))>Eight </option>
-                                                <option value="nine" @selected(is_array($classes) && in_array('nine', $classes))>Nine</option>
-                                                <option value="ten" @selected(is_array($classes) && in_array('ten', $classes))>Ten </option>
-                                                <option value="first_year" @selected(is_array($classes) && in_array('first_year', $classes))>First Year </option>
-                                                <option value="second_year" @selected(is_array($classes) && in_array('second_year', $classes))>Second Year</option>
+                                                <option value="1" @selected(is_array($classes) && in_array('1', $classes))>One </option>
+                                                <option value="2" @selected(is_array($classes) && in_array('2', $classes))>Two</option>
+                                                <option value="3" @selected(is_array($classes) && in_array('3', $classes))>Three </option>
+                                                <option value="4" @selected(is_array($classes) && in_array('4', $classes))>Four </option>
+                                                <option value="5" @selected(is_array($classes) && in_array('5', $classes))>Five </option>
+                                                <option value="6" @selected(is_array($classes) && in_array('6', $classes))>Six </option>
+                                                <option value="7" @selected(is_array($classes) && in_array('7', $classes))>Seven </option>
+                                                <option value="8" @selected(is_array($classes) && in_array('8', $classes))>Eight </option>
+                                                <option value="9" @selected(is_array($classes) && in_array('9', $classes))>Nine</option>
+                                                <option value="10" @selected(is_array($classes) && in_array('10', $classes))>Ten </option>
+                                                <option value="11" @selected(is_array($classes) && in_array('11', $classes))>First Year
+                                                </option>
+                                                <option value="12" @selected(is_array($classes) && in_array('12', $classes))>Second Year
+                                                </option>
                                             </x-admin.select-option>
                                         </div>
                                     </div>

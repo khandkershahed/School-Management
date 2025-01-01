@@ -2,16 +2,21 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Carbon\Carbon;
 use App\Models\Fee;
 use Dompdf\Options;
 use App\Models\User;
 use App\Models\StudentFee;
 use Illuminate\Http\Request;
+use App\Models\OfficeInvoice;
+use App\Models\StudentInvoice;
 use App\Models\EducationMedium;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
 use Rmunate\Utilities\SpellNumber;
+use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 
 class StudentFeeController extends Controller
 {
@@ -39,6 +44,212 @@ class StudentFeeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+    // public function store(Request $request)
+    // {
+    //     // Start a transaction to ensure atomicity
+    //     DB::beginTransaction();
+
+    //     try {
+    //         // Validate the incoming request
+    //         $request->validate([
+    //             'student_id' => 'required|exists:users,id',
+    //             'fee_id' => 'required|array',
+    //             'fee_id.*' => 'exists:fees,id',
+    //             'year' => 'required|string',
+    //             'month' => 'required|string',
+    //         ]);
+
+    //         // Get the student
+    //         $student = User::findOrFail($request->student_id);
+
+    //         // Store the student fee entries
+    //         $totalAmount = 0;
+    //         foreach ($request->fee_id as $feeId) {
+    //             $fee = Fee::findOrFail($feeId);
+    //             // Create student fee record
+    //             $studentFee = StudentFee::create([
+    //                 'student_id' => $student->id,
+    //                 'fee_id' => $fee->id,
+    //                 'year' => date('Y'),
+    //                 'month' => date('M'),
+    //                 'status' => 'paid', // Default status is 'Unpaid'
+    //             ]);
+
+    //             $totalAmount += $fee->amount; // Accumulate total amount for the receipt
+    //         }
+
+    //         // Prepare receipt data
+    //         $receiptData = [
+    //             'student' => $student,
+    //             'fees' => Fee::whereIn('id', $request->fee_id)->get(),
+    //             'totalAmount' => $totalAmount,
+    //             'year' => $request->year,
+    //             'month' => $request->month,
+    //             'amount_in_words' => SpellNumber::value($totalAmount)->locale('en')->toLetters(),
+    //         ];
+
+    //         // Generate PDF using Dompdf
+    //         $pdf = $this->generateReceiptPDF($receiptData);
+
+    //         // Generate the file path for saving the PDFs
+    //         $studentPdfPath = 'receipts/student_copy_' . $student->id . '_' . time() . '.pdf';
+    //         $officePdfPath = 'receipts/office_copy_' . $student->id . '_' . time() . '.pdf';
+
+    //         // Save the PDF files to storage
+    //         Storage::disk('public')->put($studentPdfPath, $pdf->output());
+    //         Storage::disk('public')->put($officePdfPath, $pdf->output());
+
+    //         // Store file paths in the database
+    //         $invoice_number = $request->student_id . '-' . date('d');
+    //         StudentInvoice::create([
+    //             'student_id'     => $invoice_number,
+    //             'invoice_number' => $request->invoice_number,
+    //             'month'          => $request->month,
+    //             'year'           => $request->year,
+    //             'total_amount'   => $request->total_amount,
+    //             'generated_at'   => Carbon::now(),
+    //             'invoice'        => $studentPdfPath,
+    //         ]);
+    //         OfficeInvoice::create([
+    //             'student_id'     => $invoice_number,
+    //             'invoice_number' => $request->invoice_number,
+    //             'month'          => $request->month,
+    //             'year'           => $request->year,
+    //             'total_amount'   => $request->total_amount,
+    //             'generated_at'   => Carbon::now(),
+    //             'invoice'        => $officePdfPath,
+    //         ]);
+
+    //         // Commit the transaction after successful creation
+    //         DB::commit();
+
+    //         // Return the generated PDF as a download response
+    //         return response()->stream(function () use ($pdf) {
+    //             echo $pdf->output();
+    //         }, 200, [
+    //             "Content-Type" => "application/pdf",
+    //             "Content-Disposition" => "inline; filename=receipt.pdf",
+    //         ]);
+    //     } catch (\Exception $e) {
+    //         // Rollback the transaction if any error occurs
+    //         DB::rollBack();
+    //         return redirect()->back()->with('error', $e->getMessage());
+    //     }
+    // }
+
+    // public function store(Request $request)
+    // {
+    //     // Start a transaction to ensure atomicity
+    //     DB::beginTransaction();
+
+    //     try {
+    //         // Validate the incoming request
+    //         $request->validate([
+    //             'student_id' => 'required|exists:users,id',
+    //             'fee_id' => 'required|array',
+    //             'fee_id.*' => 'exists:fees,id',
+    //             'waiver_amount' => 'nullable|array',
+    //             'waiver_amount.*' => 'numeric|min:0',
+    //             'month' => 'required|string',
+    //             'year' => 'required|string',
+    //         ]);
+
+    //         // Get the student
+    //         $student = User::findOrFail($request->student_id);
+    //         $invoiceNumber = $student->student_id . '-' . date('d');
+    //         // Store the student fee entries and calculate total amount
+    //         $totalAmount = 0;
+    //         foreach ($request->fee_id as $index => $feeId) {
+    //             $fee = Fee::findOrFail($feeId);
+
+    //             // Calculate the final amount after applying any waivers
+    //             $waiverAmount = isset($request->waiver_amount[$feeId]) ? $request->waiver_amount[$feeId] : 0;
+    //             $finalAmount = max(0, $request->amount[$index] - $waiverAmount); // Ensure the amount doesn't go negative
+
+    //             // Create student fee record in `student_fees`
+    //             StudentFee::create([
+    //                 'student_id' => $student->id,
+    //                 'fee_id' => $fee->id,
+    //                 'amount' => $finalAmount,
+    //                 'invoice_number' => $invoiceNumber,
+    //                 'month' => $request->month,
+    //                 'year' => $request->year,
+    //                 'status' => $finalAmount > 0 ? 'Paid' : 'Unpaid', // Status is "Paid" if amount > 0
+    //                 'paid_at' => $finalAmount > 0 ? Carbon::now() : null, // Set paid_at if payment is made
+    //             ]);
+
+    //             // Add the final amount to the total amount
+    //             $totalAmount += $finalAmount;
+    //         }
+
+    //         // Prepare receipt data
+    //         $receiptData = [
+    //             'student' => $student,
+    //             'fees' => Fee::whereIn('id', $request->fee_id)->get(),
+    //             'totalAmount' => $totalAmount,
+    //             'year' => $request->year,
+    //             'month' => $request->month,
+    //             'amount_in_words' => SpellNumber::value($totalAmount)->locale('en')->toLetters(),
+    //         ];
+
+    //         // Generate PDF using Dompdf (adjust this as per your method)
+    //         $pdf = $this->generateReceiptPDF($receiptData);
+
+    //         // Generate file paths for storing the PDFs
+    //         $studentPdfPath = 'receipts/student_copy_' . $student->id . '_' . time() . '.pdf';
+    //         $officePdfPath = 'receipts/office_copy_' . $student->id . '_' . time() . '.pdf';
+
+    //         // Save the PDF files to storage
+    //         Storage::disk('public')->put($studentPdfPath, $pdf->output());
+    //         Storage::disk('public')->put($officePdfPath, $pdf->output());
+
+    //         // Generate a unique invoice number
+
+
+    //         // Store the student invoice record in `student_invoices`
+    //         StudentInvoice::create([
+    //             'student_id' => $student->id,
+    //             'invoice_number' => $invoiceNumber,
+    //             'month' => $request->month,
+    //             'year' => $request->year,
+    //             'total_amount' => $totalAmount,
+    //             'generated_at' => Carbon::now(),
+    //             'invoice' => $studentPdfPath, // Path to student copy
+    //         ]);
+
+    //         // Store the office invoice record in `office_invoices`
+    //         OfficeInvoice::create([
+    //             'student_id' => $student->id,
+    //             'invoice_number' => $invoiceNumber,
+    //             'month' => $request->month,
+    //             'year' => $request->year,
+    //             'total_amount' => $totalAmount,
+    //             'generated_at' => Carbon::now(),
+    //             'invoice' => $officePdfPath, // Path to office copy
+    //         ]);
+
+    //         // Commit the transaction after successful creation
+    //         DB::commit();
+
+    //         // Return the generated PDF as a download response
+    //         return response()->stream(function () use ($pdf) {
+    //             echo $pdf->output();
+    //         }, 200, [
+    //             "Content-Type" => "application/pdf",
+    //             "Content-Disposition" => "inline; filename=receipt.pdf",
+    //         ]);
+    //     } catch (\Exception $e) {
+    //         // Rollback the transaction if any error occurs
+    //         DB::rollBack();
+
+    //         // Log the error for debugging
+    //         Log::error('Error storing payment data: ', ['error' => $e->getMessage()]);
+
+    //         // Return a generic error message
+    //         return redirect()->back()->with('error', $e->getMessage());
+    //     }
+    // }
+
     public function store(Request $request)
     {
         // Start a transaction to ensure atomicity
@@ -50,27 +261,43 @@ class StudentFeeController extends Controller
                 'student_id' => 'required|exists:users,id',
                 'fee_id' => 'required|array',
                 'fee_id.*' => 'exists:fees,id',
-                'year' => 'required|integer',
-                'month' => 'required|integer',
+                'waiver_amount' => 'nullable|array',
+                'waiver_amount.*' => 'numeric|min:0',
+                'month' => 'required|string',
+                'year' => 'required|string',
             ]);
 
             // Get the student
             $student = User::findOrFail($request->student_id);
+            $invoiceNumber = $student->student_id . '-' . date('d');
 
-            // Store the student fee entries
+            // Store the student fee entries and calculate total amount
             $totalAmount = 0;
-            foreach ($request->fee_id as $feeId) {
+
+            foreach ($request->fee_id as $index => $feeId) {
                 $fee = Fee::findOrFail($feeId);
-                // Create student fee record
-                $studentFee = StudentFee::create([
+
+                // Check if there's a waiver for this fee
+                $waiverAmount = isset($request->waiver_amount[$feeId]) ? $request->waiver_amount[$feeId] : 0;
+
+                // Calculate the final amount after applying any waivers
+                $finalAmount = $waiverAmount;
+                $finalAmount = max(0, $finalAmount); // Ensure the amount doesn't go negative
+
+                // Create student fee record in `student_fees`
+                StudentFee::create([
                     'student_id' => $student->id,
                     'fee_id' => $fee->id,
-                    'year' => $request->year,
+                    'amount' => $finalAmount,
+                    'invoice_number' => $invoiceNumber,
                     'month' => $request->month,
-                    'status' => 'paid', // Default status is 'Unpaid'
+                    'year' => $request->year,
+                    'status' => $finalAmount > 0 ? 'Paid' : 'Unpaid', // Status is "Paid" if amount > 0
+                    'paid_at' => $finalAmount > 0 ? Carbon::now() : null, // Set paid_at if payment is made
                 ]);
 
-                $totalAmount += $fee->amount; // Accumulate total amount for the receipt
+                // Add the final amount to the total amount
+                $totalAmount += $finalAmount;
             }
 
             // Prepare receipt data
@@ -83,8 +310,38 @@ class StudentFeeController extends Controller
                 'amount_in_words' => SpellNumber::value($totalAmount)->locale('en')->toLetters(),
             ];
 
-            // Generate PDF using Dompdf
+            // Generate PDF using Dompdf (adjust this as per your method)
             $pdf = $this->generateReceiptPDF($receiptData);
+
+            // Generate file paths for storing the PDFs
+            $studentPdfPath = 'receipts/student_copy_' . $student->id . '_' . time() . '.pdf';
+            $officePdfPath = 'receipts/office_copy_' . $student->id . '_' . time() . '.pdf';
+
+            // Save the PDF files to storage
+            Storage::disk('public')->put($studentPdfPath, $pdf->output());
+            Storage::disk('public')->put($officePdfPath, $pdf->output());
+
+            // Store the student invoice record in `student_invoices`
+            StudentInvoice::create([
+                'student_id' => $student->id,
+                'invoice_number' => $invoiceNumber,
+                'month' => $request->month,
+                'year' => $request->year,
+                'total_amount' => $totalAmount,
+                'generated_at' => Carbon::now(),
+                'invoice' => $studentPdfPath, // Path to student copy
+            ]);
+
+            // Store the office invoice record in `office_invoices`
+            OfficeInvoice::create([
+                'student_id' => $student->id,
+                'invoice_number' => $invoiceNumber,
+                'month' => $request->month,
+                'year' => $request->year,
+                'total_amount' => $totalAmount,
+                'generated_at' => Carbon::now(),
+                'invoice' => $officePdfPath, // Path to office copy
+            ]);
 
             // Commit the transaction after successful creation
             DB::commit();
@@ -99,9 +356,15 @@ class StudentFeeController extends Controller
         } catch (\Exception $e) {
             // Rollback the transaction if any error occurs
             DB::rollBack();
+
+            // Log the error for debugging
+            Log::error('Error storing payment data: ', ['error' => $e->getMessage()]);
+
+            // Return a generic error message
             return redirect()->back()->with('error', $e->getMessage());
         }
     }
+
 
     public function generateReceiptPDF($data)
     {
@@ -156,21 +419,161 @@ class StudentFeeController extends Controller
         //
     }
 
+    // public function filter(Request $request)
+    // {
+    //     // Start with the query builder to find the student
+    //     $query = User::query();
+
+    //     // Apply search filters based on the request parameters
+    //     if ($request->has('student_id') && $request->student_id !== '') {
+    //         $query->where('student_id', $request->student_id);
+    //     }
+
+    //     if ($request->has('name') && !empty($request->name)) {
+    //         $query->orWhere('name', 'like', '%' . $request->name . '%');
+    //     }
+
+    //     if ($request->has('roll') && $request->roll !== '') {
+    //         $query->orWhere('roll', $request->roll);
+    //     }
+
+    //     if ($request->has('medium') && $request->medium !== '') {
+    //         $query->orWhere('medium', $request->medium);
+    //     }
+
+    //     if ($request->has('class') && $request->class !== '') {
+    //         $query->orWhereJsonContains('class', $request->class);
+    //     }
+
+    //     // dd($query);
+
+    //     // Execute the query to find the student (first or null)
+    //     $student = $query->first();
+
+    //     if (!$student) {
+    //         // If no student is found, return a special message
+    //         return response()->json(['error' => 'Student not found']);
+    //     }
+
+    //     // Get the student fees based on medium and class
+    //     $fees = Fee::where('medium', $student->medium)
+    //         ->whereJsonContains('class', $student->class)
+    //         ->where('status', 'active')
+    //         ->get();
+
+    //     // Return the partial view with data
+    //     return response()->view('admin.pages.studentFee.partial.studentFee', compact('student', 'fees'));
+    // }
+
+    // public function filter(Request $request)
+    // {
+    //     // Start with the query builder to find the student
+    //     $query = User::query();
+
+    //     // Apply search filters based on the request parameters
+    //     if ($request->has('student_id') && $request->student_id !== '') {
+    //         $query->where('student_id', $request->student_id);
+    //     }
+
+    //     if ($request->has('name') && !empty($request->name)) {
+    //         $query->orWhere('name', 'like', '%' . $request->name . '%');
+    //     }
+
+    //     if ($request->has('roll') && $request->roll !== '') {
+    //         $query->orWhere('roll', $request->roll);
+    //     }
+
+    //     if ($request->has('medium') && $request->medium !== '') {
+    //         $query->orWhere('medium', $request->medium);
+    //     }
+
+    //     if ($request->has('class') && $request->class !== '') {
+    //         $query->orWhereJsonContains('class', $request->class);
+    //     }
+
+    //     // Execute the query to find the student (first or null)
+    //     $student = $query->first();
+
+    //     if (!$student) {
+    //         // If no student is found, return a special message
+    //         return response()->json(['error' => 'Student not found']);
+    //     }
+
+    //     // Get the student fees based on medium and class
+    //     $fees = Fee::where('medium', $student->medium)
+    //         ->whereJsonContains('class', $student->class)
+    //         ->where('status', 'active')
+    //         ->get();
+
+    //     // Retrieve any waivers for the student
+    //     $waivers = DB::table('student_fee_waivers')
+    //         ->where('student_id', $student->id)
+    //         ->get();
+
+    //     // Create a lookup for the waivers to easily access by fee ID
+    //     $waiversLookup = $waivers->keyBy('fee_id');
+
+    //     // Return the partial view with data
+    //     return response()->view('admin.pages.studentFee.partial.studentFee', compact('student', 'fees', 'waiversLookup'));
+    // }
+
     public function filter(Request $request)
     {
-        // Get the student by name, roll, medium, and class
-        $student = User::where('name', 'like', '%' . $request->name . '%')
-            ->where('roll', $request->roll)
-            ->where('medium_id', $request->medium_id)
-            ->where('class', $request->class)
-            ->first();
+        // Start with the query builder to find the student
+        $query = User::query();
+
+        // Apply search filters based on the request parameters
+        if ($request->has('student_id') && $request->student_id !== '') {
+            $query->where('student_id', $request->student_id);
+        }
+
+        if ($request->has('name') && !empty($request->name)) {
+            $query->orWhere('name', 'like', '%' . $request->name . '%');
+        }
+
+        if ($request->has('roll') && $request->roll !== '') {
+            $query->orWhere('roll', $request->roll);
+        }
+
+        if ($request->has('medium') && $request->medium !== '') {
+            $query->orWhere('medium', $request->medium);
+        }
+
+        if ($request->has('class') && $request->class !== '') {
+            $query->orWhereJsonContains('class', $request->class);
+        }
+
+        // Execute the query to find the student (first or null)
+        $student = $query->first();
+
+        if (!$student) {
+            // If no student is found, return a special message
+            return response()->json(['error' => 'Student not found']);
+        }
 
         // Get the student fees based on medium and class
-        $fees = Fee::where('medium_id', $request->medium_id)
-            ->where('class', $request->class)
+        $fees = Fee::where('medium', $student->medium)
+            ->whereJsonContains('class', $student->class)
+            ->where('status', 'active')
             ->get();
 
+        // Retrieve any waivers for the student
+        $waivers = DB::table('student_fee_waivers')
+            ->where('student_id', $student->id)
+            ->get();
+
+        // Create a lookup for the waivers to easily access by fee ID
+        $waiversLookup = $waivers->keyBy('fee_id');
+
+        // Get the paid fees for the student (these should not show in the due fees section)
+        $paidFees = StudentFee::where('student_id', $student->id)
+            ->where('status', 'Paid')
+            ->pluck('fee_id'); // Get only the fee IDs of the paid fees
+
+        // Exclude the paid fees from the list of available fees for the due fees section
+        $dueFees = $fees->whereNotIn('id', $paidFees);
+
         // Return the partial view with data
-        return response()->view('admin.pages.studentFee.partial.studentFee', compact('student', 'fees'));
+        return response()->view('admin.pages.studentFee.partial.studentFee', compact('student', 'dueFees', 'waiversLookup', 'paidFees'));
     }
 }
