@@ -255,6 +255,40 @@
                         // ],
 
                         [
+                            'title' => 'Account Management',
+                            'icon' => 'fa-solid fa-wallet text-info',
+                            'routes' => [
+                                'admin.fees.index',
+                                'admin.fees.create',
+                                'admin.fees.edit',
+                                'admin.student-fee.index',
+                                'admin.student-fee.create',
+                                'admin.student-fee.edit',
+                            ],
+                            'subMenu' => [
+                                [
+                                    'title' => 'All Fees',
+                                    'routes' => [
+                                        'admin.fees.index',
+                                        'admin.fees.create',
+                                        'admin.fees.edit',
+                                    ],
+                                    'route' => 'admin.fees.index',
+                                ],
+                                [
+                                    'title' => 'Student Fee Collection',
+                                    'routes' => [
+                                        'admin.student-fee.index',
+                                        'admin.student-fee.create',
+                                        'admin.student-fee.edit',
+                                    ],
+                                    'route' => 'admin.student-fee.index',
+                                ],
+
+                            ],
+                        ],
+
+                        [
                             'title' => 'Setup',
                             'icon' => 'fa-solid fa-gear text-info',
                             'routes' => [

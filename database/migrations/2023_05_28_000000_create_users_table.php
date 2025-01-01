@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->string('slug')->nullable();
             $table->string('image')->nullable();
+            $table->string('gender')->nullable();
+            $table->string('year')->nullable();
             $table->unsignedInteger('roll')->nullable();
             $table->string('class')->nullable();
             $table->string('section')->nullable();

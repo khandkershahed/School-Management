@@ -57,25 +57,76 @@
                                             </x-admin.select-option>
                                         </div>
                                     </div> --}}
-                                    <div class="col-lg-2 col-md-6">
+                                    <div class="col-lg-3 col-md-6">
                                         <div class="mb-3">
                                             <x-admin.label for="class" class="form-label">Class <span
                                                     class="text-danger">*</span></x-admin.label>
-                                            <x-admin.select-option id="class" name="class" :allowClear="true"
+                                            <x-admin.select-option class="form-control-solid" id="class" name="class" :allowClear="true"
                                                 required>
                                                 <option value=""></option>
-                                                <option value="1" @selected(old('class') == '1')>i</option>
-                                                <option value="2" @selected(old('class') == '2')>ii</option>
-                                                <option value="3" @selected(old('class') == '3')>iii</option>
-                                                <option value="4" @selected(old('class') == '4')>iv</option>
-                                                <option value="5" @selected(old('class') == '5')>v</option>
-                                                <option value="6" @selected(old('class') == '6')>vi</option>
-                                                <option value="7" @selected(old('class') == '7')>vii</option>
-                                                <option value="8" @selected(old('class') == '8')>viii</option>
-                                                <option value="9" @selected(old('class') == '9')>ix</option>
-                                                <option value="10" @selected(old('class') == '10')>x</option>
-                                                <option value="11" @selected(old('class') == '11')>xi</option>
-                                                <option value="12" @selected(old('class') == '12')>xii</option>
+                                                <option value="nursery" @selected(old('class') == 'nursery')>Nursery</option>
+                                                <option value="one" @selected(old('class') == 'one')>One</option>
+                                                <option value="two" @selected(old('class') == 'two')>Two</option>
+                                                <option value="three" @selected(old('class') == 'three')>Three</option>
+                                                <option value="four" @selected(old('class') == 'four')>Four</option>
+                                                <option value="five" @selected(old('class') == 'five')>Five</option>
+                                                <option value="six" @selected(old('class') == 'six')>Six</option>
+                                                <option value="seven" @selected(old('class') == 'seven')>Seven</option>
+                                                <option value="eight" @selected(old('class') == 'eight')>Eight</option>
+                                                <option value="nine" @selected(old('class') == 'nine')>Nine</option>
+                                                <option value="ten" @selected(old('class') == 'ten')>Ten</option>
+                                                <option value="first_year" @selected(old('class') == 'first_year')>First Year</option>
+                                                <option value="second_year" @selected(old('class') == 'second_year')>Second Year</option>
+                                            </x-admin.select-option>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2 col-md-6">
+                                        <div class="mb-3">
+                                            <x-admin.label for="section" class="form-label">Section <span
+                                                    class="text-danger">*</span></x-admin.label>
+                                            <x-admin.select-option class="form-control-solid" id="section" name="section" :allowClear="true"
+                                                required>
+                                                <option value=""></option>
+                                                <option value="nursery" @selected(old('class') == 'a')>A</option>
+                                                <option value="one" @selected(old('class') == 'b')>B</option>
+                                                <option value="two" @selected(old('class') == 'c')>C</option>
+                                                <option value="three" @selected(old('class') == 'd')>D</option>
+                                                <option value="four" @selected(old('class') == 'e')>E</option>
+                                                <option value="five" @selected(old('class') == 'f')>F</option>
+                                                <option value="six" @selected(old('class') == 'g')>G</option>
+                                                <option value="seven" @selected(old('class') == 'h')>H</option>
+                                                <option value="eight" @selected(old('class') == 'i')>I</option>
+                                                <option value="nine" @selected(old('class') == 'j')>J</option>
+                                                <option value="ten" @selected(old('class') == 'k')>K</option>
+                                                <option value="first_year" @selected(old('class') == 'l')>L</option>
+                                                <option value="second_year" @selected(old('class') == 'm')>M</option>
+                                                <option value="second_year" @selected(old('class') == 'n')>N</option>
+                                            </x-admin.select-option>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-6">
+                                        <div class="mb-3">
+                                            <x-admin.label for="gender" class="form-label">Gender <span
+                                                    class="text-danger">*</span></x-admin.label>
+                                            <x-admin.select-option class="form-control-solid" id="gender" name="gender" :allowClear="true"
+                                                required>
+                                                <option value=""></option>
+                                                <option value="male" @selected(old('class') == 'male')>Male</option>
+                                                <option value="female" @selected(old('class') == 'female')>Female</option>
+                                            </x-admin.select-option>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-6">
+                                        <div class="mb-3">
+                                            <x-admin.label for="group" class="form-label">Group <span
+                                                    class="text-danger">*</span></x-admin.label>
+                                            <x-admin.select-option id="group" name="group" :allowClear="true"
+                                                required>
+                                                <option value="science" @selected(old('group') == 'science')>Science</option>
+                                                <option value="arts" @selected(old('group') == 'arts')>Arts</option>
+                                                <option value="commerce" @selected(old('group') == 'commerce')>Commerce</option>
+                                                <option value="day" @selected(old('group') == 'day')>Day</option>
+                                                <option value="morning" @selected(old('group') == 'morning')>Morning</option>
                                             </x-admin.select-option>
                                         </div>
                                     </div>
@@ -86,11 +137,11 @@
                                                 name="roll" required></x-admin.input>
                                         </div>
                                     </div>
-                                    <div class="col-lg-4 col-md-6">
+                                    <div class="col-lg-3 col-md-6">
                                         <div class="mb-3">
                                             <!-- form -->
                                             <div class="form-group">
-                                                <x-admin.label for="guardian_name" class="font-weight-bold text-dark">Guardian
+                                                <x-admin.label for="guardian_name" class="font-weight-bold text-dark">Father's
                                                     Name <span class="text-danger">*</span></x-admin.label>
                                                 <div class="input-group input-group-sm">
                                                     <x-admin.input id="guardian_name" type="text" name="guardian_name"
@@ -101,11 +152,11 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-lg-4 col-md-6">
+                                    <div class="col-lg-3 col-md-6">
                                         <div class="mb-3">
                                             <!-- form -->
                                             <div class="form-group">
-                                                <x-admin.label for="guardian_contact" class="font-weight-bold text-dark">Guardian
+                                                <x-admin.label for="guardian_contact" class="font-weight-bold text-dark">Father's
                                                     Contact Number <span class="text-danger">*</span></x-admin.label>
                                                 <div class="input-group input-group-sm">
                                                     <x-admin.input id="guardian_contact" type="text" name="guardian_contact"
@@ -113,6 +164,13 @@
                                                     </x-admin.input>
                                                 </div>
                                             </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-6">
+                                        <div class="mb-3">
+                                            <x-admin.label for="image" class="form-label">Image</x-admin.label>
+                                            <x-admin.file-input type="file" :value="old('image')" id="image"
+                                                name="image" required></x-admin.file-input>
                                         </div>
                                     </div>
                                     <div class="col-lg-3 col-md-6">
@@ -127,13 +185,7 @@
                                         </div>
                                     </div>
 
-                                    {{-- <div class="col-lg-3 col-md-6">
-                                        <div class="mb-3">
-                                            <x-admin.label for="image" class="form-label">Image</x-admin.label>
-                                            <x-admin.file-input type="file" :value="old('image')" id="image"
-                                                name="image" required></x-admin.file-input>
-                                        </div>
-                                    </div> --}}
+
                                     <div class="col-lg-12">
                                         <div class="mb-3">
                                             <label for="address" class="form-label">Address</label>

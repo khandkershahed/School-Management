@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug');
-            $table->string('class')->nullable();
+            $table->json('class')->nullable();
             $table->text('description')->nullable();
             $table->decimal('amount', 10, 2);
             $table->foreignId('medium_id')->nullable()->constrained('education_media')->onDelete('set null')->onUpdate('no action');

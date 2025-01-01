@@ -30,7 +30,7 @@
                                         <tr>
                                             <th width="5%" class="text-center">Sl</th>
                                             <th width="25%" class="text-center">Name</th>
-                                            <th width="25%" class="text-center">Description</th>
+                                            {{-- <th width="25%" class="text-center">Description</th> --}}
                                             <th width="15%" class="text-center">Medium</th>
                                             <th width="15%" class="text-center">Class</th>
                                             <th width="10%" class="text-center">Amount</th>
@@ -42,9 +42,18 @@
                                             <tr>
                                                 <td class="text-center">{{ $loop->iteration }}</td>
                                                 <td class="text-center">{{ $fee->name }}</td>
-                                                <td class="text-center">{{ $fee->description }}</td>
+                                                {{-- <td class="text-center">{{ $fee->description }}</td> --}}
                                                 <td class="text-center">{{ optional($fee->medium)->name }}</td>
-                                                <td class="text-center">{{ optional($fee)->class }}</td>
+                                                <td class="text-center">
+                                                    @if (!empty(optional($fee)->class) && is_array(optional($fee)->class))
+                                                        @foreach (json_decode(optional($fee)->class) as $item)
+                                                            <span class="px-2 bg-success text-white"> {{ $item }}</span>
+                                                        @endforeach
+                                                        @else
+                                                        <span class=""> No class selected</span>
+                                                    @endif
+                                                    {{-- {{  }} --}}
+                                                </td>
                                                 <td class="text-center">{{ number_format($fee->amount, 2) }}</td>
                                                 <td class="text-end">
                                                     <a href="{{ route('admin.fees.edit', $fee->id) }}" class="btn btn-sm btn-primary toltip mb-2"

@@ -43,7 +43,7 @@ class FeeController extends Controller
             // create client
             $userSchema = Fee::create([
                 'name'        => $request->name,
-                'class'       => $request->class,
+                'class'       => json_encode($request->class),
                 'description' => $request->description,
                 'amount'      => $request->amount,
                 'medium_id'   => $request->medium_id,
@@ -72,7 +72,11 @@ class FeeController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $data = [
+            'fee'     => Fee::findOrFail($id),
+            'mediums' => EducationMedium::get(),
+        ];
+        return view("admin.pages.fees.edit", $data);
     }
 
     /**
@@ -80,7 +84,25 @@ class FeeController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        try {
+            $fee =  Fee::findOrFail($id);
+            // create client
+            $fee->update([
+                'name'        => $request->name,
+                'class'       => json_encode($request->class),
+                'description' => $request->description,
+                'amount'      => $request->amount,
+                'medium_id'   => $request->medium_id,
+            ]);
+
+            //send welcome notification
+
+            redirectWithSuccess('fee updated successfully');
+            return redirect()->route('admin.fees.index');
+        } catch (Exception $e) {
+            redirectWithError($e->getMessage());
+            return redirect()->back()->withInput();
+        }
     }
 
     /**

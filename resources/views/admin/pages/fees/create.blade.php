@@ -23,14 +23,14 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-lg-4 col-md-6">
+                                    {{-- <div class="col-lg-4 col-md-6">
                                         <div class="mb-3">
                                             <x-admin.label for="description" class="form-label">Description <span class="text-danger">*</span></x-admin.label>
                                             <x-admin.textarea class="form-control" placeholder="Write Here" id="description" name="description" rows="3" required>
                                                 {{ old('description') }}
                                             </x-admin.textarea>
                                         </div>
-                                    </div>
+                                    </div> --}}
 
                                     <div class="col-lg-2 col-md-6">
                                         <div class="mb-3">
@@ -56,21 +56,22 @@
                                     <div class="col-lg-3 col-md-6">
                                         <div class="mb-3">
                                             <x-admin.label for="class_id" class="form-label">Class <span class="text-danger">*</span></x-admin.label>
-                                            <x-admin.select-option id="class" name="class" :allowClear="true"
+                                            <x-admin.select-option class="form-control-solid" id="class" name="class[]" :allowClear="true" multiple
                                                 required>
                                                 <option value=""></option>
-                                                <option value="1" @selected(old('class') == '1')>i</option>
-                                                <option value="2" @selected(old('class') == '2')>ii</option>
-                                                <option value="3" @selected(old('class') == '3')>iii</option>
-                                                <option value="4" @selected(old('class') == '4')>iv</option>
-                                                <option value="5" @selected(old('class') == '5')>v</option>
-                                                <option value="6" @selected(old('class') == '6')>vi</option>
-                                                <option value="7" @selected(old('class') == '7')>vii</option>
-                                                <option value="8" @selected(old('class') == '8')>viii</option>
-                                                <option value="9" @selected(old('class') == '9')>ix</option>
-                                                <option value="10" @selected(old('class') == '10')>x</option>
-                                                <option value="11" @selected(old('class') == '11')>xi</option>
-                                                <option value="12" @selected(old('class') == '12')>xii</option>
+                                                <option value="nursery" @selected(old('class') == 'nursery')>Nursery</option>
+                                                <option value="one" @selected(old('class') == 'one')>One</option>
+                                                <option value="two" @selected(old('class') == 'two')>Two</option>
+                                                <option value="three" @selected(old('class') == 'three')>Three</option>
+                                                <option value="four" @selected(old('class') == 'four')>Four</option>
+                                                <option value="five" @selected(old('class') == 'five')>Five</option>
+                                                <option value="six" @selected(old('class') == 'six')>Six</option>
+                                                <option value="seven" @selected(old('class') == 'seven')>Seven</option>
+                                                <option value="eight" @selected(old('class') == 'eight')>Eight</option>
+                                                <option value="nine" @selected(old('class') == 'nine')>Nine</option>
+                                                <option value="ten" @selected(old('class') == 'ten')>Ten</option>
+                                                <option value="first_year" @selected(old('class') == 'first_year')>First Year</option>
+                                                <option value="second_year" @selected(old('class') == 'second_year')>Second Year</option>
                                             </x-admin.select-option>
                                         </div>
                                     </div>
