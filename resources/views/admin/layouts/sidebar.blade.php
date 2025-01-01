@@ -71,11 +71,11 @@
                                 [
                                     'title' => 'Fee Waiver',
                                     'routes' => [
-                                        'admin.fee-waiver.index',
+                                        'admin.student-fee.index',
                                         'admin.fee-waiver.create',
                                         'admin.fee-waiver.edit',
                                     ],
-                                    'route' => 'admin.fee-waiver.index',
+                                    'route' => 'admin.student-fee.index',
                                 ],
                                 [
                                     'title' => 'Student Fee Collection',
