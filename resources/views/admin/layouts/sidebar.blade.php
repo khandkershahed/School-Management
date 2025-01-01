@@ -57,6 +57,7 @@
                                 'admin.student-fee.create',
                                 'admin.student-fee.edit',
                                 'admin.fee-waiver.index',
+                                'admin.students.show',
                             ],
                             'subMenu' => [
                                 [
@@ -71,11 +72,12 @@
                                 [
                                     'title' => 'Fee Waiver',
                                     'routes' => [
-                                        'admin.student-fee.index',
+                                        'admin.students.show',
+                                        'admin.fee-waiver.index',
                                         'admin.fee-waiver.create',
                                         'admin.fee-waiver.edit',
                                     ],
-                                    'route' => 'admin.student-fee.index',
+                                    'route' => 'admin.fee-waiver.index',
                                 ],
                                 [
                                     'title' => 'Student Fee Collection',

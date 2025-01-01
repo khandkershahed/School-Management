@@ -18,9 +18,7 @@ class StudentFeeWaiverController extends Controller
     public function index()
     {
         return view('admin.pages.studentFeeWaiver.index', [
-            'waivers' => StudentFeeWaiver::with('student', 'fee')->get(),
-            'students' => User::get(['id', 'student_id', 'name', 'class', 'medium']),
-            'fees' => Fee::get(['id', 'student_id', 'name', 'class', 'medium']),
+            'students' => User::with('waivers')->get(),
         ]);
     }
 

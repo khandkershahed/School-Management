@@ -1,5 +1,4 @@
-<x-admin-app-layout :title="'Student Fee Waiver'">
-
+<x-admin-app-layout :title="'Student Lists'">
     <div class="app-content">
         <div class="container-fluid mt-3">
             <div class="row">
@@ -8,112 +7,57 @@
                         <div class="card-header p-3 bg-custom text-white">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
-                                    <h4 class="mb-0">Student Fee Waiver</h4>
-                                </div>
-                                <div class="btn-group" role="group" aria-label="Basic outlined example">
-
-                                    <button type="button" data-bs-toggle="modal" data-bs-target="#addMediumModal"
-                                        class="btn btn-outline-light toltip" data-tooltip="Create New"> Set Waiver
-                                        <i class="fa-solid fa-plus"></i>
-                                    </button>
+                                    <h4 class="mb-0">Search Studento waive Fee</h4>
                                 </div>
                             </div>
                         </div>
+                        <div class="card-body p-0">
 
-                        <div class="card-body">
-                            <!-- Table -->
-                            <table class="table table-striped datatable" style="width:100%">
-                                <thead class="text-center">
-                                    <tr>
-                                        <th width="5%">SL</th>
-                                        <th width="24%">Student Name</th>
-                                        <th width="26%">Fee Name</th>
-                                        <th width="15%">Old Amount</th>
-                                        <th width="15%">New Amount</th>
-                                        <th width="15%">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="text-center">
-                                    @foreach ($waivers as $waiver)
+                            <div class="table-responsive p-3 pt-1">
+                                <!-- Table -->
+                                <table class="table table-striped datatable" style="width:100%">
+                                    <thead>
                                         <tr>
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ optional($waiver->student)->name }}</td>
-                                            <td>{{ optional($waiver->fee)->name }}</td>
-                                            <td>
-                                                <span style="text-decoration: line-through;">{{ optional($waiver->fee)->amount }}</span>
-                                            </td>
-                                            <td>
-                                                <span style="text-decoration: line-through;">{{ optional($waiver)->amount }}</span>
-                                            </td>
-                                            <td>
-                                                <a href="javascript:void(0)" class="btn btn-sm btn-primary"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#editMediumModal{{ $waiver->id }}">
-                                                    <i class="fa-solid fa-pen"></i>
-                                                </a>
-                                                <a href="{{ route('admin.education-medium.destroy', $waiver->id) }}"
-                                                    class="btn btn-sm btn-danger delete">
-                                                    <i class="fa-solid fa-trash"></i>
-                                                </a>
-                                                <div class="modal fade" id="editMediumModal{{ $waiver->id }}"
-                                                    tabindex="-1" aria-labelledby="editMediumModalLabel"
-                                                    aria-hidden="true">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header bg-dark text-white">
-                                                                <h5 class="modal-title" id="editMediumModalLabel">Edit
-                                                                    Waiver</h5>
-                                                                <button type="button" class="btn-close"
-                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <form method="POST" enctype="multipart/form-data"
-                                                                    action="{{ route('admin.education-medium.update', $waiver->id) }}">
-                                                                    @method('PUT')
-                                                                    @csrf
-                                                                    <div class="mb-3">
-                                                                        <label for="name"
-                                                                            class="form-label">Name</label>
-                                                                        <x-admin.input type="text"
-                                                                            class="form-control form-control-solid"
-                                                                            :value="old('name', $waiver->name)" id="name"
-                                                                            name="name" required></x-admin.input>
-                                                                    </div>
-                                                                    <div class="mb-3">
-                                                                        <x-admin.label for="note"
-                                                                            class="form-label">Note</x-admin.label>
-                                                                        {{-- <textarea class="form-control form-control-solid" id="note" name="note" rows="3">{{ old('note',$waiver->note) }}</textarea> --}}
-                                                                        <x-admin.textarea id="note" name="note"
-                                                                            :rows="2">{{ old('note', $waiver->note) }}</x-admin.textarea>
-                                                                    </div>
-
-                                                                    <div class="mb-3">
-                                                                        <x-admin.label for="status"
-                                                                            class="form-label">Status</x-admin.label>
-                                                                        <x-admin.select-option
-                                                                            class="form-select form-select-solid"
-                                                                            id="status" name="status">
-                                                                            <option value="active"
-                                                                                @selected($waiver->status == 'active')>Active
-                                                                            </option>
-                                                                            <option value="inactive"
-                                                                                @selected($waiver->status == 'inactive')>Inactive
-                                                                            </option>
-                                                                        </x-admin.select-option>
-                                                                    </div>
-                                                                    <x-admin.button type="submit"
-                                                                        class="btn btn-white">Edit
-                                                                        Medium</x-admin.button>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </td>
+                                            <th width="5%" class="text-center">Sl</th>
+                                            <th width="15%" class="text-center">Student ID</th>
+                                            <th width="15%" class="text-center">Name</th>
+                                            <th width="15%" class="text-center">Medium</th>
+                                            <th width="15%" class="text-center">Class</th>
+                                            <th width="15%" class="text-center">Roll </th>
+                                            <th width="5%" class="text-center">Status</th>
+                                            <th width="10%" class="text-end">Action</th>
                                         </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($students as $student)
+                                            <tr>
+                                                <td class="text-center">{{ $loop->iteration }}</td>
+                                                <td class="text-center">{{ $student->student_id }}</td>
+                                                <td class="text-center">
+                                                    <a href="{{ route('admin.students.show',$student->slug) }}">{{ $student->name }}</a>
+                                                </td>
+                                                <td class="text-center">{{ optional($student)->medium }}</td>
+                                                <td class="text-center">{{ $student->class }}</td>
+                                                <td class="text-center">{{ $student->roll }}</td>
+                                                <td class="text-center">
+                                                    <span
+                                                        class="badge {{ $student->status == 'active' ? 'bg-success' : 'bg-danger' }}">
+                                                        {{ $student->status == 'active' ? 'Active' : 'InActive' }}</span>
+                                                </td>
+                                                <td class="text-end">
+
+                                                    <a href="{{ route('admin.students.show',$student->slug) }}"
+                                                        class="btn btn-sm btn-warning text-white toltip mb-2"
+                                                        data-tooltip="View">
+                                                        <i class="fa-solid fa-expand"></i>
+                                                    </a>
+
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -121,39 +65,72 @@
         </div>
     </div>
 
-    <!-- Add New Medium Modal -->
-    <div class="modal fade" id="addMediumModal" tabindex="-1" aria-labelledby="addMediumModalLabel"
+    <div class="modal fade" id="excelImport" tabindex="-1" aria-labelledby="excelImportLabel"
         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header bg-dark text-white">
-                    <h5 class="modal-title" id="addMediumModalLabel">Add New Department</h5>
+                    <h5 class="modal-title" id="excelImportLabel">Import Excel</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="{{ route('admin.education-medium.store') }}"
+                    <form method="POST" action="{{ route('admin.students.import') }}"
                         enctype="multipart/form-data">
                         @csrf
                         <div class="mb-3">
-                            <x-admin.label for="name" class="form-label">Name</x-admin.label>
-                            <x-admin.input type="text" class="form-control form-control-solid" :value="old('name')"
-                                id="name" name="name" required></x-admin.input>
+                            <x-admin.label for="name" class="form-label">Select Excel File (.xlsx,.xls,.csv only): ( <a href="{{ asset('images/Demo Excel Student Import.xlsx') }}" download="" class="fw-bold">Download</a> demo format Excel)</x-admin.label>
+                            <x-admin.file-input class="form-control form-control-solid" :value="old('file')"
+                                id="file" name="file" required></x-admin.file-input>
                         </div>
-                        <div class="mb-3">
-                            <label for="note" class="form-label">Note</label>
-                            <textarea class="form-control form-control-solid" id="note" name="note"></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label for="status" class="form-label">Status</label>
-                            <x-admin.select-option id="status" name="status" :allowClear="true">
-                                <option value="active" @selected(old('status') == 'active')>Active</option>
-                                <option value="inactive" @selected(old('status') == 'inactive')>Inactive</option>
-                            </x-admin.select-option>
-                        </div>
-                        <x-admin.button type="submit" class="btn btn-white">Add Medium</x-admin.button>
+                        <x-admin.button type="submit" class="btn btn-white float-end">Submit</x-admin.button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+
+    @push('scripts')
+        <script>
+            // Multi Select Date Picker
+            var dates = [];
+            $(document).ready(function() {
+                $("#cal").daterangepicker();
+                $("#cal").on("apply.daterangepicker", function(e, picker) {
+                    e.preventDefault();
+                    const obj = {
+                        key: dates.length + 1,
+                        start: picker.startDate.format("MM/DD/YYYY"),
+                        end: picker.endDate.format("MM/DD/YYYY"),
+                    };
+                    dates.push(obj);
+                    showDates();
+                });
+                $(".remove").on("click", function() {
+                    removeDate($(this).attr("key"));
+                });
+            });
+
+            function showDates() {
+                $("#ranges").html("");
+                $.each(dates, function() {
+                    const el =
+                        "<li>" +
+                        this.start +
+                        "-" +
+                        this.end +
+                        "<button class='remove' onClick='removeDate(" +
+                        this.key +
+                        ")'>-</button></li>";
+                    $("#ranges").append(el);
+                });
+            }
+
+            function removeDate(i) {
+                dates = dates.filter(function(o) {
+                    return o.key !== i;
+                });
+                showDates();
+            }
+        </script>
+    @endpush
 </x-admin-app-layout>
