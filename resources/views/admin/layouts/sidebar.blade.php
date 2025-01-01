@@ -97,7 +97,7 @@
 
 
                         [
-                            'title' => 'Accounts Management',
+                            'title' => 'Reports',
                             'icon' => 'fa-solid fa-wallet text-info',
                             'routes' => [
                                 'admin.fee-reports',

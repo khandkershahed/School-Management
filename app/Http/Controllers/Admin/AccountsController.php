@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -28,9 +29,14 @@ class AccountsController extends Controller
                 return $query->where('fees.medium', $medium);
             })
             ->where('student_fees.status', 'Paid')
-            ->groupBy('fees.medium')
-            ->select('fees.medium', DB::raw('SUM(student_fees.amount) as total_amount'))
-            ->get();
+            ->groupBy('student_fees.paid_at', 'fees.medium')
+            ->select('student_fees.paid_at', 'fees.medium', DB::raw('SUM(student_fees.amount) as total_amount'))
+            ->get()
+            ->map(function ($item) {
+                // Format the date to a more readable format
+                $item->paid_at = Carbon::parse($item->paid_at)->format('Y-m-d');
+                return $item;
+            });
 
         // Class-wise collection
         $classWiseCollection = DB::table('student_fees')
@@ -45,7 +51,12 @@ class AccountsController extends Controller
             ->where('student_fees.status', 'Paid')
             ->groupBy('fees.class')
             ->select('fees.class', DB::raw('SUM(student_fees.amount) as total_amount'))
-            ->get();
+            ->get()
+            ->map(function ($item) {
+                // Decode the JSON class field
+                $item->class = json_decode($item->class);
+                return $item;
+            });
 
         // Month/Year-wise collection
         $monthYearWiseCollection = DB::table('student_fees')
