@@ -23,7 +23,8 @@
                                     </div>
                                     <div class="col-lg-3 col-md-6">
                                         <div class="mb-3">
-                                            <x-admin.label for="student_id" class="form-label">Student ID </x-admin.label>
+                                            <x-admin.label for="student_id" class="form-label">Student ID
+                                            </x-admin.label>
                                             <x-admin.input type="text" :value="old('student_id')" id="student_id"
                                                 name="student_id"></x-admin.input>
                                         </div>
@@ -146,7 +147,8 @@
 
                     paySlipHtml += '</table>';
                 } else {
-                    paySlipHtml = '<div class="d-flex align-items-center justify-content-center"><h4 class="text-danger text-center">No fees selected.</h4></div>';
+                    paySlipHtml =
+                        '<div class="d-flex align-items-center justify-content-center"><h4 class="text-danger text-center">No fees selected.</h4></div>';
                 }
 
                 // Update the paySlip div with the generated HTML
@@ -160,6 +162,42 @@
             });
         </script>
         <script>
+            // function fetchFilteredData(e) {
+            //     e.preventDefault(); // Prevent form submission
+            //     var formData = $('#filterForm').serialize(); // Serialize the form data
+
+            //     $.ajax({
+            //         url: '{{ route('admin.student.filter') }}', // Your route here
+            //         method: 'GET',
+            //         data: formData, // Send serialized form data
+            //         success: function(response) {
+            //             // Check if the response contains an error message
+            //             if (response.error) {
+            //                 // Show the alert if the student is not found
+            //                 alert(response.error);
+            //             } else {
+            //                 // Update the container with the new data
+            //                 $('#studentFeeContainer').html(response);
+            //             }
+            //         },
+            //         error: function(xhr, status, error) {
+            //             // Log any error in the request
+            //             console.error("Error in AJAX request:", status, error);
+            //             alert('Error fetching data');
+            //         }
+            //     });
+            // }
+            $(document).ready(function() {
+                // Make sure the click event for "Check" works even after new data is loaded.
+                // Using event delegation to handle clicks on dynamically injected content
+                $(document).on('click', '.btn-primary', function(e) {
+                    e.preventDefault(); // Prevent form submission
+                    fetchFilteredData(e);
+                });
+
+                updatePaySlip();
+            });
+
             function fetchFilteredData(e) {
                 e.preventDefault(); // Prevent form submission
                 var formData = $('#filterForm').serialize(); // Serialize the form data
@@ -176,6 +214,9 @@
                         } else {
                             // Update the container with the new data
                             $('#studentFeeContainer').html(response);
+
+                            // Ensure the event listener for the "Check" button is still functional after AJAX update
+                            // No need to do anything extra here since we are using event delegation
                         }
                     },
                     error: function(xhr, status, error) {

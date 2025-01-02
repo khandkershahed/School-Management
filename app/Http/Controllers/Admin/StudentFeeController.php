@@ -519,16 +519,88 @@ class StudentFeeController extends Controller
     //     return response()->view('admin.pages.studentFee.partial.studentFee', compact('student', 'fees', 'waiversLookup'));
     // }
 
+    // public function filter(Request $request)
+    // {
+    //     // Start with the query builder to find the student
+    //     $query = User::query();
+
+    //     // Apply search filters based on the request parameters
+    //     if ($request->has('student_id') && $request->student_id !== '') {
+    //         $query->where('student_id', 'like', '%' . $request->student_id . '%');
+    //     }
+
+    //     if ($request->has('name') && !empty($request->name)) {
+    //         $query->orWhere('name', 'like', '%' . $request->name . '%');
+    //     }
+
+    //     if ($request->has('roll') && $request->roll !== '') {
+    //         $query->orWhere('roll', $request->roll);
+    //     }
+
+    //     if ($request->has('medium') && $request->medium !== '') {
+    //         $query->orWhere('medium', $request->medium);
+    //     }
+
+    //     if ($request->has('class') && $request->class !== '') {
+    //         $query->orWhereJsonContains('class', $request->class);
+    //     }
+
+    //     // Execute the query to find the student (first or null)
+    //     $student = $query->first();
+
+    //     if (!$student) {
+    //         // If no student is found, return a special message
+    //         return response()->json(['error' => 'Student not found']);
+    //     }
+
+    //     // Get the student fees based on medium and class
+    //     $fees = Fee::where('medium', $student->medium)
+    //         ->whereJsonContains('class', $student->class)
+    //         ->where('status', 'active')
+    //         ->get();
+
+    //     // Retrieve any waivers for the student
+    //     $waivers = DB::table('student_fee_waivers')
+    //         ->where('student_id', $student->id)
+    //         ->get();
+
+    //     // Create a lookup for the waivers to easily access by fee ID
+    //     $waiversLookup = $waivers->keyBy('fee_id');
+
+    //     // Get the paid fees for the student (these should not show in the due fees section)
+    //     $paidFees = StudentFee::where('student_id', $student->id)
+    //         ->where('status', 'Paid')
+    //         ->pluck('fee_id'); // Get only the fee IDs of the paid fees
+
+    //     // Exclude the paid fees from the list of available fees for the due fees section
+    //     $dueFees = $fees->whereNotIn('id', $paidFees);
+
+    //     // Return the partial view with data
+    //     return response()->view('admin.pages.studentFee.partial.studentFee', compact('student', 'dueFees', 'waiversLookup', 'paidFees'));
+    // }
+
     public function filter(Request $request)
     {
         // Start with the query builder to find the student
         $query = User::query();
 
         // Apply search filters based on the request parameters
+
+        // Check for student_id input and strip the prefix "EMM-" if provided
         if ($request->has('student_id') && $request->student_id !== '') {
-            $query->where('student_id', 'like', '%' . $request->student_id . '%');
+            $studentId = $request->student_id;
+
+            // If the student ID contains a prefix (e.g., 'EMM-'), remove the prefix before searching
+            if (strpos($studentId, '-') !== false) {
+                // Extract only the numeric part of the student ID
+                $studentId = substr($studentId, strpos($studentId, '-') + 1);
+            }
+
+            // Use the updated studentId for the search
+            $query->where('student_id', 'like', '%' . $studentId . '%');
         }
 
+        // Other search filters
         if ($request->has('name') && !empty($request->name)) {
             $query->orWhere('name', 'like', '%' . $request->name . '%');
         }

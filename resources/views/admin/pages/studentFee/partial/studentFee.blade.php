@@ -294,7 +294,7 @@
             <input type="hidden" name="amount" class="amount" value="">
         </div>
 
-        <div class="row">
+        <div class="row"> 
             <div class="mb-3 d-flex justify-content-center">
                 <x-admin.button type="submit" class="primary">
                     {{ __('Pay Now') }}

@@ -166,7 +166,7 @@
 
         <!-- Signature -->
         <div class="signature">
-            <p>Received By</p>
+            <p style="border-top: 1px dashed #bababa">Accounts Officer</p>
         </div>
     </div>
 </body>
