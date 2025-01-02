@@ -76,8 +76,7 @@
 
                                     <div class="col-lg-12">
                                         <div class="mb-3 d-flex justify-content-center">
-                                            <a href="javascript:void(0)"
-                                            {{-- <a href="javascript:void(0)" onclick="fetchFilteredData(event)" --}}
+                                            <a href="javascript:void(0)" {{-- <a href="javascript:void(0)" onclick="fetchFilteredData(event)" --}}
                                                 class="btn btn-primary">Check
                                                 <i class="fa-regular fa-floppy-disk ps-2"></i>
                                             </a>
@@ -189,8 +188,6 @@
             //     });
             // }
             $(document).ready(function() {
-                // Make sure the click event for "Check" works even after new data is loaded.
-                // Using event delegation to handle clicks on dynamically injected content
                 $(document).on('click', '.btn-primary', function(e) {
                     e.preventDefault(); // Prevent form submission
                     fetchFilteredData(e);
@@ -213,11 +210,8 @@
                             // Show the alert if the student is not found
                             alert(response.error);
                         } else {
-                            // Update the container with the new data
                             $('#studentFeeContainer').html(response);
 
-                            // Ensure the event listener for the "Check" button is still functional after AJAX update
-                            // No need to do anything extra here since we are using event delegation
                         }
                     },
                     error: function(xhr, status, error) {

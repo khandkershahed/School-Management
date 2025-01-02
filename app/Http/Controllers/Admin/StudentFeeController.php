@@ -581,26 +581,21 @@ class StudentFeeController extends Controller
 
     public function filter(Request $request)
     {
-        // Start with the query builder to find the student
         $query = User::query();
 
-        // Apply search filters based on the request parameters
-
-        // Check for student_id input and strip the prefix "EMM-" if provided
         if ($request->has('student_id') && $request->student_id !== '') {
             $studentId = $request->student_id;
 
-            // If the student ID contains a prefix (e.g., 'EMM-'), remove the prefix before searching
             if (strpos($studentId, '-') !== false) {
-                // Extract only the numeric part of the student ID
+                // Extract only the numeric part (e.g., 20259640 from EMM-20259640)
                 $studentId = substr($studentId, strpos($studentId, '-') + 1);
             }
 
-            // Use the updated studentId for the search
+            // Search using the student_id (whether numeric part or full ID)
             $query->where('student_id', 'like', '%' . $studentId . '%');
         }
 
-        // Other search filters
+        // Search by other fields (name, roll, medium, class)
         if ($request->has('name') && !empty($request->name)) {
             $query->orWhere('name', 'like', '%' . $request->name . '%');
         }
