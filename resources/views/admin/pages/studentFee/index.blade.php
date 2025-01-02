@@ -76,7 +76,8 @@
 
                                     <div class="col-lg-12">
                                         <div class="mb-3 d-flex justify-content-center">
-                                            <a href="javascript:void(0)" onclick="fetchFilteredData(event)"
+                                            <a href="javascript:void(0)"
+                                            {{-- <a href="javascript:void(0)" onclick="fetchFilteredData(event)" --}}
                                                 class="btn btn-primary">Check
                                                 <i class="fa-regular fa-floppy-disk ps-2"></i>
                                             </a>
