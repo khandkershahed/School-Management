@@ -12,7 +12,9 @@ use App\Models\EducationMedium;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use App\Notifications\WelcomeNotification;
 use Illuminate\Support\Facades\Notification;
 
@@ -47,6 +49,20 @@ class StudentController extends Controller
     public function store(Request $request)
     {
         try {
+            $validator = Validator::make($request->all(), [
+                'name' => 'required',
+                'class' => 'required',
+                'medium' => 'required',
+                'section' => 'required',
+                'roll' => 'required',
+            ], [
+                ]);
+
+            if ($validator->fails()) {
+                Session::flash('error', $validator->messages()->all());
+                return redirect()->back()->withInput();
+            }
+
             $code = strtoupper(substr($request->medium, 0, 1)) .
                 strtoupper(substr($request->group, 0, 1)) .
                 strtoupper($request->section) . '-' .
