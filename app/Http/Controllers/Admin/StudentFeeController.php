@@ -269,8 +269,10 @@ class StudentFeeController extends Controller
 
             // Get the student
             $student = User::findOrFail($request->student_id);
-            $invoiceNumber = $student->student_id . '-' . date('d');
 
+            // Generate a unique invoice number
+            // We use a combination of student ID and current timestamp to make it unique
+            $invoiceNumber = $student->student_id . '-' . time();
             // Store the student fee entries and calculate total amount
             $totalAmount = 0;
 
@@ -524,7 +526,7 @@ class StudentFeeController extends Controller
 
         // Apply search filters based on the request parameters
         if ($request->has('student_id') && $request->student_id !== '') {
-            $query->where('student_id', $request->student_id);
+            $query->where('student_id', 'like', '%' . $request->student_id . '%');
         }
 
         if ($request->has('name') && !empty($request->name)) {

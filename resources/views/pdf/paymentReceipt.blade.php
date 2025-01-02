@@ -167,7 +167,6 @@
         <!-- Signature -->
         <div class="signature">
             <p>Received By</p>
-            <p>Md. Akram Miah</p>
         </div>
     </div>
 </body>
