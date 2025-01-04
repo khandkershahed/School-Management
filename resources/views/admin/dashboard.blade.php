@@ -1,7 +1,7 @@
 <x-admin-app-layout>
     <div class="app-content pt-3">
         <div class="container-fluid">
-            <div class="row">
+            <div class="row mb-4">
                 <div class="col-lg-3 col-6">
                     <div class="small-box py-3">
                         <div class="inner">
@@ -44,52 +44,41 @@
                         </svg>
                     </div>
                 </div>
-                {{-- <div class="col-lg-3 col-6">
-                    <div class="small-box py-3">
-                        <div class="inner">
-                            <h3>53<sup class="fs-5">%</sup></h3>
-                            <p>Bounce Rate</p>
-                        </div>
-                        <svg class="small-box-icon" fill="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                            <path
-                                d="M18.375 2.25c-1.035 0-1.875.84-1.875 1.875v15.75c0 1.035.84 1.875 1.875 1.875h.75c1.035 0 1.875-.84 1.875-1.875V4.125c0-1.036-.84-1.875-1.875-1.875h-.75zM9.75 8.625c0-1.036.84-1.875 1.875-1.875h.75c1.036 0 1.875.84 1.875 1.875v11.25c0 1.035-.84 1.875-1.875 1.875h-.75a1.875 1.875 0 01-1.875-1.875V8.625zM3 13.125c0-1.036.84-1.875 1.875-1.875h.75c1.036 0 1.875.84 1.875 1.875v6.75c0 1.035-.84 1.875-1.875 1.875h-.75A1.875 1.875 0 013 19.875v-6.75z">
-                            </path>
-                        </svg>
-                    </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-4">
+                    <a href="{{ route('admin.student-fee.index') }}">
+                        <button class="btn btn-app bg-info text-white w-100"
+                            style="border:none;">
+                            <svg height="20" width="20" viewBox="0 0 640 512">
+                                <path fill="#ffffff"
+                                    d="M337.8 5.4C327-1.8 313-1.8 302.2 5.4L166.3 96H48C21.5 96 0 117.5 0 144V464c0 26.5 21.5 48 48 48H256V416c0-35.3 28.7-64 64-64s64 28.7 64 64v96H592c26.5 0 48-21.5 48-48V144c0-26.5-21.5-48-48-48H473.7L337.8 5.4zM96 192h32c8.8 0 16 7.2 16 16v64c0 8.8-7.2 16-16 16H96c-8.8 0-16-7.2-16-16V208c0-8.8 7.2-16 16-16zm400 16c0-8.8 7.2-16 16-16h32c8.8 0 16 7.2 16 16v64c0 8.8-7.2 16-16 16H512c-8.8 0-16-7.2-16-16V208zM96 320h32c8.8 0 16 7.2 16 16v64c0 8.8-7.2 16-16 16H96c-8.8 0-16-7.2-16-16V336c0-8.8 7.2-16 16-16zm400 16c0-8.8 7.2-16 16-16h32c8.8 0 16 7.2 16 16v64c0 8.8-7.2 16-16 16H512c-8.8 0-16-7.2-16-16V336zM232 176a88 88 0 1 1 176 0 88 88 0 1 1 -176 0zm88-48c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16s-7.2-16-16-16H336V144c0-8.8-7.2-16-16-16z">
+                                </path>
+                            </svg>
+                            <br>Student Fee Collection
+                        </button>
+                    </a>
                 </div>
-                <div class="col-lg-3 col-6">
-                    <div class="small-box py-3">
-                        <div class="inner">
-                            <h3>44</h3>
-                            <p>User Registrations</p>
-                        </div>
-                        <svg class="small-box-icon" fill="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                            <path
-                                d="M6.25 6.375a4.125 4.125 0 118.25 0 4.125 4.125 0 01-8.25 0zM3.25 19.125a7.125 7.125 0 0114.25 0v.003l-.001.119a.75.75 0 01-.363.63 13.067 13.067 0 01-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 01-.364-.63l-.001-.122zM19.75 7.5a.75.75 0 00-1.5 0v2.25H16a.75.75 0 000 1.5h2.25v2.25a.75.75 0 001.5 0v-2.25H22a.75.75 0 000-1.5h-2.25V7.5z">
-                            </path>
-                        </svg>
-                    </div>
+                <div class="col-lg-4 col-4">
+                    <a href="{{ route('admin.report.studentdue') }}">
+                        <button class="btn btn-app bg-success text-white w-100"
+                            style="border:none;">
+                            <svg height="20" width="20" viewBox="0 0 448 512">
+                                <path fill="#ffffff" d="M64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm64 192c17.7 0 32 14.3 32 32v96c0 17.7-14.3 32-32 32s-32-14.3-32-32V256c0-17.7 14.3-32 32-32zm64-64c0-17.7 14.3-32 32-32s32 14.3 32 32V352c0 17.7-14.3 32-32 32s-32-14.3-32-32V160zM320 288c17.7 0 32 14.3 32 32v32c0 17.7-14.3 32-32 32s-32-14.3-32-32V320c0-17.7 14.3-32 32-32z"></path>
+                            </svg>
+                            <br>Student Due Report
+                        </button>
+                    </a>
                 </div>
-                <div class="col-lg-3 col-6">
-                    <div class="small-box py-3">
-                        <div class="inner">
-                            <h3>65</h3>
-                            <p>Unique Visitors</p>
-                        </div>
-                        <svg class="small-box-icon" fill="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                            <path clip-rule="evenodd" fill-rule="evenodd"
-                                d="M2.25 13.5a8.25 8.25 0 018.25-8.25.75.75 0 01.75.75v6.75H18a.75.75 0 01.75.75 8.25 8.25 0 01-16.5 0z">
-                            </path>
-                            <path clip-rule="evenodd" fill-rule="evenodd"
-                                d="M12.75 3a.75.75 0 01.75-.75 8.25 8.25 0 018.25 8.25.75.75 0 01-.75.75h-7.5a.75.75 0 01-.75-.75V3z">
-                            </path>
-                        </svg>
-
-                    </div>
-                </div> --}}
+                <div class="col-lg-4 col-4">
+                    <a href="{{ route('admin.report.duefee') }}">
+                        <button class="btn btn-app bg-danger text-white w-100"
+                            style="border:none;">
+                            <i class="fa-solid fa-chart-line"></i>
+                            <br>Due Fee Report
+                        </button>
+                    </a>
+                </div>
             </div>
             <!-- /.row (main row) -->
         </div>

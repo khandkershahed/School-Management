@@ -61,6 +61,7 @@ use App\Http\Controllers\Admin\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Admin\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Admin\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Admin\Auth\EmailVerificationNotificationController;
+use App\Http\Controllers\Admin\ReportController;
 
 Route::get('/', function () {
     return redirect()->route('admin.login');
@@ -155,6 +156,17 @@ Route::middleware('auth:admin')->name('admin.')->group(function () {
 
     // Filtering
     Route::get('student/filter', [StudentFeeController::class, 'filter'])->name('student.filter');
+    Route::get('invoice/list', [AccountsController::class, 'invoiceList'])->name('invoice.list');
+
+
+    //Reports
+    Route::get('report/duefee', [ReportController::class, 'dueFee'])->name('report.duefee');
+    Route::get('report/studentdue', [ReportController::class, 'studentDue'])->name('report.studentdue');
+    Route::get('report/studentinvoice', [ReportController::class, 'studentInvoice'])->name('report.studentinvoice');
+    Route::get('report/income', [ReportController::class, 'income'])->name('report.income');
+
+
+
 
 
     Route::get('active-mail-configuration', [EmailSettingController::class, 'activeMailConfiguration'])->name('active.mail.configuration');

@@ -58,6 +58,7 @@
                                 'admin.student-fee.edit',
                                 'admin.fee-waiver.index',
                                 'admin.students.show',
+                                'admin.invoice.list',
                             ],
                             'subMenu' => [
                                 [
@@ -88,21 +89,22 @@
                                     ],
                                     'route' => 'admin.student-fee.index',
                                 ],
-                                // [
-                                //     'title' => 'Incomes List',
-                                //     'routes' => ['admin.income.index', 'admin.income.create', 'admin.income.edit'],
-                                //     'route' => 'admin.income.index',
-                                // ],
+                                [
+                                    'title' => 'Invoice List',
+                                    'routes' => ['admin.invoice.list'],
+                                    'route' => 'admin.invoice.list',
+                                ],
                             ],
                         ],
-
-
 
                         [
                             'title' => 'Reports',
                             'icon' => 'fa-solid fa-wallet text-info',
                             'routes' => [
                                 'admin.fee-reports',
+                                'admin.report.studentinvoice',
+                                'admin.report.income',
+                                'admin.report.duefee',
                             ],
                             'subMenu' => [
                                 [
@@ -111,6 +113,41 @@
                                         'admin.fee-reports',
                                     ],
                                     'route' => 'admin.fee-reports',
+                                ],
+                                [
+                                    'title' => 'Student Invoice Report',
+                                    'routes' => [
+                                        'admin.report.studentinvoice',
+                                    ],
+                                    'route' => 'admin.report.studentinvoice',
+                                ],
+                                [
+                                    'title' => 'Accounting Balance Report',
+                                    'routes' => [
+                                        'admin.fee-reports',
+                                    ],
+                                    'route' => 'admin.fee-reports',
+                                ],
+                                [
+                                    'title' => 'Due Fee Report',
+                                    'routes' => [
+                                        'admin.report.duefee',
+                                    ],
+                                    'route' => 'admin.report.duefee',
+                                ],
+                                [
+                                    'title' => 'Custom Report',
+                                    'routes' => [
+                                        'admin.fee-reports',
+                                    ],
+                                    'route' => 'admin.fee-reports',
+                                ],
+                                [
+                                    'title' => 'Income Report',
+                                    'routes' => [
+                                        'admin.report.income',
+                                    ],
+                                    'route' => 'admin.report.income',
                                 ],
 
                             ],

@@ -50,13 +50,12 @@ class StudentController extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
-                'name' => 'required',
-                'class' => 'required',
-                'medium' => 'required',
+                'name'    => 'required',
+                'class'   => 'required',
+                'medium'  => 'required',
                 'section' => 'required',
-                'roll' => 'required',
-            ], [
-                ]);
+                'roll'    => 'required',
+            ]);
 
             if ($validator->fails()) {
                 Session::flash('error', $validator->messages()->all());

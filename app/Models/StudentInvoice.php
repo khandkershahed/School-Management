@@ -14,5 +14,13 @@ class StudentInvoice extends Model
      *
      * @var array
      */
+    protected $casts = [
+        'generated_at' => 'datetime',
+    ];
+
     protected $guarded = [];
+    public function student()
+    {
+        return $this->belongsTo(User::class, 'student_id');
+    }
 }

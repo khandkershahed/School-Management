@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\StudentInvoice;
 
 class AccountsController extends Controller
 {
@@ -90,6 +91,21 @@ class AccountsController extends Controller
             'classWiseCollection',
             'monthYearWiseCollection',
             'totalCollection'
+        ));
+    }
+
+    public function invoiceList(Request $request)
+    {
+        // Initialize filters
+        $medium = $request->input('medium');
+        $date = $request->input('date');
+        $class = $request->input('class');
+        $month = $request->input('month');
+        $year = $request->input('year');
+
+        $invoices = StudentInvoice::latest('id')->get();
+        return view('admin.pages.report.invoiceList', compact(
+            'invoices',
         ));
     }
 }
