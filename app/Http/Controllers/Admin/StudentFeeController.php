@@ -26,7 +26,6 @@ class StudentFeeController extends Controller
     public function index()
     {
         $data = [
-            'mediums' => EducationMedium::get(),
             'student' => User::with('medium')->latest('id')->get(),
         ];
 
@@ -250,6 +249,125 @@ class StudentFeeController extends Controller
     //     }
     // }
 
+    // public function store(Request $request)
+    // {
+    //     // Start a transaction to ensure atomicity
+    //     DB::beginTransaction();
+
+    //     try {
+    //         // Validate the incoming request
+    //         $request->validate([
+    //             'student_id' => 'required|exists:users,id',
+    //             'fee_id' => 'required|array',
+    //             'fee_id.*' => 'exists:fees,id',
+    //             'waiver_amount' => 'nullable|array',
+    //             'waiver_amount.*' => 'numeric|min:0',
+    //             'month' => 'required|string',
+    //             'year' => 'required|string',
+    //         ]);
+
+    //         // Get the student
+    //         $student = User::findOrFail($request->student_id);
+
+    //         // Generate a unique invoice number
+    //         // We use a combination of student ID and current timestamp to make it unique
+    //         $invoiceNumber = $student->student_id . '-' . time();
+    //         // Store the student fee entries and calculate total amount
+    //         $totalAmount = 0;
+
+    //         foreach ($request->fee_id as $index => $feeId) {
+    //             $fee = Fee::findOrFail($feeId);
+
+    //             // Check if there's a waiver for this fee
+    //             $waiverAmount = isset($request->waiver_amount[$feeId]) ? $request->waiver_amount[$feeId] : 0;
+
+    //             // Calculate the final amount after applying any waivers
+    //             $finalAmount = $waiverAmount;
+    //             $finalAmount = max(0, $finalAmount); // Ensure the amount doesn't go negative
+
+    //             // Create student fee record in `student_fees`
+    //             StudentFee::create([
+    //                 'student_id' => $student->id,
+    //                 'fee_id' => $fee->id,
+    //                 'amount' => $finalAmount,
+    //                 'invoice_number' => $invoiceNumber,
+    //                 'month' => $request->month,
+    //                 'year' => $request->year,
+    //                 'status' => $finalAmount > 0 ? 'Paid' : 'Unpaid', // Status is "Paid" if amount > 0
+    //                 'paid_at' => $finalAmount > 0 ? Carbon::now() : null, // Set paid_at if payment is made
+    //             ]);
+
+    //             // Add the final amount to the total amount
+    //             $totalAmount += $finalAmount;
+    //         }
+
+    //         // Prepare receipt data
+    //         $receiptData = [
+    //             'student' => $student,
+    //             'fees' => Fee::whereIn('id', $request->fee_id)->get(),
+    //             'totalAmount' => $totalAmount,
+    //             'year' => $request->year,
+    //             'month' => $request->month,
+    //             'amount_in_words' => SpellNumber::value($totalAmount)->locale('en')->toLetters(),
+    //         ];
+
+    //         // Generate PDF using Dompdf (adjust this as per your method)
+    //         $pdf = $this->generateReceiptPDF($receiptData);
+
+    //         // Generate file paths for storing the PDFs
+    //         $studentPdfPath = 'receipts/student_copy_' . $student->id . '_' . time() . '.pdf';
+    //         $officePdfPath = 'receipts/office_copy_' . $student->id . '_' . time() . '.pdf';
+
+    //         // Save the PDF files to storage
+    //         Storage::disk('public')->put($studentPdfPath, $pdf->output());
+    //         Storage::disk('public')->put($officePdfPath, $pdf->output());
+
+    //         // Store the student invoice record in `student_invoices`
+    //         StudentInvoice::create([
+    //             'student_id' => $student->id,
+    //             'invoice_number' => $invoiceNumber,
+    //             'month' => $request->month,
+    //             'year' => $request->year,
+    //             'total_amount' => $totalAmount,
+    //             'generated_at' => Carbon::now(),
+    //             'invoice' => $studentPdfPath, // Path to student copy
+    //         ]);
+
+    //         // Store the office invoice record in `office_invoices`
+    //         OfficeInvoice::create([
+    //             'student_id' => $student->id,
+    //             'invoice_number' => $invoiceNumber,
+    //             'month' => $request->month,
+    //             'year' => $request->year,
+    //             'total_amount' => $totalAmount,
+    //             'generated_at' => Carbon::now(),
+    //             'invoice' => $officePdfPath, // Path to office copy
+    //         ]);
+
+    //         // Commit the transaction after successful creation
+    //         DB::commit();
+
+    //         // Return the generated PDF as a download response
+    //         return response()->stream(function () use ($pdf) {
+    //             echo $pdf->output();
+    //         }, 200, [
+    //             "Content-Type" => "application/pdf",
+    //             "Content-Disposition" => "inline; filename=receipt.pdf",
+    //         ]);
+    //     } catch (\Exception $e) {
+    //         // Rollback the transaction if any error occurs
+    //         DB::rollBack();
+
+    //         // Log the error for debugging
+    //         Log::error('Error storing payment data: ', ['error' => $e->getMessage()]);
+
+    //         // Return a generic error message
+    //         return redirect()->back()->with('error', $e->getMessage());
+    //     }
+    // }
+
+
+
     public function store(Request $request)
     {
         // Start a transaction to ensure atomicity
@@ -265,14 +383,15 @@ class StudentFeeController extends Controller
                 'waiver_amount.*' => 'numeric|min:0',
                 'month' => 'required|string',
                 'year' => 'required|string',
+                'months' => 'nullable|array', // For monthly fees
             ]);
 
             // Get the student
             $student = User::findOrFail($request->student_id);
 
             // Generate a unique invoice number
-            // We use a combination of student ID and current timestamp to make it unique
             $invoiceNumber = $student->student_id . '-' . time();
+
             // Store the student fee entries and calculate total amount
             $totalAmount = 0;
 
@@ -283,23 +402,46 @@ class StudentFeeController extends Controller
                 $waiverAmount = isset($request->waiver_amount[$feeId]) ? $request->waiver_amount[$feeId] : 0;
 
                 // Calculate the final amount after applying any waivers
-                $finalAmount = $waiverAmount;
+                $finalAmount = $fee->amount - $waiverAmount;
                 $finalAmount = max(0, $finalAmount); // Ensure the amount doesn't go negative
 
-                // Create student fee record in `student_fees`
-                StudentFee::create([
-                    'student_id' => $student->id,
-                    'fee_id' => $fee->id,
-                    'amount' => $finalAmount,
-                    'invoice_number' => $invoiceNumber,
-                    'month' => $request->month,
-                    'year' => $request->year,
-                    'status' => $finalAmount > 0 ? 'Paid' : 'Unpaid', // Status is "Paid" if amount > 0
-                    'paid_at' => $finalAmount > 0 ? Carbon::now() : null, // Set paid_at if payment is made
-                ]);
+                // Handle Monthly Fees
+                if ($fee->fee_type === 'monthly') {
+                    // Get the selected months from the request (if any)
+                    $selectedMonths = isset($request->months[$feeId]) ? $request->months[$feeId] : [];
 
-                // Add the final amount to the total amount
-                $totalAmount += $finalAmount;
+                    foreach ($selectedMonths as $month) {
+                        // Create student fee record for each selected month
+                        StudentFee::create([
+                            'student_id' => $student->id,
+                            'fee_id' => $fee->id,
+                            'amount' => $finalAmount,
+                            'invoice_number' => $invoiceNumber,
+                            'month' => Carbon::create()->month($month)->format('F'),  // Convert month number to month name
+                            'year' => $request->year,
+                            'status' => $finalAmount > 0 ? 'Paid' : 'Unpaid',
+                            'paid_at' => $finalAmount > 0 ? Carbon::now() : null,
+                        ]);
+
+                        // Add to the total amount
+                        $totalAmount += $finalAmount;
+                    }
+                } else {
+                    // For non-monthly fees, store as a single fee record
+                    StudentFee::create([
+                        'student_id' => $student->id,
+                        'fee_id' => $fee->id,
+                        'amount' => $finalAmount,
+                        'invoice_number' => $invoiceNumber,
+                        'month' => $request->month,
+                        'year' => $request->year,
+                        'status' => $finalAmount > 0 ? 'Paid' : 'Unpaid',
+                        'paid_at' => $finalAmount > 0 ? Carbon::now() : null,
+                    ]);
+
+                    // Add to the total amount for non-monthly fees
+                    $totalAmount += $finalAmount;
+                }
             }
 
             // Prepare receipt data
@@ -363,7 +505,7 @@ class StudentFeeController extends Controller
             Log::error('Error storing payment data: ', ['error' => $e->getMessage()]);
 
             // Return a generic error message
-            return redirect()->back()->with('error', $e->getMessage());
+            return redirect()->back()->with('error', 'There was an error processing the payment.');
         }
     }
 

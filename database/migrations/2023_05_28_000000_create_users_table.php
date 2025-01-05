@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // $table->foreignId('medium_id')->nullable()->constrained('education_media')->onDelete('cascade')->onUpdate('no action');
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('medium_id')->nullable()->constrained('education_media')->onDelete('cascade')->onUpdate('no action');
             $table->string('student_id')->unique()->nullable();
             $table->string('name')->nullable();
             $table->string('slug')->nullable();

@@ -23,14 +23,14 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-lg-2 col-md-6">
+                                    <div class="col-lg-4 col-md-6">
                                         <div class="mb-3">
                                             <x-admin.label for="amount" class="form-label">Amount <span class="text-danger">*</span></x-admin.label>
                                             <x-admin.input type="number" step="0.01" :value="old('amount')" id="amount" name="amount" required></x-admin.input>
                                         </div>
                                     </div>
 
-                                    <div class="col-lg-3 col-md-6">
+                                    <div class="col-lg-4 col-md-6">
                                         <div class="mb-3">
                                             <x-admin.label for="medium" class="form-label">Medium <span class="text-danger">*</span></x-admin.label>
                                             <x-admin.select-option id="medium" name="medium" :allowClear="true" required>
@@ -42,7 +42,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-lg-3 col-md-6">
+                                    <div class="col-lg-4 col-md-6">
                                         <div class="mb-3">
                                             <x-admin.label for="class_id" class="form-label">Class <span class="text-danger">*</span></x-admin.label>
                                             <x-admin.select-option class="form-control-solid" id="class" name="class[]" :allowClear="true" multiple required>
@@ -63,8 +63,17 @@
                                             </x-admin.select-option>
                                         </div>
                                     </div>
-
-                                    <div class="col-lg-3 col-md-6">
+                                    <div class="col-lg-4 col-md-6">
+                                        <div class="mb-3">
+                                            <x-admin.label for="fee_type" class="form-label">Fee Type <span class="text-danger">*</span></x-admin.label>
+                                            <x-admin.select-option id="fee_type" name="fee_type" :allowClear="true" required>
+                                                <option value="">-- Select Fee type --</option>
+                                                <option value="yearly" @selected(old('fee_type') == 'yearly')>Yearly</option>
+                                                <option value="monthly" @selected(old('fee_type') == 'monthly')>Monthly</option>
+                                            </x-admin.select-option>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-6">
                                         <div class="mb-3">
                                             <x-admin.label for="status" class="form-label">Status <span class="text-danger">*</span></x-admin.label>
                                             <x-admin.select-option id="status" name="status" :allowClear="true" required>
@@ -92,5 +101,5 @@
     </div>
 
     <!-- jQuery Validation Script -->
-    
+
 </x-admin-app-layout>

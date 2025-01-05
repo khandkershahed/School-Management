@@ -47,6 +47,7 @@ class FeeController extends Controller
                 'class'     => 'required',
                 'amount'    => 'required|min:1',
                 'status'    => 'required|in:active,inactive',
+                'fee_type'  => 'required|in:monthly,yearly',
                 'medium'    => 'required|string',
             ], [
                 'name.required'   => 'The name field is required.',
@@ -58,6 +59,7 @@ class FeeController extends Controller
                 'name.max'        => 'The name may not be greater than :max characters.',
                 'name.unique'     => 'This name has already been taken.',
                 'status.in'       => 'The status must be one of: active, inactive.',
+                'fee_type.in'     => 'The Fee Type must be one of: monthly or yearly.',
             ]);
 
             if ($validator->fails()) {
@@ -74,6 +76,7 @@ class FeeController extends Controller
                 'description' => $request->description,
                 'amount'      => $request->amount,
                 'status'      => $request->status,
+                'fee_type'    => $request->fee_type,
                 'medium'      => $request->medium,
                 'medium_id'   => $request->medium_id,
             ]);
@@ -121,6 +124,7 @@ class FeeController extends Controller
                 'description' => $request->description,
                 'amount'      => $request->amount,
                 'status'      => $request->status,
+                'fee_type'    => $request->fee_type,
                 'medium'      => $request->medium,
                 'medium_id'   => $request->medium_id,
             ]);

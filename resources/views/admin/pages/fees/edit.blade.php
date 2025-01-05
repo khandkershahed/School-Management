@@ -30,7 +30,7 @@
 
 
 
-                                    <div class="col-lg-2 col-md-6">
+                                    <div class="col-lg-4 col-md-6">
                                         <div class="mb-3">
                                             <x-admin.label for="amount" class="form-label">Amount <span
                                                     class="text-danger">*</span></x-admin.label>
@@ -39,7 +39,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-lg-3 col-md-6">
+                                    <div class="col-lg-4 col-md-6">
                                         <div class="mb-3">
                                             <x-admin.label for="medium" class="form-label">Medium <span
                                                     class="text-danger">*</span></x-admin.label>
@@ -52,7 +52,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-lg-3 col-md-6">
+                                    <div class="col-lg-4 col-md-6">
                                         <div class="mb-3">
                                             @php
                                                 $classes = isset($fee->class) ? json_decode($fee->class, true) : [];
@@ -81,7 +81,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-lg-3 col-md-6">
+                                    <div class="col-lg-4 col-md-6">
                                         <div class="mb-3">
                                             <x-admin.label for="status" class="form-label">Status <span
                                                     class="text-danger">*</span></x-admin.label>
@@ -92,7 +92,16 @@
                                             </x-admin.select-option>
                                         </div>
                                     </div>
-
+                                    <div class="col-lg-4 col-md-6">
+                                        <div class="mb-3">
+                                            <x-admin.label for="fee_type" class="form-label">Fee Type <span class="text-danger">*</span></x-admin.label>
+                                            <x-admin.select-option id="fee_type" name="fee_type" :allowClear="true" required>
+                                                <option value="">-- Select Fee type --</option>
+                                                <option value="yearly" @selected(old('fee_type') == 'yearly')>Yearly</option>
+                                                <option value="monthly" @selected(old('fee_type') == 'monthly')>Monthly</option>
+                                            </x-admin.select-option>
+                                        </div>
+                                    </div>
                                     <div class="col-lg-12">
                                         <div class="mb-3">
                                             <x-admin.button type="submit" class="">Edit fee

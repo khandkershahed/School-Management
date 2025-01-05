@@ -96,33 +96,19 @@
         </div>
     </div>
 
-    @push('scripts')
+    {{-- @push('scripts')
         <script>
-            // Function to update the Pay Slip dynamically
             function updatePaySlip() {
                 let totalAmount = 0;
                 let selectedFees = [];
 
+                // Debugging: log to see if checkboxes are being selected
+                console.log('Checkbox clicked');
+
                 // Loop through all selected checkboxes
-                $('.fee-checkbox').each(function() {
+                $('.fee-checkbox:checked').each(function() {
                     let feeAmount = parseFloat($(this).data('amount')); // Get the fee amount from the checkbox
                     let feeName = $(this).data('name'); // Get the fee name from the label
-                    let feeId = $(this).val(); // Get the ID of the selected fee
-                    let feeType = $(this).data('type'); // Get fee type (monthly or yearly)
-
-                    // If the fee is monthly, toggle the visibility of the month selection
-                    if (feeType === 'monthly') {
-                        let monthSelection = $('#month-selection-' + feeId);
-
-                        // Check if the checkbox is checked
-                        if ($(this).prop("checked")) {
-                            console.log("Checkbox is checked for fee ID: " + feeId); // Debugging
-                            monthSelection.show(); // Show the months div if the checkbox is checked
-                        } else {
-                            console.log("Checkbox is unchecked for fee ID: " + feeId); // Debugging
-                            monthSelection.hide(); // Hide the months div if the checkbox is unchecked
-                        }
-                    }
 
                     // Add this fee to the selected fees array
                     selectedFees.push({
@@ -134,7 +120,6 @@
                     totalAmount += feeAmount;
                 });
 
-                // Generate the HTML for the Pay Slip
                 let paySlipHtml = '';
 
                 if (selectedFees.length > 0) {
@@ -145,20 +130,20 @@
                     paySlipHtml += '<table class="table table-borderless">';
                     selectedFees.forEach(function(fee) {
                         paySlipHtml += `
-                        <tr>
-                            <td style="text-align: left;">${fee.name}</td>
-                            <td style="text-align: right;">${fee.amount}</td>
-                        </tr>
-                    `;
+                <tr>
+                    <td style="text-align: left;">${fee.name}</td>
+                    <td style="text-align: right;">${fee.amount}</td>
+                </tr>
+            `;
                     });
 
                     // Add total amount row at the bottom
                     paySlipHtml += `
-                    <tr style="border-top: 1px solid black;">
-                        <td style="text-align: right;"><strong>Total</strong></td>
-                        <td style="text-align: right;"><strong>${totalAmount}</strong></td>
-                    </tr> </div></div>
-                `;
+            <tr style-"border-top: 1px solid black !important;">
+                <td style="text-align: right;"><strong>Total</strong></td>
+                <td style="text-align: right;"><strong>${totalAmount}</strong></td>
+            </tr> </div></div>
+        `;
 
                     paySlipHtml += '</table>';
                 } else {
@@ -168,15 +153,182 @@
 
                 // Update the paySlip div with the generated HTML
                 $('#paySlip').html(paySlipHtml);
-                $('.amount').val(totalAmount); // Update the hidden amount input
+                $('.amount').val(totalAmount);
+
             }
 
-            // Trigger updatePaySlip on page load and checkbox changes
+            $(document).ready(function() {
+                updatePaySlip();
+            });
+        </script>
+        <script>
+            // function fetchFilteredData(e) {
+            //     e.preventDefault(); // Prevent form submission
+            //     var formData = $('#filterForm').serialize(); // Serialize the form data
+
+            //     $.ajax({
+            //         url: '{{ route('admin.student.filter') }}', // Your route here
+            //         method: 'GET',
+            //         data: formData, // Send serialized form data
+            //         success: function(response) {
+            //             // Check if the response contains an error message
+            //             if (response.error) {
+            //                 // Show the alert if the student is not found
+            //                 alert(response.error);
+            //             } else {
+            //                 // Update the container with the new data
+            //                 $('#studentFeeContainer').html(response);
+            //             }
+            //         },
+            //         error: function(xhr, status, error) {
+            //             // Log any error in the request
+            //             console.error("Error in AJAX request:", status, error);
+            //             alert('Error fetching data');
+            //         }
+            //     });
+            // }
+            $(document).ready(function() {
+                $(document).on('click', '.btn-primary', function(e) {
+                    e.preventDefault(); // Prevent form submission
+                    fetchFilteredData(e);
+                });
+
+                updatePaySlip();
+            });
+
+            function fetchFilteredData(e) {
+                e.preventDefault(); // Prevent form submission
+                var formData = $('#filterForm').serialize(); // Serialize the form data
+
+                $.ajax({
+                    url: '{{ route('admin.student.filter') }}', // Your route here
+                    method: 'GET',
+                    data: formData, // Send serialized form data
+                    success: function(response) {
+                        // Check if the response contains an error message
+                        if (response.error) {
+                            // Show the alert if the student is not found
+                            alert(response.error);
+                        } else {
+                            $('#studentFeeContainer').html(response);
+
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        // Log any error in the request
+                        console.error("Error in AJAX request:", status, error);
+                        alert('Error fetching data');
+                    }
+                });
+            }
         </script>
 
 
-
+    @endpush --}}
+    @push('scripts')
         <script>
+            // Function to update the Pay Slip dynamically
+            function updatePaySlip() {
+                let totalAmount = 0;
+                let selectedFees = [];
+
+                // Loop through all selected checkboxes
+                $('.fee-checkbox:checked').each(function() {
+                    let feeAmount = parseFloat($(this).data('amount')); // Get the fee amount from the checkbox
+                    let feeName = $(this).data('name'); // Get the fee name from the label
+
+                    // Add this fee to the selected fees array
+                    selectedFees.push({
+                        name: feeName,
+                        amount: feeAmount
+                    });
+
+                    // Add the fee amount to the total
+                    totalAmount += feeAmount;
+                });
+
+                let paySlipHtml = '';
+
+                if (selectedFees.length > 0) {
+                    paySlipHtml +=
+                        '<div class="card shadow-none mb-5"><div class="card-body"><h4 class="text-center mb-3">Payment Receipt</h4>';
+
+                    // Start a no-border table to align names and amounts
+                    paySlipHtml += '<table class="table table-borderless">';
+                    selectedFees.forEach(function(fee) {
+                        paySlipHtml += `
+                    <tr>
+                        <td style="text-align: left;">${fee.name}</td>
+                        <td style="text-align: right;">${fee.amount}</td>
+                    </tr>
+                `;
+                    });
+
+                    // Add total amount row at the bottom
+                    paySlipHtml += `
+                <tr style="border-top: 1px solid black;">
+                    <td style="text-align: right;"><strong>Total</strong></td>
+                    <td style="text-align: right;"><strong>${totalAmount}</strong></td>
+                </tr>
+            </table></div></div>`;
+                } else {
+                    paySlipHtml =
+                        '<div class="d-flex align-items-center justify-content-center"><h4 class="text-danger text-center">No fees selected.</h4></div>';
+                }
+
+                // Update the paySlip div with the generated HTML
+                $('#paySlip').html(paySlipHtml);
+                $('.amount').val(totalAmount); // Update the hidden amount field
+            }
+
+            $(document).ready(function() {
+                // Initially update the pay slip
+                updatePaySlip();
+
+                // Handle checkbox change event
+                $(document).on('change', '.fee-checkbox', function() {
+                    // Display month selection for monthly fees
+                    let feeId = $(this).val();
+                    let monthSelection = $('#month-selection-' + feeId);
+
+                    // Show the month selection for monthly fee when checkbox is checked
+                    if ($(this).prop('checked') && $(this).data('type') === 'monthly') {
+                        monthSelection.show();
+                    } else {
+                        monthSelection.hide();
+                    }
+
+                    // Update the pay slip after each checkbox change
+                    updatePaySlip();
+                });
+            });
+        </script>
+        <script>
+            // function fetchFilteredData(e) {
+            //     e.preventDefault(); // Prevent form submission
+            //     var formData = $('#filterForm').serialize(); // Serialize the form data
+
+            //     $.ajax({
+            //         url: '{{ route('admin.student.filter') }}', // Your route here
+            //         method: 'GET',
+            //         data: formData, // Send serialized form data
+            //         success: function(response) {
+            //             // Check if the response contains an error message
+            //             if (response.error) {
+            //                 // Show the alert if the student is not found
+            //                 alert(response.error);
+            //             } else {
+            //                 // Update the container with the new data
+            //                 $('#studentFeeContainer').html(response);
+            //             }
+            //         },
+            //         error: function(xhr, status, error) {
+            //             // Log any error in the request
+            //             console.error("Error in AJAX request:", status, error);
+            //             alert('Error fetching data');
+            //         }
+            //     });
+            // }
             $(document).ready(function() {
                 $(document).on('click', '.btn-primary', function(e) {
                     e.preventDefault(); // Prevent form submission
