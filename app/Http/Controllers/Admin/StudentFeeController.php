@@ -661,16 +661,25 @@ class StudentFeeController extends Controller
     //     return response()->view('admin.pages.studentFee.partial.studentFee', compact('student', 'fees', 'waiversLookup'));
     // }
 
+
     // public function filter(Request $request)
     // {
-    //     // Start with the query builder to find the student
     //     $query = User::query();
 
-    //     // Apply search filters based on the request parameters
     //     if ($request->has('student_id') && $request->student_id !== '') {
-    //         $query->where('student_id', 'like', '%' . $request->student_id . '%');
+    //         $studentId = $request->student_id;
+
+    //         if (strpos($studentId, '-') !== false) {
+    //             // Extract only the numeric part (e.g., 20259640 from EMM-20259640)
+    //             $studentId = substr($studentId, strpos($studentId, '-') + 1);
+    //         }
+
+    //         // Search using the student_id (whether numeric part or full ID)
+    //         // $query->where('student_id', 'like', '%' . $studentId . '%');
+    //         $query->whereRaw("SUBSTRING(student_id, 5) = ?", [$studentId]);
     //     }
 
+    //     // Search by other fields (name, roll, medium, class)
     //     if ($request->has('name') && !empty($request->name)) {
     //         $query->orWhere('name', 'like', '%' . $request->name . '%');
     //     }
@@ -725,19 +734,24 @@ class StudentFeeController extends Controller
     {
         $query = User::query();
 
+        // Check if the student_id is provided
         if ($request->has('student_id') && $request->student_id !== '') {
             $studentId = $request->student_id;
 
-            if (strpos($studentId, '-') !== false) {
-                // Extract only the numeric part (e.g., 20259640 from EMM-20259640)
-                $studentId = substr($studentId, strpos($studentId, '-') + 1);
+            // Regular expression to match "XXX-YYYYYYYYY" format (3 letters, dash, and digits)
+            $pattern = '/^[A-Za-z]{3}-\d+$/';
+            if (preg_match($pattern, $studentId)) {
+                $query->where('student_id', $studentId);
+            } elseif (is_numeric($studentId) && strlen($studentId) == 9) {
+                // The input matches the second format (just digits, e.g., 202511211)
+                $query->where('student_id', 'like', '%' . $studentId);
+            } else {
+                // Optionally handle the case for invalid student_id formats here
+                return response()->json(['message' => 'Invalid Student ID format'], 400);
             }
-
-            // Search using the student_id (whether numeric part or full ID)
-            $query->where('student_id', 'like', '%' . $studentId . '%');
         }
 
-        // Search by other fields (name, roll, medium, class)
+        // Filter by other fields (name, roll, medium, class)
         if ($request->has('name') && !empty($request->name)) {
             $query->orWhere('name', 'like', '%' . $request->name . '%');
         }

@@ -282,8 +282,22 @@ class StudentController extends Controller
 
     public function fetchStudentData(Request $request)
     {
-        $student = User::where('student_id', $request->student_id)->first();
+        $studentId = $request->student_id;
 
+        $pattern = '/^[A-Za-z]{3}-\d+$/';
+        if (preg_match($pattern, $studentId)) {
+            $student = User::where('student_id', $studentId)->first();
+        } elseif (is_numeric($studentId) && strlen($studentId) == 9) {
+            $student = User::where('student_id', 'like', '%' . $studentId)->first();
+        } else {
+            // Invalid format, return a 400 response
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid student_id format'
+            ], 400);
+        }
+
+        // Check if the student was found
         if ($student) {
             return response()->json([
                 'success' => true,

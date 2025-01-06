@@ -34,8 +34,9 @@
                                     <div class="col-lg-3 col-md-6">
                                         <div class="mb-3">
                                             <x-admin.label for="medium_id" class="form-label">Medium</x-admin.label>
-                                            <x-admin.select-option id="medium" name="medium" :allowClear="true"
-                                                >
+                                            <x-admin.select-option id="medium" name="medium"
+                                                data-placeholder="select an option" :allowClear="true">
+                                                <option value=""></option>
                                                 <option value="Bangla">Bangla</option>
                                                 <option value="English">English</option>
                                                 <option value="College">College</option>
@@ -47,7 +48,9 @@
                                         <div class="mb-3">
                                             <x-admin.label for="class" class="form-label">Class </x-admin.label>
                                             <x-admin.select-option class="form-control-solid" id="class"
-                                                name="class" :allowClear="true" required>
+                                                name="class" data-placeholder="select an option" :allowClear="true"
+                                                required>
+                                                <option value=""></option>
                                                 <option value="nursery" @selected(old('class') == 'nursery')>Nursery</option>
                                                 <option value="1" @selected(old('class') == '1')>One</option>
                                                 <option value="2" @selected(old('class') == '2')>Two</option>
@@ -78,7 +81,9 @@
                                             <x-admin.label for="section" class="form-label">Section <span
                                                     class="text-danger">*</span></x-admin.label>
                                             <x-admin.select-option class="form-control-solid" id="section"
-                                                name="section" :allowClear="true" required>
+                                                name="section" data-placeholder="select an option" :allowClear="true"
+                                                required>
+                                                <option value=""></option>
                                                 @foreach (range('A', 'N') as $section)
                                                     <option value="{{ $section }}" @selected(old('section') == $section)>
                                                         {{ $section }}</option>
@@ -202,10 +207,10 @@
 
                         // Check if the checkbox is checked
                         if ($(this).prop("checked")) {
-                            console.log("Checkbox is checked for fee ID: " + feeId); // Debugging
+                            // console.log("Checkbox is checked for fee ID: " + feeId); // Debugging
                             monthSelection.show(); // Show the months div if the checkbox is checked
                         } else {
-                            console.log("Checkbox is unchecked for fee ID: " + feeId); // Debugging
+                            // console.log("Checkbox is unchecked for fee ID: " + feeId); // Debugging
                             monthSelection.hide(); // Hide the months div if the checkbox is unchecked
                         }
                     }
@@ -256,8 +261,6 @@
                 $('#paySlip').html(paySlipHtml);
                 $('.amount').val(totalAmount); // Update the hidden amount input
             }
-
-            // Trigger updatePaySlip on page load and checkbox changes
         </script>
 
 

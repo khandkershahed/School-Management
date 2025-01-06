@@ -108,9 +108,11 @@
                                 @endif
                             @endforeach
                         @else
-                            <td colspan="5">
-                                <h6 class="text-center">No Paid Fees</h6>
-                            </td>
+                            <tr>
+                                <td colspan="5">
+                                    <h6 class="text-center">No Paid Fees</h6>
+                                </td>
+                            </tr>
                         @endif
                     </tbody>
                 </table>
@@ -129,8 +131,8 @@
                 <div class="col-lg-4 col-md-6">
                     <div class="form-check ps-0 border bg-light-primary p-3 rounded-2 text-center text-info"
                         style="text-align: start !important;">
-                        <label class="form-check-label" for="fee_id_{{ $fee->id }}">
-                            <input class="form-check-input ms-3 fee-checkbox" type="checkbox" name="fee_id[]"
+                        <label class="form-check-label mt-2" for="fee_id_{{ $fee->id }}">
+                            <input class="form-check-input ms-3 mt-0 fee-checkbox" type="checkbox" name="fee_id[]"
                                 onchange="updatePaySlip()" value="{{ $fee->id }}" id="fee_id_{{ $fee->id }}"
                                 data-amount="{{ $waiver ? $waiver->amount : $fee->amount }}"
                                 data-name="{{ $fee->name }}" data-type="{{ $fee->fee_type }}">
@@ -148,17 +150,19 @@
 
                     <!-- Monthly Fee Month Selection (Only shown for Monthly Fees) -->
                     @if ($isMonthlyFee)
-                        <div class="month-selection mt-2" id="month-selection-{{ $fee->id }}" style="display: none;">
+                        <div class="month-selection mt-2" id="month-selection-{{ $fee->id }}"
+                            style="display: none;">
                             <label><strong>Select Months:</strong></label>
                             <div class="row">
                                 @foreach (['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] as $index => $month)
                                     <div class="col-4 mb-2">
                                         <div class="form-check">
-                                            <label class="form-check-label" for="month_{{ $fee->id }}_{{ $index + 1 }}">
-                                            <input class="form-check-input me-1 month-checkbox" type="checkbox"
-                                                name="months[{{ $fee->id }}][]" value="{{ $index + 1 }}"
-                                                id="month_{{ $fee->id }}_{{ $index + 1 }}"
-                                                @if (in_array($index + 1, $paidMonths)) disabled checked @endif>
+                                            <label class="form-check-label"
+                                                for="month_{{ $fee->id }}_{{ $index + 1 }}">
+                                                <input class="form-check-input me-1 mt-0 month-checkbox" type="checkbox"
+                                                    name="months[{{ $fee->id }}][]" value="{{ $index + 1 }}"
+                                                    id="month_{{ $fee->id }}_{{ $index + 1 }}"
+                                                    @if (in_array($index + 1, $paidMonths)) disabled checked @endif>
                                                 {{ $month }}
                                             </label>
                                         </div>
@@ -184,4 +188,3 @@
 </div>
 
 <!-- Scripts for dynamic updates -->
-
