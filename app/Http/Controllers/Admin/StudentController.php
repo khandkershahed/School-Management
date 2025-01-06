@@ -279,4 +279,21 @@ class StudentController extends Controller
         redirectWithSuccess('Student Data Imported successfully');
         return redirect()->route('admin.students.index');
     }
+
+    public function fetchStudentData(Request $request)
+    {
+        $student = User::where('student_id', $request->student_id)->first();
+
+        if ($student) {
+            return response()->json([
+                'success' => true,
+                'student' => $student
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Student not found'
+            ]);
+        }
+    }
 }

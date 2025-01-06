@@ -14,30 +14,31 @@
                         <div class="card-body">
                             <form id="filterForm" enctype="multipart/form-data">
                                 <div class="row">
-                                    <div class="col-lg-3 col-md-6">
+                                    <div class="col-lg-4 offset-lg-4 col-md-6 offset-md-3">
                                         <div class="mb-3">
-                                            <x-admin.label for="name" class="form-label">Name </x-admin.label>
-                                            <x-admin.input type="text" :value="old('name')" id="name"
-                                                name="name"></x-admin.input>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3 col-md-6">
-                                        <div class="mb-3">
-                                            <x-admin.label for="student_id" class="form-label">Student ID
-                                            </x-admin.label>
+                                            <x-admin.label for="student_id" class="form-label">Student
+                                                ID</x-admin.label>
                                             <x-admin.input type="text" :value="old('student_id')" id="student_id"
                                                 name="student_id"></x-admin.input>
                                         </div>
                                     </div>
-
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-6">
+                                        <div class="mb-3">
+                                            <x-admin.label for="name" class="form-label">Name </x-admin.label>
+                                            <x-admin.input type="text" :value="old('name')" id="name"
+                                                name="name" readonly></x-admin.input>
+                                        </div>
+                                    </div>
                                     <div class="col-lg-3 col-md-6">
                                         <div class="mb-3">
                                             <x-admin.label for="medium_id" class="form-label">Medium</x-admin.label>
-                                            <x-admin.select-option id="medium" name="medium" :allowClear="true">
-                                                <option value="">-- Select Medium --</option>
-                                                <option value="Bangla" @selected(old('medium') == 'Bangla')>Bangla</option>
-                                                <option value="English" @selected(old('medium') == 'English')>English</option>
-                                                <option value="College" @selected(old('medium') == 'College')>College</option>
+                                            <x-admin.select-option id="medium" name="medium" :allowClear="true"
+                                                >
+                                                <option value="Bangla">Bangla</option>
+                                                <option value="English">English</option>
+                                                <option value="College">College</option>
                                             </x-admin.select-option>
                                         </div>
                                     </div>
@@ -46,8 +47,7 @@
                                         <div class="mb-3">
                                             <x-admin.label for="class" class="form-label">Class </x-admin.label>
                                             <x-admin.select-option class="form-control-solid" id="class"
-                                                name="class" :allowClear="true" multiple required>
-                                                <option value=""></option>
+                                                name="class" :allowClear="true" required>
                                                 <option value="nursery" @selected(old('class') == 'nursery')>Nursery</option>
                                                 <option value="1" @selected(old('class') == '1')>One</option>
                                                 <option value="2" @selected(old('class') == '2')>Two</option>
@@ -73,17 +73,30 @@
                                                 name="roll" required></x-admin.input>
                                         </div>
                                     </div>
-
+                                    <div class="col-lg-3 col-md-6">
+                                        <div class="mb-3">
+                                            <x-admin.label for="section" class="form-label">Section <span
+                                                    class="text-danger">*</span></x-admin.label>
+                                            <x-admin.select-option class="form-control-solid" id="section"
+                                                name="section" :allowClear="true" required>
+                                                @foreach (range('A', 'N') as $section)
+                                                    <option value="{{ $section }}" @selected(old('section') == $section)>
+                                                        {{ $section }}</option>
+                                                @endforeach
+                                            </x-admin.select-option>
+                                        </div>
+                                    </div>
                                     <div class="col-lg-12">
                                         <div class="mb-3 d-flex justify-content-center">
-                                            <a href="javascript:void(0)" {{-- <a href="javascript:void(0)" onclick="fetchFilteredData(event)" --}}
-                                                class="btn btn-primary">Check
+                                            <a href="javascript:void(0)" id="checkBtn" class="btn btn-primary">Check
                                                 <i class="fa-regular fa-floppy-disk ps-2"></i>
                                             </a>
                                         </div>
                                     </div>
-
                                 </div>
+
+
+
                             </form>
 
                         </div>
@@ -97,6 +110,79 @@
     </div>
 
     @push('scripts')
+        <script>
+            document.getElementById('checkBtn').addEventListener('click', function(event) {
+                event.preventDefault();
+                const studentId = document.getElementById('student_id').value;
+
+                if (!studentId) {
+                    alert('Please enter a student ID.');
+                    return;
+                }
+
+                fetch("{{ route('admin.fetch.student.data') }}", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({
+                            student_id: studentId
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            const student = data.student;
+
+                            // Populate fields with student data
+                            document.getElementById('name').value = student.name;
+                            document.getElementById('roll').value = student.roll;
+
+                            // Enable and populate the 'medium' select
+                            const mediumSelect = document.getElementById('medium');
+                            mediumSelect.disabled = false;
+                            mediumSelect.value = student.medium;
+
+                            // Enable and populate the 'class' select
+                            const classSelect = document.getElementById('class');
+                            classSelect.disabled = false;
+                            // Set selected values for multiple select if necessary
+                            classSelect.value = student.class;
+
+                            // Enable and populate the 'section' select
+                            const sectionSelect = document.getElementById('section');
+                            sectionSelect.disabled = false;
+                            sectionSelect.value = student.section;
+
+                            Array.from(mediumSelect.options).forEach(option => {
+                                if (option.value === student.medium) {
+                                    option.selected = true;
+                                }
+                            });
+
+                            Array.from(classSelect.options).forEach(option => {
+                                if (option.value === student.class) {
+                                    option.selected = true;
+                                }
+                            });
+
+                            Array.from(sectionSelect.options).forEach(option => {
+                                if (option.value === student.section) {
+                                    option.selected = true;
+                                }
+                            });
+
+                        } else {
+                            alert(data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('There was an error fetching the data.');
+                    });
+            });
+        </script>
         <script>
             // Function to update the Pay Slip dynamically
             function updatePaySlip() {
