@@ -16,27 +16,31 @@ class AdminController extends Controller
 {
     public function dashboard()
     {
-        $currentMonth = date('M');
-        $currentYear = Carbon::now()->year;   // Current year (e.g., 2025)
+        // Get the current year and month
+        $currentYear = Carbon::now()->year;  // Current year (e.g., 2025)
+        $currentMonth = Carbon::now()->month; // Current month (e.g., 1 for January)
 
-        // Query for current month's income
+        // Query for current month's income based on 'paid_at'
         $currentMonthIncome = DB::table('student_fees')
-            ->where('month', $currentMonth)
-            ->where('year', $currentYear)
-            ->where('status', 'paid')  // You can add 'paid' to ensure only paid fees are included
+            ->whereYear('paid_at', $currentYear) // Filter by current year
+            ->whereMonth('paid_at', $currentMonth) // Filter by current month
+            ->where('status', 'paid')  // Only include paid fees
             ->sum('amount');  // Sum the 'amount' column
 
+        // Query for current year's income based on 'paid_at'
         $currentYearIncome = DB::table('student_fees')
-            ->where('year', $currentYear)
-            ->where('status', 'paid')
-            ->sum('amount');
+            ->whereYear('paid_at', $currentYear) // Filter by current year
+            ->where('status', 'paid')  // Only include paid fees
+            ->sum('amount');  // Sum the 'amount' column
 
+        // Prepare data for the dashboard view
         $data = [
-            'total_student' => User::count(),
+            'total_student' => User::count(), // Total number of students (assuming users are students)
             'currentMonthIncome' => $currentMonthIncome,
             'currentYearIncome' => $currentYearIncome,
         ];
 
+        // Return the view with data
         return view('admin.dashboard', $data);
     }
 }
