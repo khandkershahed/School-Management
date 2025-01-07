@@ -19,7 +19,7 @@ class ReportController extends Controller
     {
         // Validate incoming request
         $validator = Validator::make($request->all(), [
-            'year' => 'nullable|integer|between:2023,'.date('Y'),
+            'year' => 'nullable|integer|between:2023,' . date('Y'),
             'group_by' => 'nullable|in:daily,monthly,yearly',
             'fee_id' => 'nullable|exists:fees,id',
             'from_date' => 'nullable|date|before_or_equal:to_date',
@@ -28,7 +28,7 @@ class ReportController extends Controller
 
         // Check if validation fails
         if ($validator->fails()) {
-            Session::flash('error',$validator);
+            Session::flash('error', $validator);
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
@@ -87,7 +87,6 @@ class ReportController extends Controller
 
             // Calculate total amount
             $totalAmount = $incomes->sum('amount');
-
         } catch (\Exception $e) {
             // Log the error for debugging
             Log::error("Error in custom report query: " . $e->getMessage());
@@ -107,37 +106,57 @@ class ReportController extends Controller
         $class = $request->input('class');
         $student_id = $request->input('student_id');
 
-        // Retrieve students (active only)
-        $students = User::latest('id')->where('status', 'active')->get();
+        // Query the students based on the filter
+        $students = User::query()
+            ->where('status', 'active') // Only active students
+            ->when($class, function ($query) use ($class) {
+                return $query->where('class', $class); // Filter by class
+            })
+            ->when($student_id, function ($query) use ($student_id) {
+                return $query->where('id', $student_id); // Filter by student ID
+            })
+            ->latest('id')
+            ->get();
 
-        // Start building the query for invoices
-        $invoices = StudentInvoice::latest('id');
+        // Initialize arrays to store the due fees
+        $dueMonthlyFees = [];
+        $dueYearlyFees = [];
 
-        // Apply filters if present
-        if ($class) {
-            // Filter invoices based on student class using a relationship
-            $invoices->whereHas('student', function ($query) use ($class) {
-                $query->where('class', $class);
-            });
+        // Loop through each student to gather their due fees
+        $user = User::where('student_id', $student_id)->first();
+        // Get due monthly fees
+        if ($user) {
+            $dueMonthlyFeesForUser = $user->studentFees()
+                ->where('status', 'unpaid')
+                ->where('month', date('F')) // Current month
+                ->whereHas('fee', function ($query) {
+                    $query->where('fee_type', 'monthly');
+                })
+                ->get();
+
+            // Get due yearly fees
+            $dueYearlyFeesForUser = $user->studentFees()
+                ->where('status', 'unpaid')
+                ->whereHas('fee', function ($query) {
+                    $query->where('fee_type', 'yearly');
+                })
+                ->get();
+        } else {
+            $dueMonthlyFeesForUser = '';
+            $dueYearlyFeesForUser = '';
+        }
+        // Store the fees under each student
+        if ($dueMonthlyFeesForUser->isNotEmpty()) {
+            $dueMonthlyFees[$user->id] = $dueMonthlyFeesForUser;
+        }
+        if ($dueYearlyFeesForUser->isNotEmpty()) {
+            $dueYearlyFees[$user->id] = $dueYearlyFeesForUser;
         }
 
-        if ($student_id) {
-            // Filter invoices by student_id
-            $invoices->where('student_id', $student_id);
-        }
-
-        // Get the filtered invoices with pagination
-        $invoices = $invoices->paginate(10);
-
-        // Calculate total balance (if you need to display it in the view)
-        $total_balance = $invoices->sum(function ($invoice) {
-            return $invoice->total_amount - ($invoice->paid_amount ?? 0); // Adjust this based on your field names
-        });
 
         // Return the view with the filtered data
-        return view('admin.pages.report.dueFee' , compact('students', 'invoices', 'total_balance'));
+        return view('admin.pages.report.dueFee', compact('students', 'dueMonthlyFees', 'dueYearlyFees', 'class', 'student_id'));
     }
-
 
     public function studentDue(Request $request)
     {
@@ -156,7 +175,7 @@ class ReportController extends Controller
         ]);
 
         if ($validator->fails()) {
-            Session::flash('error',$validator);
+            Session::flash('error', $validator);
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
@@ -263,7 +282,7 @@ class ReportController extends Controller
         ]);
 
         if ($validator->fails()) {
-            Session::flash('error',$validator);
+            Session::flash('error', $validator);
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
