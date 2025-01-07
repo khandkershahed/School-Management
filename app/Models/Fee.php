@@ -38,14 +38,14 @@ class Fee extends Model
         // Fetch the student fees for this fee and the given student
         $studentFees = $this->studentFees()
             ->where('student_id', $studentId)
-            ->whereNotNull('paid_at')  // Only consider paid fees
+            ->whereNotNull('month')  // Only consider paid fees
             ->get();
 
         $paidMonths = [];
 
         // Loop through the student fees and extract the months
         foreach ($studentFees as $studentFee) {
-            $paidMonths[] = Carbon::parse($studentFee->paid_at)->month; // Get month number
+            $paidMonths[] = Carbon::parse($studentFee->month)->month; // Get month number
         }
 
         return $paidMonths;

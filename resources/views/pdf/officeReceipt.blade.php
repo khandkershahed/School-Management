@@ -150,8 +150,8 @@
                 @foreach ($feeDetails as $key => $detail)
                     <tr>
                         <td>{{ $key + 1 }}</td>
-                        <td>{{ $detail['fee']->name }}</td>
-                        <td>{{ $detail['fee']->amount }} Taka</td>
+                        <td>{{ $detail['fee'] }}</td>
+                        <td>{{ $detail['amount'] }} Taka</td>
                         <td> @if (($detail['waiverAmount']) >0) {{ $detail['waiverAmount'] }} Taka @else N/A @endif</td>
                         <td>{{ $detail['finalAmount'] }} Taka</td>
                     </tr>

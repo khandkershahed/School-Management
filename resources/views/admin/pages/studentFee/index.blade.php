@@ -143,7 +143,7 @@
                     });
             });
         </script>
-        {{-- <script>
+        <script>
             // Refined updatePaySlip function
             function updatePaySlip() {
                 let selectedFees = [];
@@ -151,7 +151,7 @@
 
                 // Loop through all the fee checkboxes (both yearly and monthly)
                 $('.fee-checkbox').each(function() {
-                    if ($(this).prop('checked')) {
+                    if ($(this).prop('checked') && !$(this).prop('disabled')) {
                         let feeAmount = parseFloat($(this).data('amount')); // Get the fee amount
                         let feeName = $(this).data('name'); // Get the fee name
                         let feeId = $(this).val(); // Get the fee ID
@@ -202,49 +202,62 @@
             $('.fee-checkbox').on('change', function() {
                 updatePaySlip();
             });
-        </script> --}}
+        </script>
         <script>
-            function updatePaySlip() {
-                let totalAmount = 0;
-                const selectedFees = [];
-                const selectedMonths = {}; // For storing months selection
+            // function updatePaySlip() {
+            //     let totalAmount = 0;
+            //     const selectedFees = [];
+            //     const selectedMonths = {}; // For storing months selection
 
-                $(".fee-checkbox:checked").each(function() {
-                    const feeId = $(this).val();
-                    const feeAmount = $(this).data("amount");
-                    const feeName = $(this).data("name");
-                    const feeType = $(this).data("type");
+            //     $(".fee-checkbox:checked").each(function() {
+            //         const feeId = $(this).val();
+            //         const feeAmount = $(this).data("amount");
+            //         const feeName = $(this).data("name");
+            //         const feeType = $(this).data("type");
+            //         const feeId = $(this).val(); // Get the fee ID
+            //         // Track the selected months for monthly fees
 
-                    // Track the selected months for monthly fees
-                    if (feeType === "monthly") {
-                        selectedMonths[feeId] = selectedMonths[feeId] || [];
-                        const monthsSelected = $(`#month-selection-${feeId} input:checked`).map(function() {
-                            return $(this).val(); // Get month number
-                        }).get();
-                        selectedMonths[feeId] = monthsSelected;
-                    }
+            //         selectedFees.push({
+            //             name: feeName,
+            //             amount: feeAmount,
+            //             feeId: feeId,
+            //             type: feeType
+            //         });
 
-                    totalAmount += feeAmount;
+            //         totalAmount += feeAmount;
+            //     });
 
-                    selectedFees.push({
-                        feeId: feeId,
-                        feeAmount: feeAmount,
-                        feeName: feeName
-                    });
-                });
+            //     // Update hidden fields for selected months and amount
+            //     $("input[name='months']").val(JSON.stringify(selectedMonths));
+            //     $("input[name='amount']").val(totalAmount);
 
-                // Update hidden fields for selected months and amount
-                $("input[name='months']").val(JSON.stringify(selectedMonths));
-                $("input[name='amount']").val(totalAmount);
+            //     // Update the pay slip with the selected fees and total amount
+            //     let paySlipHtml = '';
+            //     if (selectedFees.length > 0) {
+            //         paySlipHtml +=
+            //             '<div class="card shadow-none mb-5"><div class="card-body"><h4 class="text-center mb-3">Payment Receipt</h4>';
 
-                // Update the pay slip with the selected fees and total amount
-                let feeHTML = "";
-                selectedFees.forEach(fee => {
-                    feeHTML += `<div>${fee.feeName}: ${fee.feeAmount}</div>`;
-                });
+            //         paySlipHtml += '<table class="table table-borderless">';
+            //         selectedFees.forEach(function(fee) {
+            //             // If it's a monthly fee, display the fee amount and selected month
+            //             paySlipHtml +=
+            //                 `<tr><td style="text-align: left;">${fee.feeName}</td><td style="text-align: right;">${fee.feeAmount}</td></tr>`;
+            //         });
 
-                $("#paySlip").html(feeHTML || "<h4 class='text-danger text-center'>No fees selected.</h4>");
-            }
+            //         // Add a total row
+            //         paySlipHtml +=
+            //             `<tr style="border-top: 1px solid black;"><td style="text-align: right;"><strong>Total</strong></td><td style="text-align: right;"><strong>${totalAmount}</strong></td></tr></div></div>`;
+
+            //         paySlipHtml += '</table>';
+            //     } else {
+            //         paySlipHtml =
+            //             '<div class="d-flex align-items-center justify-content-center"><h4 class="text-danger text-center">No fees selected.</h4></div>';
+            //     }
+
+            //     // Update the Pay Slip
+            //     $('#paySlip').html(paySlipHtml);
+            //     $('.amount').val(totalAmount);
+            // }
 
             function confirmPayment(event) {
                 // This function can be expanded to confirm the payment, show a confirmation popup, etc.
