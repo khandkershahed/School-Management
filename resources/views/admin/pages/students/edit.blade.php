@@ -99,7 +99,7 @@
                                             <x-admin.select-option id="year" name="year" :allowClear="true"
                                                 required>
                                                 <option value="">Select Year</option>
-                                                @for ($year = 2023; $year <= 2027; $year++)
+                                                @for ($year = 2025; $year <= 2030; $year++)
                                                     <option value="{{ $year }}" @selected(old('year') == $year)>
                                                         {{ $year }}</option>
                                                 @endfor
@@ -124,7 +124,7 @@
                                     <div class="col-lg-3 col-md-6">
                                         <div class="mb-3">
                                             <x-admin.label for="roll" class="form-label">Roll No</x-admin.label>
-                                            <x-admin.input type="text" :value="old('roll', $student->roll)" id="roll"
+                                            <x-admin.input type="number" :value="old('roll', $student->roll)" id="roll"
                                                 name="roll" required></x-admin.input>
                                         </div>
                                     </div>

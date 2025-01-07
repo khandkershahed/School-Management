@@ -54,7 +54,7 @@ class StudentController extends Controller
                 'class'   => 'required',
                 'medium'  => 'required',
                 'section' => 'required',
-                'roll'    => 'required',
+                'roll'    => 'required|integer',
             ]);
 
             if ($validator->fails()) {
