@@ -97,8 +97,8 @@
                                             <x-admin.label for="fee_type" class="form-label">Fee Type <span class="text-danger">*</span></x-admin.label>
                                             <x-admin.select-option id="fee_type" name="fee_type" :allowClear="true" required>
                                                 <option value="">-- Select Fee type --</option>
-                                                <option value="yearly" @selected(old('fee_type') == 'yearly')>Yearly</option>
-                                                <option value="monthly" @selected(old('fee_type') == 'monthly')>Monthly</option>
+                                                <option value="yearly" @selected(old('fee_type', $fee->fee_type) == 'yearly')>Yearly</option>
+                                                <option value="monthly" @selected(old('fee_type', $fee->fee_type) == 'monthly')>Monthly</option>
                                             </x-admin.select-option>
                                         </div>
                                     </div>

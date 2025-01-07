@@ -23,9 +23,10 @@
                                             <x-admin.select-option id="year" name="year" :allowClear="true"
                                                 required>
                                                 <option value="">Select Academic Year</option>
-                                                @for ($year = 2023; $year <= 2027; $year++)
-                                                    <option value="{{ $year }}" @selected(old('year', $year) == $year)>
-                                                        Academic Year {{ $year }}</option>
+                                                @for ($year = 2025; $year <= 2030; $year++)
+                                                    <option value="{{ $year }}" @selected(date('Y', $year) == $year)>
+                                                        Academic Year {{ $year }}
+                                                    </option>
                                                 @endfor
                                             </x-admin.select-option>
                                         </div>

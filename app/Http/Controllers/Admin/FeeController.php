@@ -63,9 +63,6 @@ class FeeController extends Controller
             ]);
 
             if ($validator->fails()) {
-                // foreach ($validator->messages()->all() as $message) {
-                //     Session::flash('error', $message);
-                // }
                 Session::flash('error', $validator->messages()->all());
                 return redirect()->back()->withInput();
             }
@@ -116,6 +113,30 @@ class FeeController extends Controller
     public function update(Request $request, string $id)
     {
         try {
+            $validator = Validator::make($request->all(), [
+                'name'      => 'required|string|max:200',
+                'class'     => 'required',
+                'amount'    => 'required|min:1',
+                'status'    => 'required|in:active,inactive',
+                'fee_type'  => 'required|in:monthly,yearly',
+                'medium'    => 'required|string',
+            ], [
+                'name.required'   => 'The name field is required.',
+                'class.required'  => 'The class field is required.',
+                'amount.required' => 'The amount field is required.',
+                'medium.required' => 'The medium field is required.',
+                'status.required' => 'The status field is required.',
+                'name.string'     => 'The name must be a string.',
+                'name.max'        => 'The name may not be greater than :max characters.',
+                'name.unique'     => 'This name has already been taken.',
+                'status.in'       => 'The status must be one of: active, inactive.',
+                'fee_type.in'     => 'The Fee Type must be one of: monthly or yearly.',
+            ]);
+
+            if ($validator->fails()) {
+                Session::flash('error', $validator->messages()->all());
+                return redirect()->back()->withInput();
+            }
             $fee =  Fee::findOrFail($id);
             // create client
             $fee->update([

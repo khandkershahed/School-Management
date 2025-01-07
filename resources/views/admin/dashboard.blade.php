@@ -60,7 +60,7 @@
                     </a>
                 </div>
                 <div class="col-lg-4 col-4">
-                    <a href="{{ route('admin.report.studentdue') }}">
+                    <a href="{{ route('admin.report.duefee') }}">
                         <button class="btn btn-app bg-success text-white w-100"
                             style="border:none;">
                             <svg height="20" width="20" viewBox="0 0 448 512">

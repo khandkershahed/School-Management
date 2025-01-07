@@ -14,19 +14,57 @@
                         <div class="card-body">
                             <form action="{{ route('admin.report.income') }}" method="GET" class="filter-form">
                                 @csrf
+                                <div class="container-fluid" id="printContainer">
+                                    <div style="padding-left:35px;padding-right:35px;">
+                                        <div class="row">
+                                            <div style="width:100%; padding:0px; margin:0px;">
+                                                <table
+                                                    style=" width:100%; -webkit-print-color-adjust: exact !important; background-color: #f0f3f5 !important; border-radius: 10px; margin-bottom: 20px; padding: 10px;">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td style="width:10%;text-align:center;">
+                                                                <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('images/logo_color_no_bg.png'))) }}"
+                                                                    alt="" height="80px" width="80px">
+                                                            </td>
+                                                            <td style="width:80%;  text-align:center;">
+                                                                <span style="text-align: center ;">
+                                                                    <div class="clearfix">&nbsp;</div>
+                                                                    <h3 class="text-muted" style="margin-top:10px;">
+                                                                        <strong>Shamsul Hoque Khan School and College</strong>
+                                                                    </h3>
+                                                                    <h6 class="text-muted" style="margin-top:10px;">
+                                                                        Paradogair, Matuail, Demra
+                                                                        Dhaka-1362
+                                                                    </h6>
+                                                                    <h3 class="head-title ptint-title text-info"
+                                                                        style="width: 100%;margin-top:10px;">
+                                                                        <i class="fa fa-bar-chart"></i>
+                                                                        <small> Student Invoice Report</small>
+                                                                    </h3>
+                                                                    <div class="clearfix">&nbsp;</div>
+                                                                    {{-- <div>Academic Year: {{ old('year', $year) }}</div> --}}
+                                                                </span>
+                                                            </td>
+                                                            <td style="width:10%;  text-align:center;"> </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
                                 <div class="row">
                                     <div class="col-lg-3 col-md-4">
                                         <div class="mb-3">
                                             <x-admin.label for="year" class="form-label">Academic Year<span
-                                                    class="text-danger">*</span></x-admin.label>
-                                            <x-admin.select-option id="year" name="year" :allowClear="true"
-                                                required>
-                                                <option value="">Select Academic Year</option>
-                                                @for ($year = 2023; $year <= 2027; $year++)
-                                                    <option value="{{ $year }}" @selected(old('year', $year) == $year)>
-                                                        Academic Year {{ $year }}</option>
-                                                @endfor
-                                            </x-admin.select-option>
+                                                class="text-danger">*</span></x-admin.label>
+                                        <x-admin.select-option id="year" name="year" :allowClear="true"
+                                            required>
+                                            <option value="">Select Academic Year</option>
+                                            @for ($year = 2025; $year <= 2030; $year++)
+                                                <option value="{{ $year }}" @selected(date('Y', $year) == $year)>
+                                                    Academic Year {{ $year }}
+                                                </option>
+                                            @endfor
+                                        </x-admin.select-option>
                                         </div>
                                     </div>
 
