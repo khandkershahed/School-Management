@@ -123,40 +123,36 @@ class ReportController extends Controller
         $dueYearlyFees = [];
 
         // Loop through each student to gather their due fees
-        $user = User::where('student_id', $student_id)->first();
-        // Get due monthly fees
-        if ($user) {
-            $dueMonthlyFeesForUser = $user->studentFees()
-                ->where('status', 'unpaid')
-                ->where('month', date('F')) // Current month
+        foreach ($students as $student) {
+            // Get due monthly fees
+            $dueMonthlyFeesForStudent = $student->studentFees()
+                ->where('status', 'unpaid') // Only unpaid fees
                 ->whereHas('fee', function ($query) {
-                    $query->where('fee_type', 'monthly');
+                    $query->where('fee_type', 'monthly'); // Filter by monthly fees
                 })
                 ->get();
 
             // Get due yearly fees
-            $dueYearlyFeesForUser = $user->studentFees()
-                ->where('status', 'unpaid')
+            $dueYearlyFeesForStudent = $student->studentFees()
+                ->where('status', 'unpaid') // Only unpaid fees
                 ->whereHas('fee', function ($query) {
-                    $query->where('fee_type', 'yearly');
+                    $query->where('fee_type', 'yearly'); // Filter by yearly fees
                 })
                 ->get();
-        } else {
-            $dueMonthlyFeesForUser = '';
-            $dueYearlyFeesForUser = '';
-        }
-        // Store the fees under each student
-        if ($dueMonthlyFeesForUser->isNotEmpty()) {
-            $dueMonthlyFees[$user->id] = $dueMonthlyFeesForUser;
-        }
-        if ($dueYearlyFeesForUser->isNotEmpty()) {
-            $dueYearlyFees[$user->id] = $dueYearlyFeesForUser;
-        }
 
+            // Store the fees under each student if there are any due fees
+            if ($dueMonthlyFeesForStudent->isNotEmpty()) {
+                $dueMonthlyFees[$student->id] = $dueMonthlyFeesForStudent;
+            }
+            if ($dueYearlyFeesForStudent->isNotEmpty()) {
+                $dueYearlyFees[$student->id] = $dueYearlyFeesForStudent;
+            }
+        }
 
         // Return the view with the filtered data
         return view('admin.pages.report.dueFee', compact('students', 'dueMonthlyFees', 'dueYearlyFees', 'class', 'student_id'));
     }
+
 
     public function studentDue(Request $request)
     {

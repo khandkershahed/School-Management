@@ -90,14 +90,28 @@
                                             </thead>
                                             <tbody>
                                                 @foreach ($students as $key => $student)
-                                                    @foreach (array_merge($dueMonthlyFees[$student->id] ?? [], $dueYearlyFees[$student->id] ?? []) as $fee)
+                                                    <!-- Monthly Fees -->
+                                                    @foreach ($dueMonthlyFees[$student->id] ?? [] as $fee)
                                                         <tr>
                                                             <td class="text-center">{{ $loop->iteration }}</td>
                                                             <td class="text-center">{{ $fee->fee->name }}</td>
                                                             <td class="text-center">{{ $student->student_id }}</td>
                                                             <td class="text-center">{{ $student->name }}</td>
-                                                            <td class="text-center">{{ $fee->month ?? 'Annual' }}</td>
-                                                            <td class="text-center">{{ $fee->amount }}</td>
+                                                            <td class="text-center">{{ $fee->month }}</td>
+                                                            <td class="text-center">{{ number_format($fee->amount, 2) }}</td>
+                                                            <td class="text-center">{{ $fee->status }}</td>
+                                                        </tr>
+                                                    @endforeach
+
+                                                    <!-- Yearly Fees -->
+                                                    @foreach ($dueYearlyFees[$student->id] ?? [] as $fee)
+                                                        <tr>
+                                                            <td class="text-center">{{ $loop->iteration }}</td>
+                                                            <td class="text-center">{{ $fee->fee->name }}</td>
+                                                            <td class="text-center">{{ $student->student_id }}</td>
+                                                            <td class="text-center">{{ $student->name }}</td>
+                                                            <td class="text-center">Annual</td>
+                                                            <td class="text-center">{{ number_format($fee->amount, 2) }}</td>
                                                             <td class="text-center">{{ $fee->status }}</td>
                                                         </tr>
                                                     @endforeach
