@@ -12,7 +12,6 @@
                             </div>
                         </div>
                         <div class="card-body p-0">
-
                             <div class="container-fluid" id="printContainer">
                                 <div style="padding-left:35px;padding-right:35px;">
                                     <div class="row">
@@ -51,7 +50,7 @@
                                             </table>
                                         </div>
                                     </div>
-                                    <div class="table-responsive p-3 pt-1">
+                                    <div class="row p-3 pt-1">
                                         <!-- Table -->
                                         <table class="table table-striped" style="width:100%">
                                             <thead>
@@ -96,7 +95,7 @@
                                 </div>
                             </div>
 
-                            <div class="row mt-3">
+                            <div class="row my-3">
                                 <div class="col-4 offset-4 text-center">
                                     <button class="btn btn-primary" onclick="printInvoice();" style="width: 150px;"><i
                                             class="fa fa-print"></i> Print</button>

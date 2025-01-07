@@ -497,8 +497,8 @@ class StudentFeeController extends Controller
                 'invoiceNumber'   => $invoiceNumber,
                 'year'            => $request->year,
                 'month'           => $request->month,
-                // 'amount_in_words' => SpellNumber::value($totalAmount)->locale('en')->toLetters(),
-                'amount_in_words' => "hdnvdddfdsdsfdsfvd",
+                'amount_in_words' => SpellNumber::value($totalAmount)->locale('en')->toLetters(),
+                // 'amount_in_words' => "hdnvdddfdsdsfdsfvd",
             ];
 
             // Generate PDFs using your PDF methods
