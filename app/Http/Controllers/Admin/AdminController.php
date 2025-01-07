@@ -23,14 +23,14 @@ class AdminController extends Controller
         $currentMonthIncome = DB::table('student_fees')
             ->where('month', $currentMonth)
             ->where('year', $currentYear)
-            ->where('status', 'Paid')  // You can add 'Paid' to ensure only paid fees are included
+            ->where('status', 'paid')  // You can add 'paid' to ensure only paid fees are included
             ->sum('amount');  // Sum the 'amount' column
 
         $currentYearIncome = DB::table('student_fees')
             ->where('year', $currentYear)
-            ->where('status', 'Paid')
+            ->where('status', 'paid')
             ->sum('amount');
-            
+
         $data = [
             'total_student' => User::count(),
             'currentMonthIncome' => $currentMonthIncome,
