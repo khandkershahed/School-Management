@@ -89,7 +89,7 @@ class StudentController extends Controller
                 'student_id'       => $code,
                 'name'             => $request->name,
                 'medium'           => $request->medium,
-                'medium_id'        => $request->medium_id,
+                // 'medium_id'        => $request->medium_id,
                 'class'            => $request->class,
                 'section'          => $request->section,
                 'gender'           => $request->gender,
@@ -220,7 +220,7 @@ class StudentController extends Controller
             $client->update([
                 'name'             => $request->name,
                 'medium'           => $request->medium,
-                'medium_id'        => $request->medium_id,
+                // 'medium_id'        => $request->medium_id,
                 'class'            => $request->class,
                 'section'          => $request->section,
                 'gender'           => $request->gender,
