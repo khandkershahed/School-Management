@@ -385,7 +385,7 @@ class StudentFeeController extends Controller
             Log::error('Error storing payment data: ', ['error' => $e->getMessage()]);
 
             // Return a generic error message
-            return response()->json(['success' => false, 'message' => 'There was an error processing the payment.']);
+            return response()->json(['success' => false, 'message' => $e->getMessage()]);
         }
     }
 
