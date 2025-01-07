@@ -137,11 +137,17 @@ class ReportController extends Controller
 
                 // If the fee has not been paid, add it to the due fees
                 if (!$paidFee) {
-                    $dueMonthlyFees[$student->id][] = [
-                        'fee' => $fee,
-                        'amount' => $fee->amount,
-                        'status' => 'Unpaid',
-                    ];
+                    if ($fee->fee_type === 'monthly') {
+                        // Prevent duplicate fees for the same student
+                        if (!in_array($fee->id, array_column($dueMonthlyFees, 'fee_id'))) {
+                            $dueMonthlyFees[$student->id][] = [
+                                'fee_id' => $fee->id, // store fee_id to check duplicates
+                                'fee' => $fee,
+                                'amount' => $fee->amount,
+                                'status' => 'Unpaid',
+                            ];
+                        }
+                    }
                 }
             }
 
@@ -155,11 +161,15 @@ class ReportController extends Controller
 
                     // If the fee has not been paid, add it to the due fees
                     if (!$paidFee) {
-                        $dueYearlyFees[$student->id][] = [
-                            'fee' => $fee,
-                            'amount' => $fee->amount,
-                            'status' => 'Unpaid',
-                        ];
+                        // Prevent duplicate fees for the same student
+                        if (!in_array($fee->id, array_column($dueYearlyFees, 'fee_id'))) {
+                            $dueYearlyFees[$student->id][] = [
+                                'fee_id' => $fee->id, // store fee_id to check duplicates
+                                'fee' => $fee,
+                                'amount' => $fee->amount,
+                                'status' => 'Unpaid',
+                            ];
+                        }
                     }
                 }
             }
@@ -168,6 +178,7 @@ class ReportController extends Controller
         // Return the view with the due fee data
         return view('admin.pages.report.dueFee', compact('students', 'dueMonthlyFees', 'dueYearlyFees', 'class', 'student_id'));
     }
+
 
 
 
