@@ -1,6 +1,7 @@
 <div class="card-body">
     <form action="{{ route('admin.student-fee.store') }}" method="post" id="paymentForm">
         @csrf
+        @csrf
         <input type="hidden" name="student_id" value="{{ $student->id }}">
         <input type="hidden" name="year" value="{{ date('Y') }}">
         <input type="hidden" name="month" value="{{ date('M') }}">
@@ -17,7 +18,46 @@
                             </h5>
                         </div>
                     </div>
-                    <!-- Other student details like student ID, class, etc. -->
+                    <div class="col-lg-6 col-md-12 mb-4">
+                        <div class="border p-3 rounded" style="border-color: #eee;">
+                            <h6><strong>Student ID:</strong> {{ $student->student_id }}</h6>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-12 mb-4">
+                        <div class="border p-3 rounded" style="border-color: #eee;">
+                            <h6><strong>Medium:</strong> {{ optional($student)->medium }}</h6>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
+                        <div class="border p-3 rounded" style="border-color: #eee;">
+                            <h6><strong>Class:</strong> {{ $student->class }}</h6>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
+                        <div class="border p-3 rounded" style="border-color: #eee;">
+                            <h6><strong>Roll:</strong> {{ $student->roll }}</h6>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
+                        <div class="border p-3 rounded" style="border-color: #eee;">
+                            <h6><strong>Group:</strong> {{ $student->group }}</h6>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-12 mb-4">
+                        <div class="border p-3 rounded" style="border-color: #eee;">
+                            <h6><strong>Gender:</strong> {{ $student->gender }}</h6>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-12 mb-4">
+                        <div class="border p-3 rounded" style="border-color: #eee;">
+                            <h6><strong>Father's Name:</strong> {{ $student->guardian_name }}</h6>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-12 mb-4">
+                        <div class="border p-3 rounded" style="border-color: #eee;">
+                            <h6><strong>Father's Number:</strong> {{ $student->guardian_contact }}</h6>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="col-lg-4" id="paySlip">
@@ -28,7 +68,44 @@
         <!-- Paid Fees Section -->
         <div class="row mb-3">
             <h5 class="fw-bold text-center mb-3">Paid Fees</h5>
-            <!-- Table for displaying paid fees -->
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <th>Fee Name</th>
+                        <th>Payment Status</th>
+                        <th>Invoice Number</th>
+                        <th>Amount</th>
+                        <th>Paid at</th>
+                    </thead>
+                    <tbody>
+                        @if ($paidFees->count() > 0)
+                            @foreach ($paidFees as $feeId)
+                                @php
+                                    $fee = \App\Models\Fee::find($feeId);
+                                    $studentFee = \App\Models\StudentFee::where('student_id', $student->id)
+                                        ->where('fee_id', $feeId)
+                                        ->first();
+                                @endphp
+                                @if ($fee && $studentFee)
+                                    <tr>
+                                        <td>{{ $fee->name }}</td>
+                                        <td>{{ $studentFee->status }}</td>
+                                        <td>{{ $studentFee->invoice_number }}</td>
+                                        <td>{{ $fee->amount }}</td>
+                                        <td>{{ $studentFee->paid_at }}</td>
+                                    </tr>
+                                @endif
+                            @endforeach
+                        @else
+                            <tr>
+                                <td colspan="5">
+                                    <h6 class="text-center">No Paid Fees</h6>
+                                </td>
+                            </tr>
+                        @endif
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <!-- Due Fees Section -->
@@ -102,4 +179,3 @@
 </div>
 
 <!-- Scripts for dynamic updates -->
-
