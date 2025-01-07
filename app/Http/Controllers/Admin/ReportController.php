@@ -239,7 +239,7 @@ class ReportController extends Controller
         }
 
         // Get the filtered invoices with pagination
-        $invoices = $invoices->paginate(10);
+        $invoices = $invoices->get();
 
         // Calculate total balance (if you need to display it in the view)
         $total_balance = $invoices->sum(function ($invoice) {

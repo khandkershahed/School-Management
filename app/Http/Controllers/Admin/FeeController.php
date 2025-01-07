@@ -78,7 +78,7 @@ class FeeController extends Controller
                 'status'      => $request->status,
                 'fee_type'    => $request->fee_type,
                 'medium'      => $request->medium,
-                'medium_id'   => $request->medium_id,
+                // 'medium_id'   => $request->medium_id,
             ]);
 
             //send welcome notification
@@ -126,7 +126,7 @@ class FeeController extends Controller
                 'status'      => $request->status,
                 'fee_type'    => $request->fee_type,
                 'medium'      => $request->medium,
-                'medium_id'   => $request->medium_id,
+                // 'medium_id'   => $request->medium_id,
             ]);
 
             //send welcome notification
