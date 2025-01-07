@@ -70,6 +70,7 @@
                                                 <option value="">-- Select Fee type --</option>
                                                 <option value="yearly" @selected(old('fee_type') == 'yearly')>Yearly</option>
                                                 <option value="monthly" @selected(old('fee_type') == 'monthly')>Monthly</option>
+                                                <option value="recurring" @selected(old('fee_type') == 'recurring')>Recurring</option>
                                             </x-admin.select-option>
                                         </div>
                                     </div>

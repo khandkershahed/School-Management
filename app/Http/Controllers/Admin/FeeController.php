@@ -47,7 +47,7 @@ class FeeController extends Controller
                 'class'     => 'required',
                 'amount'    => 'required|min:1',
                 'status'    => 'required|in:active,inactive',
-                'fee_type'  => 'required|in:monthly,yearly',
+                'fee_type'  => 'required|in:monthly,yearly,recurring',
                 'medium'    => 'required|string',
             ], [
                 'name.required'   => 'The name field is required.',
@@ -118,7 +118,7 @@ class FeeController extends Controller
                 'class'     => 'required',
                 'amount'    => 'required|min:1',
                 'status'    => 'required|in:active,inactive',
-                'fee_type'  => 'required|in:monthly,yearly',
+                'fee_type'  => 'required|in:monthly,yearly,recurring',
                 'medium'    => 'required|string',
             ], [
                 'name.required'   => 'The name field is required.',

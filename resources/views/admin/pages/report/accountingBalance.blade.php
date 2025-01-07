@@ -23,9 +23,9 @@
                                             <x-admin.select-option id="year" name="year" :allowClear="true"
                                                 required>
                                                 <option value="">Select Academic Year</option>
-                                                @for ($year = 2025; $year <= 2030; $year++)
-                                                    <option value="{{ $year }}" @selected(date('Y', $year) == $year)>
-                                                        Academic Year {{ $year }}
+                                                @for ($academic_year = 2025; $academic_year <= 2030; $academic_year++)
+                                                    <option value="{{ $academic_year }}" @selected(date('Y', $year) == $academic_year)>
+                                                        Academic Year {{ $academic_year }}
                                                     </option>
                                                 @endfor
                                             </x-admin.select-option>
@@ -64,7 +64,7 @@
                                     </div>
 
                                 </div>
-                                <div class="row mt-3">
+                                <div class="row my-3">
                                     <div class="col-4 offset-4 text-center">
                                         <button type="submit" class="btn btn-primary"
                                             style="width: 150px;">Filter</button>
@@ -84,22 +84,22 @@
                                                             <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('images/logo_color_no_bg.png'))) }}"
                                                                 alt="" height="80px" width="80px">
                                                         </td>
-                                                        <td style="width:80%;  text-align:center;">
+                                                        <td style="width:80%;text-align:center;">
                                                             <span style="text-align: center ;">
                                                                 <div class="clearfix">&nbsp;</div>
-                                                                <h3 class="text-muted" style="margin-top:10px;">
+                                                                <h4 class="text-muted" style="margin-top:10px;">
                                                                     <strong>Shamsul Hoque Khan School and
                                                                         College</strong>
-                                                                </h3>
+                                                                </h4>
                                                                 <h6 class="text-muted" style="margin-top:10px;">
                                                                     Paradogair, Matuail, Demra
                                                                     Dhaka-1362
                                                                 </h6>
-                                                                <h3 class="head-title ptint-title text-info"
+                                                                <h5 class="head-title ptint-title text-info"
                                                                     style="width: 100%;margin-top:10px;">
                                                                     <i class="fa fa-bar-chart"></i>
                                                                     <small> Accounting Balance Report</small>
-                                                                </h3>
+                                                                </h5>
                                                                 <div class="clearfix">&nbsp;</div>
                                                                 {{-- <div>Academic Year: {{ old('year', $year) }}</div> --}}
                                                             </span>
@@ -111,8 +111,8 @@
                                         </div>
                                     </div>
                                     <div class="row mt-3">
-                                        <div class="table-responsive p-3 pt-1">
-                                            <table class="table table-striped datatable" style="width:100%">
+                                        <div class="p-3 pt-1">
+                                            <table class="table table-striped" style="width:100%">
                                                 <thead>
                                                     <tr>
                                                         <th width="5%" class="text-center">SL</th>

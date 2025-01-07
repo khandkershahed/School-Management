@@ -1,4 +1,10 @@
 <x-admin-app-layout :title="'Invoice Report'">
+    <style>
+        th,
+        td {
+            font-size: 0.8rem;
+        }
+    </style>
     <div class="app-content">
         <div class="container-fluid mt-3">
             <div class="row">
@@ -78,18 +84,19 @@
                                                             <td style="width:80%;  text-align:center;">
                                                                 <span style="text-align: center ;">
                                                                     <div class="clearfix">&nbsp;</div>
-                                                                    <h3 class="text-muted" style="margin-top:10px;">
-                                                                        <strong>Shamsul Hoque Khan School and College</strong>
-                                                                    </h3>
+                                                                    <h4 class="text-muted" style="margin-top:10px;">
+                                                                        <strong>Shamsul Hoque Khan School and
+                                                                            College</strong>
+                                                                    </h4>
                                                                     <h6 class="text-muted" style="margin-top:10px;">
                                                                         Paradogair, Matuail, Demra
                                                                         Dhaka-1362
                                                                     </h6>
-                                                                    <h3 class="head-title ptint-title text-info"
+                                                                    <h5 class="head-title ptint-title text-info"
                                                                         style="width: 100%;margin-top:10px;">
                                                                         <i class="fa fa-bar-chart"></i>
                                                                         <small> Student Invoice Report</small>
-                                                                    </h3>
+                                                                    </h5>
                                                                     <div class="clearfix">&nbsp;</div>
                                                                     {{-- <div>Academic Year: {{ old('year', $year) }}</div> --}}
                                                                 </span>
@@ -102,54 +109,55 @@
                                         </div>
                                         <!-- Invoices Table -->
                                         <div class="row mt-3">
-                                            <div class="table-responsive p-3 pt-1">
-                                                <table class="table table-striped" style="width:100%">
-                                                    <thead>
+                                            <table class="table table-striped" style="width:100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="font-size: 0.7rem;" width="2%" class="text-center">SL</th>
+                                                        <th style="font-size: 0.7rem;" width="15%" class="text-center">Academic Year</th>
+                                                        <th style="font-size: 0.7rem;" width="22%" class="text-center">Student</th>
+                                                        <th style="font-size: 0.7rem;" width="15%" class="text-center">Student ID</th>
+                                                        <th style="font-size: 0.7rem;" width="9%" class="text-center">Class</th>
+                                                        <th style="font-size: 0.7rem;" width="13%" class="text-center">Net Amount</th>
+                                                        <th style="font-size: 0.7rem;" width="12%" class="text-center">Paid</th>
+                                                        <th style="font-size: 0.7rem;" width="12%" class="text-center">Balance</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($invoices as $invoice)
                                                         <tr>
-                                                            <th width="5%" class="text-center">SL</th>
-                                                            <th width="15%" class="text-center">Academic Year</th>
-                                                            <th width="15%" class="text-center">Student</th>
-                                                            <th width="12%" class="text-center">Class</th>
-                                                            <th width="12%" class="text-center">Net Amount</th>
-                                                            <th width="12%" class="text-center">Paid</th>
-                                                            <th width="12%" class="text-center">Balance</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach ($invoices as $invoice)
-                                                            <tr>
-                                                                <td class="text-center">{{ $loop->iteration }}</td>
-                                                                <td class="text-center">
-                                                                    {{ $invoice->year . ' - ' . $invoice->month }}
-                                                                </td>
-                                                                <td class="text-center">
-                                                                    {{ optional($invoice->student)->name }}</td>
-                                                                <td class="text-center">
-                                                                    {{ optional($invoice->student)->class }}
-                                                                </td>
-                                                                <td class="text-center">
-                                                                    {{ number_format($invoice->total_amount, 2) }}</td>
-                                                                <td class="text-center">
-                                                                    {{ number_format($invoice->total_amount, 2) }}</td>
-                                                                {{-- <td class="text-center">{{ number_format($invoice->paid_amount ?? 0, 2) }}</td> --}}
-                                                                <td class="text-center">
-                                                                    {{ number_format($invoice->total_amount - ($invoice->paid_amount ?? 0), 2) }}
-                                                                </td>
-                                                            </tr>
-                                                        @endforeach
-                                                    </tbody>
-                                                    <tfoot>
-                                                        <tr>
-                                                            <td colspan="6" style="text-align:end"><strong>Total
-                                                                    Balance:
-                                                                </strong></td>
-                                                            <td class="text-center">
-                                                                {{ number_format($total_balance, 2) }}
+                                                            <td style="font-size: 0.7rem;" class="text-center">{{ $loop->iteration }}</td>
+                                                            <td style="font-size: 0.7rem;" class="text-center">
+                                                                {{ $invoice->year . ' - ' . $invoice->month }}
+                                                            </td>
+                                                            <td style="font-size: 0.7rem;" class="text-center">
+                                                                {{ optional($invoice->student)->name }}</td>
+                                                            <td style="font-size: 0.7rem;" class="text-center">
+                                                                {{ optional($invoice->student)->student_id }}</td>
+                                                            <td style="font-size: 0.7rem;" class="text-center">
+                                                                {{ optional($invoice->student)->class }}
+                                                            </td>
+                                                            <td style="font-size: 0.7rem;" class="text-center">
+                                                                {{ number_format($invoice->total_amount, 2) }}</td>
+                                                            <td style="font-size: 0.7rem;" class="text-center">
+                                                                {{ number_format($invoice->total_amount, 2) }}</td>
+                                                            {{-- <td style="font-size: 0.7rem;" class="text-center">{{ number_format($invoice->paid_amount ?? 0, 2) }}</td> --}}
+                                                            <td style="font-size: 0.7rem;" class="text-center">
+                                                                {{ number_format($invoice->total_amount - ($invoice->paid_amount ?? 0), 2) }}
                                                             </td>
                                                         </tr>
-                                                    </tfoot>
-                                                </table>
-                                            </div>
+                                                    @endforeach
+                                                </tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                        <td colspan="7" style="text-align:end"><strong>Total
+                                                                Balance:
+                                                            </strong></td>
+                                                        <td style="font-size: 0.8rem;" class="text-center">
+                                                            {{ number_format($total_balance, 2) }}
+                                                        </td>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
                                         </div>
                                     </div>
 
@@ -165,8 +173,8 @@
 
                             <div class="row mt-3">
                                 <div class="col-4 offset-4 text-center">
-                                    <button class="btn btn-primary" onclick="printInvoice();" style="width: 150px;"><i
-                                            class="fa fa-print"></i> Print</button>
+                                    <button class="btn btn-primary" onclick="printInvoice();"
+                                        style="width: 150px;"><i class="fa fa-print"></i> Print</button>
                                 </div>
                             </div>
                         </div>

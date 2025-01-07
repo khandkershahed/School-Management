@@ -132,7 +132,7 @@ class ReportController extends Controller
             foreach ($fees as $fee) {
                 $paidFee = $student->studentFees()
                     ->where('fee_id', $fee->id)
-                    ->where('status', 'Paid')
+                    ->where('status', 'paid')
                     ->first();
 
                 // If the fee has not been paid, add it to the due fees
@@ -144,7 +144,7 @@ class ReportController extends Controller
                                 'fee_id' => $fee->id, // store fee_id to check duplicates
                                 'fee' => $fee,
                                 'amount' => $fee->amount,
-                                'status' => 'Unpaid',
+                                'status' => 'unpaid',
                             ];
                         }
                     }
@@ -156,7 +156,7 @@ class ReportController extends Controller
                 if ($fee->fee_type === 'yearly') {
                     $paidFee = $student->studentFees()
                         ->where('fee_id', $fee->id)
-                        ->where('status', 'Paid')
+                        ->where('status', 'paid')
                         ->first();
 
                     // If the fee has not been paid, add it to the due fees
@@ -167,7 +167,7 @@ class ReportController extends Controller
                                 'fee_id' => $fee->id, // store fee_id to check duplicates
                                 'fee' => $fee,
                                 'amount' => $fee->amount,
-                                'status' => 'Unpaid',
+                                'status' => 'unpaid',
                             ];
                         }
                     }
@@ -250,7 +250,7 @@ class ReportController extends Controller
             Log::error("Error in Accounting Balance report query: " . $e->getMessage());
 
             // Return a user-friendly message and redirect back
-            return redirect()->back()->with('error', 'An error occurred while generating the report. Please try again later.');
+            return redirect()->back()->with('error', $e->getMessage());
         }
 
         return view('admin.pages.report.accountingBalance', compact('incomes', 'totalAmount', 'group_by', 'year', 'from_date', 'to_date'));

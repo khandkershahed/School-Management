@@ -49,8 +49,11 @@
     <link rel="stylesheet" href="{{ asset('admin/assets/css/adminlte.css') }}">
     <link rel="stylesheet" href="{{ asset('admin/assets/css/custom.css') }}">
     <link rel="stylesheet" href="{{ asset('admin/assets/css/jquerydatatable.css') }}">
-    {{-- <link rel="stylesheet" href="{{ asset('admin/assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}"> --}}
-    {{-- <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css"> --}}
+    <style>
+        th{
+            font-size: 0.9rem;
+        }
+    </style>
 </head>
 
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary" onload="myFunction()">

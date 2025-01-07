@@ -19,9 +19,9 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->decimal('amount', 10, 2);
             $table->string('medium');
-            $table->enum('fee_type', ['monthly', 'yearly'])->default('monthly');  // Monthly or Yearly
+            $table->enum('fee_type', ['monthly', 'yearly', 'recurring'])->default('yearly')->nullable();  // Monthly or Yearly
             $table->string('status');
-            $table->timestamps(); 
+            $table->timestamps();
         });
         // $table->foreignId('medium_id')->nullable()->constrained('education_media')->onDelete('set null')->onUpdate('no action');
         // $table->foreignId('class_id')->nullable()->constrained('student_classes')->onDelete('set null')->onUpdate('no action');

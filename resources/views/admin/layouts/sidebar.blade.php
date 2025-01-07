@@ -63,11 +63,7 @@
                             'subMenu' => [
                                 [
                                     'title' => 'All Fees',
-                                    'routes' => [
-                                        'admin.fees.index',
-                                        'admin.fees.create',
-                                        'admin.fees.edit',
-                                    ],
+                                    'routes' => ['admin.fees.index', 'admin.fees.create', 'admin.fees.edit'],
                                     'route' => 'admin.fees.index',
                                 ],
                                 [
@@ -118,43 +114,67 @@
                                 // ],
                                 [
                                     'title' => 'Student Invoice Report',
-                                    'routes' => [
-                                        'admin.report.studentinvoice',
-                                    ],
+                                    'routes' => ['admin.report.studentinvoice'],
                                     'route' => 'admin.report.studentinvoice',
                                 ],
                                 [
                                     'title' => 'Accounting Balance Report',
-                                    'routes' => [
-                                        'admin.report.accountingbalance',
-                                    ],
+                                    'routes' => ['admin.report.accountingbalance'],
                                     'route' => 'admin.report.accountingbalance',
                                 ],
                                 [
                                     'title' => 'Due Fee Report',
-                                    'routes' => [
-                                        'admin.report.duefee',
-                                    ],
+                                    'routes' => ['admin.report.duefee'],
                                     'route' => 'admin.report.duefee',
                                 ],
                                 [
                                     'title' => 'Custom Report',
-                                    'routes' => [
-                                        'admin.report.customreport',
-                                    ],
+                                    'routes' => ['admin.report.customreport'],
                                     'route' => 'admin.report.customreport',
                                 ],
                                 [
                                     'title' => 'Income Report',
-                                    'routes' => [
-                                        'admin.report.income',
-                                    ],
+                                    'routes' => ['admin.report.income'],
                                     'route' => 'admin.report.income',
                                 ],
-
                             ],
                         ],
-
+                        [
+                            'title' => 'Staff Management',
+                            'icon' => 'fa-solid fa-users text-info',
+                            'routes' => [
+                                'admin.staff.index',
+                                'admin.staff.create',
+                                'admin.staff.edit',
+                                'admin.role.index',
+                                'admin.role.create',
+                                'admin.role.edit',
+                                'admin.permission.index',
+                                'admin.permission.create',
+                                'admin.permission.edit',
+                            ],
+                            'subMenu' => [
+                                [
+                                    'title' => 'All Staffs',
+                                    'routes' => ['admin.staff.index', 'admin.staff.create', 'admin.staff.edit'],
+                                    'route' => 'admin.staff.index',
+                                ],
+                                [
+                                    'title' => 'Role Manage',
+                                    'routes' => ['admin.role.index', 'admin.role.create', 'admin.role.edit'],
+                                    'route' => 'admin.role.index',
+                                ],
+                                [
+                                    'title' => 'Permissions',
+                                    'routes' => [
+                                        'admin.permission.index',
+                                        'admin.permission.create',
+                                        'admin.permission.edit',
+                                    ],
+                                    'route' => 'admin.permission.index',
+                                ],
+                            ],
+                        ],
                         [
                             'title' => 'Setup',
                             'icon' => 'fa-solid fa-gear text-info',
@@ -170,22 +190,12 @@
                                     'routes' => ['admin.settings.index'],
                                     'route' => 'admin.settings.index',
                                 ],
-                                // [
-                                //     'title' => 'Email Setting',
-                                //     'routes' => ['admin.email-settings.index'],
-                                //     'route' => 'admin.email-settings.index',
-                                // ],
 
                                 [
                                     'title' => 'Database Backup',
                                     'routes' => ['admin.database.backup'],
                                     'route' => 'admin.database.backup',
                                 ],
-                                // [
-                                //     'title' => 'Profile Setting',
-                                //     // 'routes' => ['admin.email-settings.index'],
-                                //     // 'route' => 'admin.email-settings.index',
-                                // ],
                             ],
                         ],
                     ];
