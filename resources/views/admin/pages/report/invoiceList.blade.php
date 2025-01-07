@@ -27,7 +27,7 @@
                                             <th width="10%" class="text-center">Month </th>
                                             <th width="10%" class="text-center">Amount</th>
                                             <th width="10%" class="text-center">Status</th>
-                                            <th width="10%" class="text-end">Action</th>
+                                            <th width="10%" class="text-end">Download</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -51,11 +51,16 @@
                                                 </td>
                                                 <td class="text-end">
 
-                                                    <a href="#"
+                                                    <a href="{{ asset('storage/'.$invoice->invoice) }}" download=""
+                                                        class="btn btn-sm btn-warning text-white toltip mb-2"
+                                                        data-tooltip="Download Invoice">
+                                                        <i class="fa-solid fa-file-download"></i>
+                                                    </a>
+                                                    {{-- <a href="#"
                                                         class="btn btn-sm btn-warning text-white toltip mb-2"
                                                         data-tooltip="View">
                                                         <i class="fa-solid fa-expand"></i>
-                                                    </a>
+                                                    </a> --}}
 
                                                 </td>
                                             </tr>

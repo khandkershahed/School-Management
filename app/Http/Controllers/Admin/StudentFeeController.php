@@ -372,7 +372,6 @@ class StudentFeeController extends Controller
     {
         // Start a transaction to ensure atomicity
         DB::beginTransaction();
-
         try {
             // Validate the incoming request
             $request->validate([
@@ -389,11 +388,28 @@ class StudentFeeController extends Controller
             // Get the student
             $student = User::findOrFail($request->student_id);
 
-            // Generate a unique invoice number
-            $invoiceNumber = $student->student_id . '-' . time();
+            // Generate the date portion of the invoice number (YYYYMMDD)
+            $currentDate = Carbon::now();
+            $datePortion = $currentDate->format('Ymd'); // Format: 20250107
+
+            // Get the latest invoice number for today (if any)
+            $latestInvoice = StudentInvoice::whereDate('generated_at', $currentDate->toDateString())
+                ->orderBy('invoice_number', 'desc')
+                ->first();
+
+            // Determine the next sequential number
+            $nextNumber = 1; // Default to 1 if no invoices were generated today
+            if ($latestInvoice) {
+                // Increment the last invoice number by 1
+                $nextNumber = (int)substr($latestInvoice->invoice_number, -3) + 1;
+            }
+
+            // Format the invoice number as YYYYMMDDNumber (e.g., 202501071, 202501072)
+            $invoiceNumber = $datePortion . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
 
             // Store the student fee entries and calculate total amount
             $totalAmount = 0;
+            $feeDetails = []; // Collect fee details to pass to the PDF
 
             foreach ($request->fee_id as $index => $feeId) {
                 $fee = Fee::findOrFail($feeId);
@@ -404,6 +420,13 @@ class StudentFeeController extends Controller
                 // Calculate the final amount after applying any waivers
                 $finalAmount = $fee->amount - $waiverAmount;
                 $finalAmount = max(0, $finalAmount); // Ensure the amount doesn't go negative
+
+                // Add the fee details to the collection for PDF
+                $feeDetails[] = [
+                    'fee' => $fee,
+                    'waiverAmount' => $waiverAmount,
+                    'finalAmount' => $finalAmount
+                ];
 
                 // Handle Monthly Fees
                 if ($fee->fee_type === 'monthly') {
@@ -446,24 +469,26 @@ class StudentFeeController extends Controller
 
             // Prepare receipt data
             $receiptData = [
-                'student' => $student,
-                'fees' => Fee::whereIn('id', $request->fee_id)->get(),
-                'totalAmount' => $totalAmount,
-                'year' => $request->year,
-                'month' => $request->month,
+                'student'         => $student,
+                'feeDetails'      => $feeDetails,  // Pass fee details with waiver amount to PDF
+                'totalAmount'     => $totalAmount,
+                'invoiceNumber'   => $invoiceNumber,
+                'year'            => $request->year,
+                'month'           => $request->month,
                 'amount_in_words' => SpellNumber::value($totalAmount)->locale('en')->toLetters(),
             ];
 
-            // Generate PDF using Dompdf (adjust this as per your method)
-            $pdf = $this->generateReceiptPDF($receiptData);
+            // Generate PDFs using your PDF methods
+            $studentpdf = $this->generateStudentReceiptPDF($receiptData);
+            $officepdf = $this->generateOfficeReceiptPDF($receiptData);
 
             // Generate file paths for storing the PDFs
             $studentPdfPath = 'receipts/student_copy_' . $student->id . '_' . time() . '.pdf';
             $officePdfPath = 'receipts/office_copy_' . $student->id . '_' . time() . '.pdf';
 
             // Save the PDF files to storage
-            Storage::disk('public')->put($studentPdfPath, $pdf->output());
-            Storage::disk('public')->put($officePdfPath, $pdf->output());
+            Storage::disk('public')->put($studentPdfPath, $studentpdf->output());
+            Storage::disk('public')->put($officePdfPath, $officepdf->output());
 
             // Store the student invoice record in `student_invoices`
             StudentInvoice::create([
@@ -490,12 +515,11 @@ class StudentFeeController extends Controller
             // Commit the transaction after successful creation
             DB::commit();
 
-            // Return the generated PDF as a download response
-            return response()->stream(function () use ($pdf) {
-                echo $pdf->output();
-            }, 200, [
-                "Content-Type" => "application/pdf",
-                "Content-Disposition" => "inline; filename=receipt.pdf",
+            // Return URLs for the generated PDFs
+            return response()->json([
+                'success' => true,
+                'studentPdfUrl' => Storage::url($studentPdfPath),
+                'officePdfUrl' => Storage::url($officePdfPath),
             ]);
         } catch (\Exception $e) {
             // Rollback the transaction if any error occurs
@@ -505,12 +529,15 @@ class StudentFeeController extends Controller
             Log::error('Error storing payment data: ', ['error' => $e->getMessage()]);
 
             // Return a generic error message
-            return redirect()->back()->with('error', 'There was an error processing the payment.');
+            return response()->json(['success' => false, 'message' => 'There was an error processing the payment.']);
         }
     }
 
 
-    public function generateReceiptPDF($data)
+
+
+
+    public function generateStudentReceiptPDF($data)
     {
         // Set up Dompdf options
         $options = new Options();
@@ -518,7 +545,26 @@ class StudentFeeController extends Controller
         $options->set('isPhpEnabled', true);
 
         // Load view to generate the PDF content
-        $pdf = Pdf::loadView('pdf.paymentReceipt', $data);
+        $pdf = Pdf::loadView('pdf.studentReceipt', $data);
+
+        // Set paper size to one-fourth of A4 paper (105mm x 148.5mm)
+        $pdf->setPaper('A4'); // Custom size (width, height)
+
+        // Render PDF (first pass)
+        $pdf->render();
+
+        // Return the generated PDF
+        return $pdf;
+    }
+    public function generateOfficeReceiptPDF($data)
+    {
+        // Set up Dompdf options
+        $options = new Options();
+        $options->set('isHtml5ParserEnabled', true);
+        $options->set('isPhpEnabled', true);
+
+        // Load view to generate the PDF content
+        $pdf = Pdf::loadView('pdf.officeReceipt', $data);
 
         // Set paper size to one-fourth of A4 paper (105mm x 148.5mm)
         $pdf->setPaper('A4'); // Custom size (width, height)
@@ -740,37 +786,40 @@ class StudentFeeController extends Controller
 
             // Regular expression to match "XXX-YYYYYYYYY" format (3 letters, dash, and digits)
             $pattern = '/^[A-Za-z]{3}-\d+$/';
+            // dd($studentId);
             if (preg_match($pattern, $studentId)) {
-                $query->where('student_id', $studentId);
-            } elseif (is_numeric($studentId) && strlen($studentId) == 9) {
-                // The input matches the second format (just digits, e.g., 202511211)
-                $query->where('student_id', 'like', '%' . $studentId);
+                $student = User::where('student_id', $studentId)->first();
+            } elseif (is_numeric($studentId)) {
+                $student = User::where('student_id', 'like', '%' . $studentId)->first();
             } else {
-                // Optionally handle the case for invalid student_id formats here
-                return response()->json(['message' => 'Invalid Student ID format'], 400);
+                // Invalid format, return a 400 response
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Invalid student_id format'
+                ], 400);
             }
+        } else {
+
+            // Filter by other fields (name, roll, medium, class)
+            if ($request->has('name') && !empty($request->name)) {
+                $query->where('name', 'like', '%' . $request->name . '%');
+            }
+
+            if ($request->has('roll') && $request->roll !== '') {
+                $query->where('roll', $request->roll);
+            }
+
+            if ($request->has('medium') && $request->medium !== '') {
+                $query->where('medium', $request->medium);
+            }
+
+            if ($request->has('class') && $request->class !== '') {
+                $query->whereJsonContains('class', $request->class);
+            }
+
+            // Execute the query to find the student (first or null)
+            $student = $query->first();
         }
-
-        // Filter by other fields (name, roll, medium, class)
-        if ($request->has('name') && !empty($request->name)) {
-            $query->orWhere('name', 'like', '%' . $request->name . '%');
-        }
-
-        if ($request->has('roll') && $request->roll !== '') {
-            $query->orWhere('roll', $request->roll);
-        }
-
-        if ($request->has('medium') && $request->medium !== '') {
-            $query->orWhere('medium', $request->medium);
-        }
-
-        if ($request->has('class') && $request->class !== '') {
-            $query->orWhereJsonContains('class', $request->class);
-        }
-
-        // Execute the query to find the student (first or null)
-        $student = $query->first();
-
         if (!$student) {
             // If no student is found, return a special message
             return response()->json(['error' => 'Student not found']);

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payment Receipt</title>
+    <title>Payment Receipt(Student Copy)</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -103,7 +103,7 @@
                     <h1>Shamsul Hoque Khan School and College</h1>
                     <p>Paradogair, Matuail, Demra Dhaka -1362</p>
                     <p>Email: info.shksc@gmail.com | Website: www.shksc.edu.bd/</p>
-                    <h2>PAYMENT RECEIPT</h2>
+                    <h2>PAYMENT RECEIPT (STUDENT COPY)</h2>
                 </td>
             </tr>
         </table>

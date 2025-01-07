@@ -105,15 +105,17 @@
                                 'admin.report.studentinvoice',
                                 'admin.report.income',
                                 'admin.report.duefee',
+                                'admin.report.accountingbalance',
+                                'admin.report.customreport',
                             ],
                             'subMenu' => [
-                                [
-                                    'title' => 'Report Dashboard',
-                                    'routes' => [
-                                        'admin.fee-reports',
-                                    ],
-                                    'route' => 'admin.fee-reports',
-                                ],
+                                // [
+                                //     'title' => 'Report Dashboard',
+                                //     'routes' => [
+                                //         'admin.fee-reports',
+                                //     ],
+                                //     'route' => 'admin.fee-reports',
+                                // ],
                                 [
                                     'title' => 'Student Invoice Report',
                                     'routes' => [
@@ -124,9 +126,9 @@
                                 [
                                     'title' => 'Accounting Balance Report',
                                     'routes' => [
-                                        'admin.fee-reports',
+                                        'admin.report.accountingbalance',
                                     ],
-                                    'route' => 'admin.fee-reports',
+                                    'route' => 'admin.report.accountingbalance',
                                 ],
                                 [
                                     'title' => 'Due Fee Report',
@@ -138,9 +140,9 @@
                                 [
                                     'title' => 'Custom Report',
                                     'routes' => [
-                                        'admin.fee-reports',
+                                        'admin.report.customreport',
                                     ],
-                                    'route' => 'admin.fee-reports',
+                                    'route' => 'admin.report.customreport',
                                 ],
                                 [
                                     'title' => 'Income Report',

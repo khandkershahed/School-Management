@@ -22,12 +22,12 @@ return new class extends Migration
             $table->enum('status', ['Paid', 'Unpaid'])->default('Unpaid')->nullable();
             $table->timestamp('paid_at')->nullable();
             $table->timestamps();
-        });
+        }); 
     }
 
     /**
      * Reverse the migrations.
-     */ 
+     */
     public function down(): void
     {
         Schema::dropIfExists('student_fees');

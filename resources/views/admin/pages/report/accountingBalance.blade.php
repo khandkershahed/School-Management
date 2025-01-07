@@ -1,4 +1,4 @@
-<x-admin-app-layout :title="'Income Report'">
+<x-admin-app-layout :title="'Accounting Balance Report'">
     <div class="app-content">
         <div class="container-fluid mt-3">
             <div class="row">
@@ -7,12 +7,13 @@
                         <div class="card-header p-3 bg-custom text-white">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
-                                    <h4 class="mb-0">Income Report</h4>
+                                    <h4 class="mb-0">Accounting Balance Report</h4>
                                 </div>
                             </div>
                         </div>
                         <div class="card-body">
-                            <form action="{{ route('admin.report.income') }}" method="GET" class="filter-form">
+                            <form action="{{ route('admin.report.accountingbalance') }}" method="GET"
+                                class="filter-form">
                                 @csrf
                                 <div class="row">
                                     <div class="col-lg-3 col-md-4">
@@ -76,8 +77,10 @@
                                         <thead>
                                             <tr>
                                                 <th width="5%" class="text-center">SL</th>
-                                                <th width="12%" class="text-center">Group by Data</th>
-                                                <th width="12%" class="text-center">Amount</th>
+                                                <th width="23%" class="text-center">Group by Data</th>
+                                                <th width="23%" class="text-center">Income</th>
+                                                <th width="23%" class="text-center">Expense</th>
+                                                <th width="23%" class="text-center">Balance</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -91,24 +94,40 @@
                                                         <td class="text-center">{{ $income->month }}</td>
                                                     @elseif ($group_by == 'yearly')
                                                         <td class="text-center">{{ $income->year }}</td>
-                                                        @else
-                                                        <td>N/A</td>
+                                                    @else
+                                                        <td class="text-center">N/A</td>
                                                     @endif
 
-                                                    <td class="text-center">{{ number_format($income->amount, 2) }}</td>
+                                                    <td class="text-center">{{ number_format($income->amount, 2) }}
+                                                    </td>
+                                                    <td class="text-center">0</td>
+                                                    <td class="text-center">{{ number_format($income->amount, 2) }}
+                                                    </td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
                                         <tfoot>
                                             <tr>
-                                                <td colspan="2" style="text-align:end"><strong>Total Amount: </strong></td>
-                                                <td class="text-center">{{ number_format($totalAmount, 2) }}</td>
+                                                <td colspan="2" style="text-align:end"><strong>Total Amount:
+                                                    </strong></td>
+                                                <td class="text-center"><strong>{{ number_format($totalAmount, 2) }}
+                                                    </strong></td>
+                                                <td class="text-center"><strong>0 </strong></td>
+                                                <td class="text-center"><strong>{{ number_format($totalAmount, 2) }}
+                                                    </strong></td>
                                             </tr>
                                         </tfoot>
                                     </table>
                                 </div>
                             </div>
 
+                            <div class="row mt-3">
+                                <div class="col-12">
+                                    <div class="text-right font-weight-bold">
+                                        <p>Total Amount: {{ number_format($totalAmount, 2) }}</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

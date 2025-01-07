@@ -24,14 +24,14 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-lg-3 col-md-6">
+                                    <div class="col-lg-4 col-md-6">
                                         <div class="mb-3">
                                             <x-admin.label for="name" class="form-label">Name </x-admin.label>
                                             <x-admin.input type="text" :value="old('name')" id="name"
                                                 name="name" readonly></x-admin.input>
                                         </div>
                                     </div>
-                                    <div class="col-lg-3 col-md-6">
+                                    {{-- <div class="col-lg-3 col-md-6">
                                         <div class="mb-3">
                                             <x-admin.label for="medium_id" class="form-label">Medium</x-admin.label>
                                             <x-admin.select-option id="medium" name="medium"
@@ -67,16 +67,24 @@
                                                 </option>
                                             </x-admin.select-option>
                                         </div>
-                                    </div>
+                                    </div> --}}
 
-                                    <div class="col-lg-3 col-md-6">
+                                    <div class="col-lg-4 col-md-6">
                                         <div class="mb-3">
                                             <x-admin.label for="roll" class="form-label">Roll </x-admin.label>
                                             <x-admin.input type="text" :value="old('roll')" id="roll"
                                                 name="roll" required></x-admin.input>
                                         </div>
                                     </div>
-                                    <div class="col-lg-3 col-md-6">
+                                    <div class="col-lg-4 col-md-6">
+                                        <div class="mb-3">
+                                            <x-admin.label for="guardian_contact" class="form-label">Father's Number
+                                            </x-admin.label>
+                                            <x-admin.input type="number" :value="old('guardian_contact')" id="guardian_contact"
+                                                name="guardian_contact" required></x-admin.input>
+                                        </div>
+                                    </div>
+                                    {{-- <div class="col-lg-3 col-md-6">
                                         <div class="mb-3">
                                             <x-admin.label for="section" class="form-label">Section <span
                                                     class="text-danger">*</span></x-admin.label>
@@ -90,8 +98,8 @@
                                                 @endforeach
                                             </x-admin.select-option>
                                         </div>
-                                    </div>
-                                    <div class="col-lg-12">
+                                    </div> --}}
+                                    <div class="col-lg-12 mt-3">
                                         <div class="mb-3 d-flex justify-content-center">
                                             <a href="javascript:void(0)" id="checkBtn" class="btn btn-primary">Check
                                                 <i class="fa-regular fa-floppy-disk ps-2"></i>
@@ -143,40 +151,41 @@
                             // Populate fields with student data
                             document.getElementById('name').value = student.name;
                             document.getElementById('roll').value = student.roll;
+                            document.getElementById('guardian_contact').value = student.guardian_contact;
 
-                            // Enable and populate the 'medium' select
-                            const mediumSelect = document.getElementById('medium');
-                            mediumSelect.disabled = false;
-                            mediumSelect.value = student.medium;
+                            // // Enable and populate the 'medium' select
+                            // const mediumSelect = document.getElementById('medium');
+                            // mediumSelect.disabled = false;
+                            // mediumSelect.value = student.medium;
 
-                            // Enable and populate the 'class' select
-                            const classSelect = document.getElementById('class');
-                            classSelect.disabled = false;
-                            // Set selected values for multiple select if necessary
-                            classSelect.value = student.class;
+                            // // Enable and populate the 'class' select
+                            // const classSelect = document.getElementById('class');
+                            // classSelect.disabled = false;
+                            // // Set selected values for multiple select if necessary
+                            // classSelect.value = student.class;
 
-                            // Enable and populate the 'section' select
-                            const sectionSelect = document.getElementById('section');
-                            sectionSelect.disabled = false;
-                            sectionSelect.value = student.section;
+                            // // Enable and populate the 'section' select
+                            // const sectionSelect = document.getElementById('section');
+                            // sectionSelect.disabled = false;
+                            // sectionSelect.value = student.section;
 
-                            Array.from(mediumSelect.options).forEach(option => {
-                                if (option.value === student.medium) {
-                                    option.selected = true;
-                                }
-                            });
+                            // Array.from(mediumSelect.options).forEach(option => {
+                            //     if (option.value === student.medium) {
+                            //         option.selected = true;
+                            //     }
+                            // });
 
-                            Array.from(classSelect.options).forEach(option => {
-                                if (option.value === student.class) {
-                                    option.selected = true;
-                                }
-                            });
+                            // Array.from(classSelect.options).forEach(option => {
+                            //     if (option.value === student.class) {
+                            //         option.selected = true;
+                            //     }
+                            // });
 
-                            Array.from(sectionSelect.options).forEach(option => {
-                                if (option.value === student.section) {
-                                    option.selected = true;
-                                }
-                            });
+                            // Array.from(sectionSelect.options).forEach(option => {
+                            //     if (option.value === student.section) {
+                            //         option.selected = true;
+                            //     }
+                            // });
 
                         } else {
                             alert(data.message);
@@ -207,22 +216,33 @@
 
                         // Check if the checkbox is checked
                         if ($(this).prop("checked")) {
-                            // console.log("Checkbox is checked for fee ID: " + feeId); // Debugging
                             monthSelection.show(); // Show the months div if the checkbox is checked
                         } else {
-                            // console.log("Checkbox is unchecked for fee ID: " + feeId); // Debugging
                             monthSelection.hide(); // Hide the months div if the checkbox is unchecked
                         }
+
+                        // Add the monthly fee amount to the selected fees array
+                        selectedFees.push({
+                            name: feeName,
+                            amount: feeAmount,
+                            feeId: feeId,
+                            type: feeType
+                        });
+
+                        // Add the fee amount to the total
+                        totalAmount += feeAmount;
+
+                    } else {
+                        // For non-monthly fees, add the fee amount to the selected fees array and total immediately
+                        selectedFees.push({
+                            name: feeName,
+                            amount: feeAmount,
+                            feeId: feeId,
+                            type: feeType
+                        });
+
+                        totalAmount += feeAmount;
                     }
-
-                    // Add this fee to the selected fees array
-                    selectedFees.push({
-                        name: feeName,
-                        amount: feeAmount
-                    });
-
-                    // Add the fee amount to the total
-                    totalAmount += feeAmount;
                 });
 
                 // Generate the HTML for the Pay Slip
@@ -235,21 +255,45 @@
                     // Start a no-border table to align names and amounts
                     paySlipHtml += '<table class="table table-borderless">';
                     selectedFees.forEach(function(fee) {
-                        paySlipHtml += `
-                        <tr>
-                            <td style="text-align: left;">${fee.name}</td>
-                            <td style="text-align: right;">${fee.amount}</td>
-                        </tr>
-                    `;
+                        // If the fee is a monthly fee, show the months selection
+                        if (fee.type === 'monthly') {
+                            let monthSelection = $('#month-selection-' + fee.feeId);
+
+                            // Only show the selected months (if any)
+                            let selectedMonths = [];
+                            monthSelection.find('input:checked').each(function() {
+                                selectedMonths.push($(this).next('label').text().trim());
+                            });
+
+                            paySlipHtml += `
+                <tr>
+                    <td style="text-align: left;">${fee.name}</td>
+                    <td style="text-align: right;">${fee.amount}</td>
+                </tr>`;
+
+                            if (selectedMonths.length > 0) {
+                                paySlipHtml += `
+                    <tr>
+                        <td colspan="2" style="text-align: left; padding-left: 20px;"><strong>Selected Months:</strong> ${selectedMonths.join(', ')}</td>
+                    </tr>`;
+                            }
+                        } else {
+                            // For non-monthly fees, just display the name and amount
+                            paySlipHtml += `
+                <tr>
+                    <td style="text-align: left;">${fee.name}</td>
+                    <td style="text-align: right;">${fee.amount}</td>
+                </tr>`;
+                        }
                     });
 
                     // Add total amount row at the bottom
                     paySlipHtml += `
-                    <tr style="border-top: 1px solid black;">
-                        <td style="text-align: right;"><strong>Total</strong></td>
-                        <td style="text-align: right;"><strong>${totalAmount}</strong></td>
-                    </tr> </div></div>
-                `;
+                        <tr style="border-top: 1px solid black;">
+                            <td style="text-align: right;"><strong>Total</strong></td>
+                            <td style="text-align: right;"><strong>${totalAmount}</strong></td>
+                        </tr> </div></div>
+                        `;
 
                     paySlipHtml += '</table>';
                 } else {
@@ -262,8 +306,6 @@
                 $('.amount').val(totalAmount); // Update the hidden amount input
             }
         </script>
-
-
 
         <script>
             $(document).ready(function() {
@@ -299,6 +341,69 @@
                         alert('Error fetching data');
                     }
                 });
+            }
+        </script>
+        <script>
+            function confirmPayment(event) {
+                event.preventDefault(); // Prevent the form from submitting immediately
+
+                // Get the form and action URL
+                var form = document.getElementById("paymentForm");
+                var payURL = form.getAttribute("action");
+
+                // Show the SweetAlert confirmation
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "You won't be able to revert this!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Yes, Pay Now!",
+                    cancelButtonText: "No, cancel!",
+                    buttonsStyling: false,
+                    customClass: {
+                        confirmButton: "btn btn-danger",
+                        cancelButton: "btn btn-success",
+                    },
+                }).then(function(result) {
+                    if (result.isConfirmed) {
+                        // If confirmed, send the form via AJAX
+                        var formData = new FormData(form); // Gather the form data
+                        fetch(payURL, {
+                                method: 'POST',
+                                body: formData,
+                                headers: {
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                                        'content')
+                                },
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    Swal.fire("Paid!", "Your payment has been processed successfully.", "success")
+                                        .then(() => {
+                                            // Trigger both PDF downloads
+                                            downloadFile(data.studentPdfUrl, "student_receipt.pdf");
+                                            downloadFile(data.officePdfUrl, "office_receipt.pdf");
+                                        });
+                                } else {
+                                    Swal.fire("Error!", "There was an issue with your payment.", "error");
+                                }
+                            })
+                            .catch(error => {
+                                Swal.fire("Error!", "An error occurred while processing the payment.", "error");
+                            });
+                    } else {
+                        Swal.fire("Cancelled", "Your payment has been cancelled :)", "error");
+                    }
+                });
+            }
+
+            // Function to trigger file download
+            function downloadFile(url, filename) {
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = filename;
+                a.click();
             }
         </script>
     @endpush

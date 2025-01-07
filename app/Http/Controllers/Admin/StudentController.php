@@ -286,9 +286,9 @@ class StudentController extends Controller
 
         $pattern = '/^[A-Za-z]{3}-\d+$/';
         if (preg_match($pattern, $studentId)) {
-            $student = User::where('student_id', $studentId)->first();
-        } elseif (is_numeric($studentId) && strlen($studentId) == 9) {
-            $student = User::where('student_id', 'like', '%' . $studentId)->first();
+            $student = User::where('student_id', $studentId)->select('id','student_id','roll','guardian_contact','name')->first();
+        } elseif (is_numeric($studentId)) {
+            $student = User::where('student_id', 'like', '%' . $studentId)->select('id','student_id','roll','guardian_contact','name')->first();
         } else {
             // Invalid format, return a 400 response
             return response()->json([

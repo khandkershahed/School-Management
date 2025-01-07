@@ -166,6 +166,8 @@ Route::middleware('auth:admin')->name('admin.')->group(function () {
     Route::get('report/studentdue', [ReportController::class, 'studentDue'])->name('report.studentdue');
     Route::get('report/studentinvoice', [ReportController::class, 'studentInvoice'])->name('report.studentinvoice');
     Route::get('report/income', [ReportController::class, 'income'])->name('report.income');
+    Route::get('report/accounting-balance', [ReportController::class, 'accountingBalance'])->name('report.accountingbalance');
+    Route::get('report/customreport', [ReportController::class, 'customReport'])->name('report.customreport');
 
 
 

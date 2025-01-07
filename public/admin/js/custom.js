@@ -134,6 +134,8 @@ $(document).on("click", ".delete", function (e) {
     });
 });
 
+
+
 // --------------------------------
 // Delete Account with reload page
 $(document).on("click", ".delete-account", async function (e) {

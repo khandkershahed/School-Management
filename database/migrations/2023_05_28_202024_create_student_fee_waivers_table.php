@@ -9,7 +9,7 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void 
+    public function up(): void
     {
         Schema::create('student_fee_waivers', function (Blueprint $table) {
             $table->id();
@@ -18,7 +18,7 @@ return new class extends Migration
             $table->decimal('amount', 10, 2);
             $table->string('status')->nullable();
             $table->foreignId('added_by')->nullable()->constrained('admins')->onDelete('set null')->onUpdate('no action');
-            $table->timestamps();
+            $table->timestamps(); 
         });
     }
 

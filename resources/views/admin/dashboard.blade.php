@@ -5,7 +5,7 @@
                 <div class="col-lg-3 col-6">
                     <div class="small-box py-3">
                         <div class="inner">
-                            <h3>{{ $total_student }}</h3>
+                            <h4>{{ $total_student }}</h4>
                             <p>Total Students</p>
                         </div>
                         <svg class="small-box-icon" fill="currentColor" viewBox="0 0 24 24"
@@ -19,7 +19,7 @@
                 <div class="col-lg-3 col-6">
                     <div class="small-box py-3">
                         <div class="inner">
-                            <h3>{{ $currentMonthIncome }} Taka</h3>
+                            <h5>{{ $currentMonthIncome }} Taka</h5>
                             <p>This Month Income</p>
                         </div>
                         <svg class="small-box-icon" fill="currentColor" viewBox="0 0 24 24"
@@ -33,7 +33,7 @@
                 <div class="col-lg-3 col-6">
                     <div class="small-box py-3">
                         <div class="inner">
-                            <h3>{{ $currentYearIncome }} Taka</h3>
+                            <h5>{{ $currentYearIncome }} Taka</h5>
                             <p>This Year Income</p>
                         </div>
                         <svg class="small-box-icon" fill="currentColor" viewBox="0 0 24 24"
