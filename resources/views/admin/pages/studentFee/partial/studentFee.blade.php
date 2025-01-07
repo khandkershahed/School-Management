@@ -113,17 +113,19 @@
             @foreach ($dueFees as $fee)
                 @php
                     $waiver = isset($waiversLookup[$fee->id]) ? $waiversLookup[$fee->id] : null;
-                    $isMonthlyFee = $fee->fee_type === 'monthly'; // Check if the fee is a monthly fee
-                    $paidMonths = $fee->paidMonths($student->id); // Get paid months for the fee
+                    $isMonthlyFee = $fee->fee_type === 'monthly';
+                    $paidMonths = $fee->paidMonths($student->id);
                 @endphp
                 <div class="col-lg-4 col-md-6">
                     <div class="form-check ps-0 border bg-light-primary p-3 rounded-2 text-center text-info"
                         style="text-align: start !important;">
                         <label class="form-check-label mt-2" for="fee_id_{{ $fee->id }}">
-                            <input class="form-check-input ms-3 mt-0 fee-checkbox" type="checkbox" name="fee_id[]"
-                                onchange="updatePaySlip()" value="{{ $fee->id }}" id="fee_id_{{ $fee->id }}"
-                                data-amount="{{ $waiver ? ($fee->amount - $waiver->amount) : $fee->amount }}"
-                                data-name="{{ $fee->name }}" data-type="{{ $fee->fee_type }}">
+                            @if ($isMonthlyFee == false)
+                                <input class="form-check-input ms-3 mt-0 fee-checkbox" type="checkbox" name="fee_id[]"
+                                    onchange="updatePaySlip()" value="{{ $fee->id }}" id="fee_id_{{ $fee->id }}"
+                                    data-amount="{{ $waiver ? $fee->amount - $waiver->amount : $fee->amount }}"
+                                    data-name="{{ $fee->name }}" data-type="{{ $fee->fee_type }}">
+                            @endif
                             <span class="ps-3">{{ $fee->name }} &nbsp; : &nbsp; &nbsp;
                                 {{ $fee->amount }}</span>
 
@@ -138,20 +140,23 @@
 
                     <!-- Monthly Fee Month Selection (Only shown for Monthly Fees) -->
                     @if ($isMonthlyFee)
-                        <div class="month-selection mt-2" id="month-selection-{{ $fee->id }}"
-                            style="display: none;">
-                            <label><strong>Select Months:</strong></label>
+                        <div class="month-selection mt-2" id="month-selection-{{ $fee->id }}">
+                            <p class="mb-2 text-center "><strong>Select Months:</strong></p>
                             <div class="row">
                                 @foreach (['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] as $index => $month)
                                     <div class="col-4 mb-2">
-                                        <div class="form-check">
-                                            <label class="form-check-label"
+                                        <div class="form-check ps-1">
+                                            <label class="form-check-label mt-2"
                                                 for="month_{{ $fee->id }}_{{ $index + 1 }}">
-                                                <input class="form-check-input me-1 mt-0 month-checkbox" type="checkbox"
-                                                    name="months[{{ $fee->id }}][]" value="{{ $index + 1 }}"
+                                                <input class="form-check-input ms-3 mt-0 fee-checkbox" type="checkbox"
+                                                    onchange="updatePaySlip()" name="months[{{ $fee->id }}][]"
+                                                    value="{{ $index + 1 }}"
                                                     id="month_{{ $fee->id }}_{{ $index + 1 }}"
+                                                    data-amount="{{ $waiver ? $fee->amount - $waiver->amount : $fee->amount }}"
+                                                    data-name="{{ $fee->name }}({{ $month }})"
+                                                    data-type="{{ $fee->fee_type }}"
                                                     @if (in_array($index + 1, $paidMonths)) disabled checked @endif>
-                                                {{ $month }}
+                                                <span class="ps-2 pt-0">{{ $month }}</span>
                                             </label>
                                         </div>
                                     </div>
@@ -159,6 +164,8 @@
                             </div>
                         </div>
                     @endif
+
+
                 </div>
             @endforeach
             <input type="hidden" name="amount" class="amount" value="0">
@@ -167,7 +174,8 @@
         <!-- Pay Now Button -->
         <div class="row">
             <div class="mb-3 d-flex justify-content-center">
-                <a href="javascript:void(0)" class="btn btn-success" onclick="confirmPayment(event)">{{ __('Pay Now') }}</a>
+                <a href="javascript:void(0)" class="btn btn-success"
+                    onclick="confirmPayment(event)">{{ __('Pay Now') }}</a>
                 {{-- <x-admin.button class="success payNow" >
                     {{ __('Pay Now') }}
                 </x-admin.button> --}}
