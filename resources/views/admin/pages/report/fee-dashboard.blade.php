@@ -164,7 +164,7 @@
                                         <x-admin.select-option class="form-control-solid" id="class"
                                                 name="class" :allowClear="true" required>
                                                 <option value=""></option>
-                                                <option value="nursery" @selected(request('class') == 'nursery')>Nursery</option>
+                                                <option value="0" @selected(request('class') == '0')>Nursery</option>
                                                 <option value="1" @selected(request('class') == '1')>One</option>
                                                 <option value="2" @selected(request('class') == '2')>Two</option>
                                                 <option value="3" @selected(request('class') == '3')>Three</option>

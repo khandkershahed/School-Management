@@ -106,7 +106,11 @@ class ReportController extends Controller
         $class = $request->input('class');
         $student_id = $request->input('student_id');
 
-        // Query the students based on the filter
+        // Initialize the result arrays
+        $dueMonthlyFees = [];
+        $dueYearlyFees = [];
+
+        // Query to get the students with optional filters
         $students = User::query()
             ->where('status', 'active') // Only active students
             ->when($class, function ($query) use ($class) {
@@ -115,43 +119,57 @@ class ReportController extends Controller
             ->when($student_id, function ($query) use ($student_id) {
                 return $query->where('id', $student_id); // Filter by student ID
             })
-            ->latest('id')
             ->get();
 
-        // Initialize arrays to store the due fees
-        $dueMonthlyFees = [];
-        $dueYearlyFees = [];
-
-        // Loop through each student to gather their due fees
+        // Iterate over each student to calculate the due fees
         foreach ($students as $student) {
-            // Get due monthly fees
-            $dueMonthlyFeesForStudent = $student->studentFees()
-                ->where('status', 'unpaid') // Only unpaid fees
-                ->whereHas('fee', function ($query) {
-                    $query->where('fee_type', 'monthly'); // Filter by monthly fees
-                })
+            // Get all fees based on the student's class and medium
+            $fees = Fee::whereJsonContains('class', $student->class)
+                ->where('medium', $student->medium)
                 ->get();
 
-            // Get due yearly fees
-            $dueYearlyFeesForStudent = $student->studentFees()
-                ->where('status', 'unpaid') // Only unpaid fees
-                ->whereHas('fee', function ($query) {
-                    $query->where('fee_type', 'yearly'); // Filter by yearly fees
-                })
-                ->get();
+            // Process monthly fees (Unpaid)
+            foreach ($fees as $fee) {
+                $paidFee = $student->studentFees()
+                    ->where('fee_id', $fee->id)
+                    ->where('status', 'Paid')
+                    ->first();
 
-            // Store the fees under each student if there are any due fees
-            if ($dueMonthlyFeesForStudent->isNotEmpty()) {
-                $dueMonthlyFees[$student->id] = $dueMonthlyFeesForStudent;
+                // If the fee has not been paid, add it to the due fees
+                if (!$paidFee) {
+                    $dueMonthlyFees[$student->id][] = [
+                        'fee' => $fee,
+                        'amount' => $fee->amount,
+                        'status' => 'Unpaid',
+                    ];
+                }
             }
-            if ($dueYearlyFeesForStudent->isNotEmpty()) {
-                $dueYearlyFees[$student->id] = $dueYearlyFeesForStudent;
+
+            // Process yearly fees (Unpaid)
+            foreach ($fees as $fee) {
+                if ($fee->fee_type === 'yearly') {
+                    $paidFee = $student->studentFees()
+                        ->where('fee_id', $fee->id)
+                        ->where('status', 'Paid')
+                        ->first();
+
+                    // If the fee has not been paid, add it to the due fees
+                    if (!$paidFee) {
+                        $dueYearlyFees[$student->id][] = [
+                            'fee' => $fee,
+                            'amount' => $fee->amount,
+                            'status' => 'Unpaid',
+                        ];
+                    }
+                }
             }
         }
 
-        // Return the view with the filtered data
+        // Return the view with the due fee data
         return view('admin.pages.report.dueFee', compact('students', 'dueMonthlyFees', 'dueYearlyFees', 'class', 'student_id'));
     }
+
+
 
 
     public function studentDue(Request $request)

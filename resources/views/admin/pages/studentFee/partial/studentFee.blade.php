@@ -141,7 +141,7 @@
                             <p class="mb-2 text-center"><strong>Select Months:</strong></p>
                             <div class="row">
                                 @foreach (['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] as $index => $month)
-                                    <div class="col-4 mb-2">
+                                    <div class="col-6 mb-2">
                                         <div class="form-check ps-1">
                                             <label class="form-check-label mt-2"
                                                 for="month_{{ $monthly_fee->id }}_{{ $index + 1 }}">
