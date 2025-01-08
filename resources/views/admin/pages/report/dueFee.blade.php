@@ -22,7 +22,7 @@
                                             <x-admin.select-option class="form-control-solid" id="class"
                                                 name="class" :allowClear="true">
                                                 <option value="">-- Select Class --</option>
-                                                @foreach(['nursery', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] as $classOption)
+                                                @foreach (['nursery', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] as $classOption)
                                                     <option value="{{ $classOption }}" @selected(old('class', $class) == $classOption)>
                                                         {{ ucfirst($classOption) }}
                                                     </option>
@@ -48,7 +48,8 @@
                                 </div>
                                 <div class="row my-3">
                                     <div class="col-4 offset-4 text-center">
-                                        <button type="submit" class="btn btn-primary" style="width: 150px;">Filter</button>
+                                        <button type="submit" class="btn btn-primary"
+                                            style="width: 150px;">Filter</button>
                                     </div>
                                 </div>
                             </form>
@@ -57,7 +58,8 @@
                                 <div style="padding-left:35px;padding-right:35px;">
                                     <div class="row">
                                         <div style="width:100%; padding:0px; margin:0px;">
-                                            <table style=" width:100%; background-color: #f0f3f5 !important; border-radius: 10px; margin-bottom: 20px; padding: 20px 30px;">
+                                            <table
+                                                style=" width:100%; background-color: #f0f3f5 !important; border-radius: 10px; margin-bottom: 20px; padding: 20px 30px;">
                                                 <tbody>
                                                     <tr>
                                                         <td style="width:10%;text-align:center;">
@@ -65,9 +67,21 @@
                                                                 alt="" height="80px" width="80px">
                                                         </td>
                                                         <td style="width:80%; text-align:center;">
-                                                            <h3 class="text-muted mb-3 pt-2"><strong>Shamsul Hoque Khan School and College</strong></h3>
-                                                            <h6 class="text-muted mb-2">Paradogair, Matuail, Demra, Dhaka-1362</h6>
-                                                            <h3 class="text-info mb-2 pb-2"><i class="fa fa-bar-chart"></i> Due Fee Report</h3>
+                                                            <div class="clearfix">&nbsp;</div>
+                                                            <h4 class="text-muted" style="margin-top:10px;">
+                                                                <strong>Shamsul Hoque Khan School and
+                                                                    College</strong>
+                                                            </h4>
+                                                            <h6 class="text-muted" style="margin-top:10px;">
+                                                                Paradogair, Matuail, Demra
+                                                                Dhaka-1362
+                                                            </h6>
+                                                            <h5 class="head-title ptint-title text-info"
+                                                                style="width: 100%;margin-top:10px;">
+                                                                <i class="fa fa-bar-chart"></i>
+                                                                <small> Student Invoice Report</small>
+                                                            </h5>
+                                                            <div class="clearfix">&nbsp;</div>
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -97,8 +111,11 @@
                                                             <td class="text-center">{{ $fee['fee']->name }}</td>
                                                             <td class="text-center">{{ $student->student_id }}</td>
                                                             <td class="text-center">{{ $student->name }}</td>
-                                                            <td class="text-center">{{ $fee['fee']->fee_type === 'monthly' ? $fee['fee']->month : 'Annual' }}</td>
-                                                            <td class="text-center">{{ number_format($fee['amount'], 2) }}</td>
+                                                            <td class="text-center">
+                                                                {{ $fee['fee']->fee_type === 'monthly' ? $fee['fee']->month : 'Annual' }}
+                                                            </td>
+                                                            <td class="text-center">
+                                                                {{ number_format($fee['amount'], 2) }}</td>
                                                             <td class="text-center">{{ $fee['status'] }}</td>
                                                         </tr>
                                                     @endforeach
@@ -110,8 +127,11 @@
                                                             <td class="text-center">{{ $fee['fee']->name }}</td>
                                                             <td class="text-center">{{ $student->student_id }}</td>
                                                             <td class="text-center">{{ $student->name }}</td>
-                                                            <td class="text-center">{{ $fee['fee']->fee_type === 'yearly' ? 'Annual' : '' }}</td>
-                                                            <td class="text-center">{{ number_format($fee['amount'], 2) }}</td>
+                                                            <td class="text-center">
+                                                                {{ $fee['fee']->fee_type === 'yearly' ? 'Annual' : '' }}
+                                                            </td>
+                                                            <td class="text-center">
+                                                                {{ number_format($fee['amount'], 2) }}</td>
                                                             <td class="text-center">{{ $fee['status'] }}</td>
                                                         </tr>
                                                     @endforeach

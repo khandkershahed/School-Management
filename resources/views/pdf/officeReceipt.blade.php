@@ -126,8 +126,8 @@
                 <td><strong>Roll:</strong> {{ $student->roll }}</td>
             </tr>
             <tr>
-                <td><strong>Section:</strong> {{ $student->medium }}</td>
-                <td><strong>Class:</strong> {{ $student->class }}</td>
+                <td><strong>Medium:</strong> {{ $student->medium }}</td>
+                <td><strong>Class:</strong> {{ $student->class }}; <strong>Section:</strong> {{ ucfirst($student->section) }}</td>
             </tr>
             <tr>
                 <td><strong>Guardian Name:</strong> {{ $student->guardian_name }}</td>

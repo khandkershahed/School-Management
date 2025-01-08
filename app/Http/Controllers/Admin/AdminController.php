@@ -24,13 +24,13 @@ class AdminController extends Controller
         $currentMonthIncome = DB::table('student_fees')
             ->whereYear('paid_at', $currentYear) // Filter by current year
             ->whereMonth('paid_at', $currentMonth) // Filter by current month
-            ->where('status', 'paid')  // Only include paid fees
+            ->where('status', 'Paid')  // Only include paid fees
             ->sum('amount');  // Sum the 'amount' column
 
         // Query for current year's income based on 'paid_at'
         $currentYearIncome = DB::table('student_fees')
             ->whereYear('paid_at', $currentYear) // Filter by current year
-            ->where('status', 'paid')  // Only include paid fees
+            ->where('status', 'Paid')  // Only include paid fees
             ->sum('amount');  // Sum the 'amount' column
 
         // Prepare data for the dashboard view

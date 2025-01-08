@@ -98,7 +98,7 @@
                                                                 <h5 class="head-title ptint-title text-info"
                                                                     style="width: 100%;margin-top:10px;">
                                                                     <i class="fa fa-bar-chart"></i>
-                                                                    <small> Accounting Balance Report</small>
+                                                                    <small> Student Invoice Report</small>
                                                                 </h5>
                                                                 <div class="clearfix">&nbsp;</div>
                                                                 {{-- <div>Academic Year: {{ old('year', $year) }}</div> --}}
@@ -154,11 +154,13 @@
                                                             </strong></td>
                                                         <td class="text-center">
                                                             <strong>{{ number_format($totalAmount, 2) }}
-                                                            </strong></td>
+                                                            </strong>
+                                                        </td>
                                                         <td class="text-center"><strong>0 </strong></td>
                                                         <td class="text-center">
                                                             <strong>{{ number_format($totalAmount, 2) }}
-                                                            </strong></td>
+                                                            </strong>
+                                                        </td>
                                                     </tr>
                                                 </tfoot>
                                             </table>
@@ -177,8 +179,8 @@
 
                             <div class="row mt-3">
                                 <div class="col-4 offset-4 text-center">
-                                    <button class="btn btn-primary" onclick="printInvoice();" style="width: 150px;"><i
-                                            class="fa fa-print"></i> Print</button>
+                                    <button class="btn btn-primary" onclick="printInvoice();"
+                                        style="width: 150px;"><i class="fa fa-print"></i> Print</button>
                                 </div>
                             </div>
                         </div>

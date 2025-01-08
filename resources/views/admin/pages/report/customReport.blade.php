@@ -104,19 +104,19 @@
                                                         <td style="width:80%;  text-align:center;">
                                                             <span style="text-align: center ;">
                                                                 <div class="clearfix">&nbsp;</div>
-                                                                <h3 class="text-muted" style="margin-top:10px;">
+                                                                <h4 class="text-muted" style="margin-top:10px;">
                                                                     <strong>Shamsul Hoque Khan School and
                                                                         College</strong>
-                                                                </h3>
+                                                                </h4>
                                                                 <h6 class="text-muted" style="margin-top:10px;">
                                                                     Paradogair, Matuail, Demra
                                                                     Dhaka-1362
                                                                 </h6>
-                                                                <h3 class="head-title ptint-title text-info"
+                                                                <h5 class="head-title ptint-title text-info"
                                                                     style="width: 100%;margin-top:10px;">
                                                                     <i class="fa fa-bar-chart"></i>
-                                                                    <small> Custom Report</small>
-                                                                </h3>
+                                                                    <small> Student Invoice Report</small>
+                                                                </h5>
                                                                 <div class="clearfix">&nbsp;</div>
                                                                 {{-- <div>Academic Year: {{ old('year', $year) }}</div> --}}
                                                             </span>
@@ -177,8 +177,8 @@
 
                             <div class="row mt-3">
                                 <div class="col-4 offset-4 text-center">
-                                    <button class="btn btn-primary" onclick="printInvoice();" style="width: 150px;"><i
-                                            class="fa fa-print"></i> Print</button>
+                                    <button class="btn btn-primary" onclick="printInvoice();"
+                                        style="width: 150px;"><i class="fa fa-print"></i> Print</button>
                                 </div>
                             </div>
                         </div>

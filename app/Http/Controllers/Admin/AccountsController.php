@@ -108,4 +108,12 @@ class AccountsController extends Controller
             'invoices',
         ));
     }
+    public function invoiceDelete(string $id)
+    {
+        $studentInvoice = StudentInvoice::where('invoice_number',$id)->first();
+        $officeInvoice  = StudentInvoice::where('invoice_number',$id)->first();
+        $studentInvoice->delete();
+        $officeInvoice->delete();
+    }
+
 }

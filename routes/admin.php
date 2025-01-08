@@ -157,6 +157,7 @@ Route::middleware('auth:admin')->name('admin.')->group(function () {
     // Filtering
     Route::get('student/filter', [StudentFeeController::class, 'filter'])->name('student.filter');
     Route::get('invoice/list', [AccountsController::class, 'invoiceList'])->name('invoice.list');
+    Route::delete('invoice/{id}/delete', [AccountsController::class, 'invoiceDelete'])->name('invoice.destroy');
 
     Route::post('/fetch-student-data', [StudentController::class, 'fetchStudentData'])->name('fetch.student.data');
 

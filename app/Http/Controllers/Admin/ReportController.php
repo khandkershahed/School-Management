@@ -132,7 +132,7 @@ class ReportController extends Controller
             foreach ($fees as $fee) {
                 $paidFee = $student->studentFees()
                     ->where('fee_id', $fee->id)
-                    ->where('status', 'paid')
+                    ->where('status', 'Paid')
                     ->first();
 
                 // If the fee has not been paid, add it to the due fees
@@ -144,7 +144,7 @@ class ReportController extends Controller
                                 'fee_id' => $fee->id, // store fee_id to check duplicates
                                 'fee' => $fee,
                                 'amount' => $fee->amount,
-                                'status' => 'unpaid',
+                                'status' => 'Unpaid',
                             ];
                         }
                     }
@@ -156,7 +156,7 @@ class ReportController extends Controller
                 if ($fee->fee_type === 'yearly') {
                     $paidFee = $student->studentFees()
                         ->where('fee_id', $fee->id)
-                        ->where('status', 'paid')
+                        ->where('status', 'Paid')
                         ->first();
 
                     // If the fee has not been paid, add it to the due fees
@@ -167,7 +167,7 @@ class ReportController extends Controller
                                 'fee_id' => $fee->id, // store fee_id to check duplicates
                                 'fee' => $fee,
                                 'amount' => $fee->amount,
-                                'status' => 'unpaid',
+                                'status' => 'Unpaid',
                             ];
                         }
                     }

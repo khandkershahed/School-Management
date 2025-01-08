@@ -45,9 +45,6 @@
                                                 <td class="text-center">{{ $invoice->total_amount }}</td>
                                                 <td class="text-center">
                                                     Paid
-                                                    {{-- <span
-                                                        class="badge {{ $invoice->status == 'active' ? 'bg-success' : 'bg-danger' }}">
-                                                        {{ $invoice->status == 'active' ? 'Active' : 'InActive' }}</span> --}}
                                                 </td>
                                                 <td class="text-end">
 
@@ -61,6 +58,11 @@
                                                         data-tooltip="View">
                                                         <i class="fa-solid fa-expand"></i>
                                                     </a> --}}
+                                                    <a href="{{ route('admin.invoice.destroy', $invoice->invoice_number) }}"
+                                                        class="btn btn-sm btn-danger toltip mb-2 delete"
+                                                        data-tooltip="Delete">
+                                                        <i class="fa-solid fa-trash"></i>
+                                                    </a>
 
                                                 </td>
                                             </tr>
@@ -75,7 +77,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="excelImport" tabindex="-1" aria-labelledby="excelImportLabel"
+    {{-- <div class="modal fade" id="excelImport" tabindex="-1" aria-labelledby="excelImportLabel"
         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -97,7 +99,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 
     @push('scripts')
         <script>
