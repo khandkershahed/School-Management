@@ -76,7 +76,7 @@
                                     </div>
                                     <div class="row p-3 pt-1">
                                         <!-- Table -->
-                                        <table class="table table-striped" style="width:100%">
+                                        <table class="table table-striped datatable" style="width:100%">
                                             <thead>
                                                 <tr>
                                                     <th class="text-center">SL</th>
