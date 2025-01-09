@@ -111,7 +111,7 @@ class StaffController extends Controller
         $request->validate([
             'name' => ['nullable', 'string', 'max:255'],
             'email' => ['nullable', 'string', 'email', 'max:255', 'unique:' . Admin::class . ',email,' . $staff->id],
-            'username' => ['string', 'max:191', 'unique:' . Admin::class . ',username,' . $staff->id],
+            'username' => ['nullable', 'string', 'max:191', 'unique:' . Admin::class . ',username,' . $staff->id],
             'password' => ['nullable', 'confirmed', Rules\Password::defaults()],
         ]);
 

@@ -123,7 +123,7 @@
                             </span>
                         </div>
                         <span data-bs-toggle="tooltip" data-bs-trigger="hover" title="Edit User Details">
-                            <a href="{{ route('admin.user.edit', $user->id) }}"
+                            <a href="{{ route('admin.staff.edit', $user->id) }}"
                                 class="btn btn-sm btn-light-primary">Edit</a>
                         </span>
                     </div>

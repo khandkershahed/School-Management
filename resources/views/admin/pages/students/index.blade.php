@@ -14,15 +14,6 @@
                                         data-tooltip="Import Excel">
                                         <i class="fa-solid fa-file-csv pe-2"></i> Import Excel
                                     </button>
-                                    {{-- <a href="#" class="btn btn-outline-light toltip"
-                                        data-tooltip="Download PDF">
-                                        <i class="fa-solid fa-file-pdf"></i>
-                                    </a> --}}
-                                    {{-- <button type="button" class="btn btn-outline-light toltip"
-                                        data-tooltip="Print Table">
-                                        <i class="fa-solid fa-print"></i>
-                                        <span class="tooltiptext">Print</span>
-                                    </button> --}}
                                     <a href="{{ route('admin.students.create') }}" class="btn btn-outline-light toltip"
                                         data-tooltip="Create New"> Create
                                         <i class="fa-solid fa-plus"></i>
@@ -31,12 +22,7 @@
                             </div>
                         </div>
                         <div class="card-body p-0">
-                            {{-- <div class="d-flex justify-content-between align-items-center mb-3 bg-light p-3">
-                                <h6>Filter Assets (From-To)</h6>
-                                <div>
-                                    <input class="form-control" name='range' id='cal' />
-                                </div>
-                            </div> --}}
+                            
                             <div class="table-responsive p-3 pt-1">
                                 <!-- Table -->
                                 <table class="table table-striped datatable" style="width:100%">

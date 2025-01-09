@@ -1,5 +1,5 @@
-<div class="card card-flash mt-5">
-    <div class="card-header border-0 cursor-pointer">
+
+    <div class="card-header d-flex justify-content-center">
         <div class="card-title m-0">
             <h3 class="fw-bolder m-0"> {{ __('Update Password') }} </h3>
         </div>
@@ -7,7 +7,7 @@
     <form class="form" method="post" action="{{ route('admin.password.update') }}">
         @csrf
         @method('put')
-        <div class="card-body border-top p-9">
+        <div class="card-body">
             <div class="row">
                 <div class="mb-10 col-lg-4">
                     <x-admin.label class="required form-label"
@@ -31,14 +31,9 @@
                 </div>
             </div>
         </div>
-        <div class="card-footer d-flex justify-content-end py-3 px-9">
-            {{-- <button type="submit" class="btn btn-primary fw-bold rounded-1">{{ __('Submit') }}</button> --}}
+        <div class="d-flex justify-content-end py-3 px-3">
             <x-admin.button type="submit" class="primary">
                 {{ __('Submit') }}
             </x-admin.button>
         </div>
-
     </form>
-
-
-</div>

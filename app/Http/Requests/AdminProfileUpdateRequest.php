@@ -16,22 +16,22 @@ class AdminProfileUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['string', 'max:255'],
-            'username' => ['string', 'max:255'],
-            'designation' => ['string', 'max:200'],
-            'phone' => ['string', 'max:200'],
-            'photo' => ['image'],
-            'country' => ['string', 'max:200'],
-            'city' => ['string', 'max:200'],
-            'zipcode' => ['string', 'max:200'],
-            'address' => ['string', 'max:200'],
-            'youtube' => ['string', 'max:200'],
-            'facebook' => ['string', 'max:200'],
-            'twitter' => ['string', 'max:200'],
-            'linkedin' => ['string', 'max:200'],
-            'website' => ['string', 'max:200'],
-            'biometric_id' => ['string', 'max:200'],
-            'email' => ['email', 'max:255', Rule::unique(Admin::class)->ignore($this->user()->id)],
+            'name'         => ['nullable', 'string', 'max:255'],
+            'username'     => ['nullable', 'string', 'max:255'],
+            'designation'  => ['nullable', 'string', 'max:200'],
+            'phone'        => ['nullable', 'string', 'max:200'],
+            'photo'        => ['nullable', 'image'],
+            'country'      => ['nullable', 'string', 'max:200'],
+            'city'         => ['nullable', 'string', 'max:200'],
+            'zipcode'      => ['nullable', 'string', 'max:200'],
+            'address'      => ['nullable', 'string', 'max:200'],
+            'youtube'      => ['nullable', 'string', 'max:200'],
+            'facebook'     => ['nullable', 'string', 'max:200'],
+            'twitter'      => ['nullable', 'string', 'max:200'],
+            'linkedin'     => ['nullable', 'string', 'max:200'],
+            'website'      => ['nullable', 'string', 'max:200'],
+            'biometric_id' => ['nullable', 'string', 'max:200'],
+            'email'        => ['nullable', 'email',  'max:255', Rule::unique(Admin::class)->ignore($this->user()->id)],
         ];
     }
 }

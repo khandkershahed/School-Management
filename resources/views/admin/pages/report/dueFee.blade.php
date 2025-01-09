@@ -13,7 +13,6 @@
                         </div>
                         <div class="card-body">
                             <form action="{{ route('admin.report.duefee') }}" method="GET" class="filter-form">
-                                @csrf
                                 <div class="row">
                                     <!-- Class Filter -->
                                     <div class="col-lg-3 col-md-4">
@@ -54,93 +53,98 @@
                                 </div>
                             </form>
 
-                            <div class="container-fluid" id="printContainer">
-                                <div style="padding-left:35px;padding-right:35px;">
-                                    <div class="row">
-                                        <div style="width:100%; padding:0px; margin:0px;">
-                                            <table
-                                                style=" width:100%; background-color: #f0f3f5 !important; border-radius: 10px; margin-bottom: 20px; padding: 20px 30px;">
-                                                <tbody>
+                            <!-- Only show table if there are students and fees to display -->
+                            @if ($students->isNotEmpty())
+                                <div class="container-fluid mt-3" id="printContainer">
+                                    <div style="padding-left:35px;padding-right:35px;">
+                                        <div class="row">
+                                            <div style="width:100%; padding:0px; margin:0px;">
+                                                <table
+                                                    style=" width:100%; background-color: #f0f3f5 !important; border-radius: 10px; margin-bottom: 20px; padding: 20px 30px;">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td style="width:10%;text-align:center;">
+                                                                <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('images/logo_color_no_bg.png'))) }}"
+                                                                    alt="" height="80px" width="80px">
+                                                            </td>
+                                                            <td style="width:80%; text-align:center;">
+                                                                <div class="clearfix">&nbsp;</div>
+                                                                <h4 class="text-muted" style="margin-top:10px;">
+                                                                    <strong>Shamsul Hoque Khan School and
+                                                                        College</strong>
+                                                                </h4>
+                                                                <h6 class="text-muted" style="margin-top:10px;">
+                                                                    Paradogair, Matuail, Demra
+                                                                    Dhaka-1362
+                                                                </h6>
+                                                                <h5 class="head-title ptint-title text-info"
+                                                                    style="width: 100%;margin-top:10px;">
+                                                                    <i class="fa fa-bar-chart"></i>
+                                                                    <small> Student Due Fees Report</small>
+                                                                </h5>
+                                                                <div class="clearfix">&nbsp;</div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="row p-3 pt-1">
+                                            <!-- Table -->
+                                            <table class="table table-striped" id="datatable" style="width:100%">
+                                                <thead>
                                                     <tr>
-                                                        <td style="width:10%;text-align:center;">
-                                                            <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('images/logo_color_no_bg.png'))) }}"
-                                                                alt="" height="80px" width="80px">
-                                                        </td>
-                                                        <td style="width:80%; text-align:center;">
-                                                            <div class="clearfix">&nbsp;</div>
-                                                            <h4 class="text-muted" style="margin-top:10px;">
-                                                                <strong>Shamsul Hoque Khan School and
-                                                                    College</strong>
-                                                            </h4>
-                                                            <h6 class="text-muted" style="margin-top:10px;">
-                                                                Paradogair, Matuail, Demra
-                                                                Dhaka-1362
-                                                            </h6>
-                                                            <h5 class="head-title ptint-title text-info"
-                                                                style="width: 100%;margin-top:10px;">
-                                                                <i class="fa fa-bar-chart"></i>
-                                                                <small> Student Invoice Report</small>
-                                                            </h5>
-                                                            <div class="clearfix">&nbsp;</div>
-                                                        </td>
+                                                        {{-- <th class="text-center">SL</th> --}}
+                                                        <th style="font-size: 0.7rem;" class="text-center">Fee</th>
+                                                        <th style="font-size: 0.7rem;" class="text-center">Student ID</th>
+                                                        <th style="font-size: 0.7rem;" class="text-center">Student Name</th>
+                                                        <th style="font-size: 0.7rem;" class="text-center">Month</th>
+                                                        <th style="font-size: 0.7rem;" class="text-center">Amount</th>
+                                                        <th style="font-size: 0.7rem;" class="text-center">Status</th>
                                                     </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($students as $student)
+                                                        <!-- Display Due Monthly Fees -->
+                                                        @foreach ($dueMonthlyFees[$student->id] ?? [] as $fee)
+                                                            <tr>
+                                                                <td style="font-size: 0.7rem;" class="text-center">{{ $fee['fee']->name }}</td>
+                                                                <td style="font-size: 0.7rem;" class="text-center">{{ $student->student_id }}</td>
+                                                                <td style="font-size: 0.7rem;" class="text-center">{{ $student->name }}</td>
+                                                                <td style="font-size: 0.7rem;" class="text-center">
+                                                                    {{ $fee['fee']->fee_type === 'monthly' ? $fee['fee']->month : 'Annual' }}
+                                                                </td>
+                                                                <td style="font-size: 0.7rem;" class="text-center">
+                                                                    {{ number_format($fee['amount'], 2) }}</td>
+                                                                <td style="font-size: 0.7rem;" class="text-center">{{ $fee['status'] }}</td>
+                                                            </tr>
+                                                        @endforeach
+
+                                                        <!-- Display Due Yearly Fees -->
+                                                        @foreach ($dueYearlyFees[$student->id] ?? [] as $fee)
+                                                            <tr>
+                                                                <td style="font-size: 0.7rem;" class="text-center">{{ $fee['fee']->name }}</td>
+                                                                <td style="font-size: 0.7rem;" class="text-center">{{ $student->student_id }}</td>
+                                                                <td style="font-size: 0.7rem;" class="text-center">{{ $student->name }}</td>
+                                                                <td style="font-size: 0.7rem;" class="text-center">
+                                                                    {{ $fee['fee']->fee_type === 'yearly' ? 'Annual' : '' }}
+                                                                </td>
+                                                                <td style="font-size: 0.7rem;" class="text-center">
+                                                                    {{ number_format($fee['amount'], 2) }}</td>
+                                                                <td style="font-size: 0.7rem;" class="text-center">{{ $fee['status'] }}</td>
+                                                            </tr>
+                                                        @endforeach
+                                                    @endforeach
                                                 </tbody>
                                             </table>
                                         </div>
                                     </div>
-                                    <div class="row p-3 pt-1">
-                                        <!-- Table -->
-                                        <table class="table table-striped datatable" style="width:100%">
-                                            <thead>
-                                                <tr>
-                                                    <th class="text-center">SL</th>
-                                                    <th class="text-center">Fee</th>
-                                                    <th class="text-center">Student ID</th>
-                                                    <th class="text-center">Student Name</th>
-                                                    <th class="text-center">Month</th>
-                                                    <th class="text-center">Amount</th>
-                                                    <th class="text-center">Status</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($students as $student)
-                                                    <!-- Display Due Monthly Fees -->
-                                                    @foreach ($dueMonthlyFees[$student->id] ?? [] as $fee)
-                                                        <tr>
-                                                            <td class="text-center">{{ $loop->iteration }}</td>
-                                                            <td class="text-center">{{ $fee['fee']->name }}</td>
-                                                            <td class="text-center">{{ $student->student_id }}</td>
-                                                            <td class="text-center">{{ $student->name }}</td>
-                                                            <td class="text-center">
-                                                                {{ $fee['fee']->fee_type === 'monthly' ? $fee['fee']->month : 'Annual' }}
-                                                            </td>
-                                                            <td class="text-center">
-                                                                {{ number_format($fee['amount'], 2) }}</td>
-                                                            <td class="text-center">{{ $fee['status'] }}</td>
-                                                        </tr>
-                                                    @endforeach
-
-                                                    <!-- Display Due Yearly Fees -->
-                                                    @foreach ($dueYearlyFees[$student->id] ?? [] as $fee)
-                                                        <tr>
-                                                            <td class="text-center">{{ $loop->iteration }}</td>
-                                                            <td class="text-center">{{ $fee['fee']->name }}</td>
-                                                            <td class="text-center">{{ $student->student_id }}</td>
-                                                            <td class="text-center">{{ $student->name }}</td>
-                                                            <td class="text-center">
-                                                                {{ $fee['fee']->fee_type === 'yearly' ? 'Annual' : '' }}
-                                                            </td>
-                                                            <td class="text-center">
-                                                                {{ number_format($fee['amount'], 2) }}</td>
-                                                            <td class="text-center">{{ $fee['status'] }}</td>
-                                                        </tr>
-                                                    @endforeach
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
                                 </div>
-                            </div>
+                            @else
+                                <div class="text-center">
+                                    <p>No data available. Please apply filters to see the report.</p>
+                                </div>
+                            @endif
 
                             <div class="row my-3">
                                 <div class="col-4 offset-4 text-center">
@@ -156,19 +160,5 @@
         </div>
     </div>
 
-    @push('scripts')
-        <script>
-            function printInvoice() {
-                // Hide everything except the print container
-                var printContents = document.getElementById('printContainer').innerHTML;
-                var originalContents = document.body.innerHTML;
-
-                document.body.innerHTML = printContents;
-                window.print();
-
-                // Restore the original page content after printing
-                document.body.innerHTML = originalContents;
-            }
-        </script>
-    @endpush
+    
 </x-admin-app-layout>

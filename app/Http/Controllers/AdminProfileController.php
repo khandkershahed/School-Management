@@ -6,7 +6,9 @@ use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Requests\AdminProfileUpdateRequest;
@@ -18,7 +20,7 @@ class AdminProfileController extends Controller
      */
     public function edit(Request $request): View
     {
-        return view('admin.profile.edit', [
+        return view('admin.pages.profile.edit', [
             'user' => Auth::guard('admin')->user(),
             'roles' => Role::get(),
         ]);
@@ -32,13 +34,13 @@ class AdminProfileController extends Controller
 
 
         $files = [
-            'photo'    => $request->file('photo'),
+            'photo' => $request->file('photo'),
         ];
         $uploadedFiles = [];
         foreach ($files as $key => $file) {
             if (!empty($file)) {
                 $filePath = 'admin/' . $key;
-                $oldFile = $request->user()->$key ?? null;
+                $oldFile = $client->$key ?? null;
 
                 if ($oldFile) {
                     Storage::delete("public/" . $oldFile);
@@ -51,17 +53,17 @@ class AdminProfileController extends Controller
                 $uploadedFiles[$key] = ['status' => 0];
             }
         }
-        $request->user()->photo = $uploadedFiles['photo']['status'] == 1 ? $uploadedFiles['photo']['file_path'] : $request->user()->photo;
-        $request->user()->fill($request->validated());
-        // dd($request->user());
+        $request->user()->update([
+            'name'        => $request->name ? $request->name  : $request->user()->name,
+            'email'       => $request->email ? $request->email: $request->user()->email,
+            'username'    => $request->username,
+            'designation' => $request->designation,
+            'photo'       => $uploadedFiles['photo']['status'] == 1 ? $uploadedFiles['photo']['file_path'] : $request->user()->photo,
+            'password'    => $request->password ? Hash::make($request->password) : $request->user()->password,
+        ]);
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
-        }
-
-        $request->user()->save();
-
-        return Redirect::route('admin.profile.edit')->with('status', 'profile-updated');
+        Session::flash('success','Profile Updated.');
+        return redirect()->back();
     }
 
     /**

@@ -20,7 +20,6 @@
                         <div class="card-body">
                             <!-- Filter Form -->
                             <form action="{{ route('admin.report.studentinvoice') }}" method="GET" class="filter-form">
-                                @csrf
                                 <div class="row">
                                     <!-- Class Filter -->
                                     <div class="col-lg-3 col-md-4">
@@ -29,19 +28,19 @@
                                             <x-admin.select-option class="form-control-solid" id="class"
                                                 name="class" :allowClear="true">
                                                 <option value=""></option>
-                                                <option value="0" @selected(old('class') == '0')>Nursery</option>
-                                                <option value="1" @selected(old('class') == '1')>One</option>
-                                                <option value="2" @selected(old('class') == '2')>Two</option>
-                                                <option value="3" @selected(old('class') == '3')>Three</option>
-                                                <option value="4" @selected(old('class') == '4')>Four</option>
-                                                <option value="5" @selected(old('class') == '5')>Five</option>
-                                                <option value="6" @selected(old('class') == '6')>Six</option>
-                                                <option value="7" @selected(old('class') == '7')>Seven</option>
-                                                <option value="8" @selected(old('class') == '8')>Eight</option>
-                                                <option value="9" @selected(old('class') == '9')>Nine</option>
-                                                <option value="10" @selected(old('class') == '10')>Ten</option>
-                                                <option value="11" @selected(old('class') == '11')>First Year</option>
-                                                <option value="12" @selected(old('class') == '12')>Second Year
+                                                <option value="0" @selected(old('class',$class) == '0')>Nursery</option>
+                                                <option value="1" @selected(old('class',$class) == '1')>One</option>
+                                                <option value="2" @selected(old('class',$class) == '2')>Two</option>
+                                                <option value="3" @selected(old('class',$class) == '3')>Three</option>
+                                                <option value="4" @selected(old('class',$class) == '4')>Four</option>
+                                                <option value="5" @selected(old('class',$class) == '5')>Five</option>
+                                                <option value="6" @selected(old('class',$class) == '6')>Six</option>
+                                                <option value="7" @selected(old('class',$class) == '7')>Seven</option>
+                                                <option value="8" @selected(old('class',$class) == '8')>Eight</option>
+                                                <option value="9" @selected(old('class',$class) == '9')>Nine</option>
+                                                <option value="10" @selected(old('class',$class) == '10')>Ten</option>
+                                                <option value="11" @selected(old('class',$class) == '11')>First Year</option>
+                                                <option value="12" @selected(old('class',$class) == '12')>Second Year
                                                 </option>
                                             </x-admin.select-option>
                                         </div>
@@ -54,7 +53,7 @@
                                             <x-admin.select-option id="student_id" name="student_id" :allowClear="true">
                                                 <option value="">-- Select Student --</option>
                                                 @foreach ($students as $student)
-                                                    <option value="{{ $student->id }}" @selected(old('student_id') == $student->id)>
+                                                    <option value="{{ $student->id }}" @selected(old('student_id',$student_id) == $student->id)>
                                                         {{ $student->name }} [{{ $student->student_id }}]
                                                     </option>
                                                 @endforeach
@@ -62,10 +61,14 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row my-3">
-                                    <div class="col-4 offset-4 text-center">
+                                <div class="row my-3 align-items-center justify-content-center">
+                                    <div class="col-4 text-center">
                                         <button type="submit" class="btn btn-primary"
                                             style="width: 150px;">Filter</button>
+                                    </div>
+                                    <div class="col-4 text-center">
+                                        <a href="{{ route('admin.report.studentinvoice') }}" class="btn btn-primary"
+                                            style="width: 150px;">Clear Filter</a>
                                     </div>
                                 </div>
                                 <!-- Submit Filter Button -->
@@ -109,11 +112,11 @@
                                         </div>
                                         <!-- Invoices Table -->
                                         <div class="row mt-3">
-                                            <table class="table table-striped" style="width:100%">
+                                            <table class="table table-striped" id="datatable" style="width:100%">
                                                 <thead>
                                                     <tr>
                                                         <th style="font-size: 0.7rem;" width="2%" class="text-center">SL</th>
-                                                        <th style="font-size: 0.7rem;" width="15%" class="text-center">Academic Year</th>
+                                                        <th style="font-size: 0.7rem;" width="15%" class="text-center">Year</th>
                                                         <th style="font-size: 0.7rem;" width="22%" class="text-center">Student</th>
                                                         <th style="font-size: 0.7rem;" width="15%" class="text-center">Student ID</th>
                                                         <th style="font-size: 0.7rem;" width="9%" class="text-center">Class</th>
@@ -183,19 +186,5 @@
             </div>
         </div>
     </div>
-    @push('scripts')
-        <script>
-            function printInvoice() {
-                // Hide everything except the print container
-                var printContents = document.getElementById('printContainer').innerHTML;
-                var originalContents = document.body.innerHTML;
-
-                document.body.innerHTML = printContents;
-                window.print();
-
-                // Restore the original page content after printing
-                document.body.innerHTML = originalContents;
-            }
-        </script>
-    @endpush
+   
 </x-admin-app-layout>

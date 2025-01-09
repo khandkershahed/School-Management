@@ -19,19 +19,18 @@ class ReportController extends Controller
     {
         // Validate incoming request
         $validator = Validator::make($request->all(), [
-            'year' => 'nullable|integer|between:2023,' . date('Y'),
-            'group_by' => 'nullable|in:daily,monthly,yearly',
-            'fee_id' => 'nullable|exists:fees,id',
-            'from_date' => 'nullable|date|before_or_equal:to_date',
-            'to_date' => 'nullable|date|after_or_equal:from_date',
+            'fee_id'    => 'nullable|exists:fees,id',
+            'year'      => 'nullable|integer|between:2025,2030',  // Ensure year is within a valid range
+            'group_by'  => 'nullable|in:daily,monthly,yearly',
+            'from_date' => 'nullable|date',
+            'to_date'   => 'nullable|date|after_or_equal:from_date',
         ]);
 
         // Check if validation fails
         if ($validator->fails()) {
-            Session::flash('error', $validator);
-            return redirect()->back()->withErrors($validator)->withInput();
+            Session::flash('error', $validator->errors()->all());
+            return redirect()->back()->withInput();
         }
-
 
         // Get filter inputs
         $year = $request->input('year');
@@ -44,60 +43,70 @@ class ReportController extends Controller
             // Get active fee types for selection
             $fees = Fee::where('status', 'active')->get();
 
-            // Start query to get incomes based on selected fee type and filters
-            $query = DB::table('student_fees')
-                ->join('fees', 'student_fees.fee_id', '=', 'fees.id')
-                ->select(
-                    DB::raw("SUM(student_fees.amount) AS amount"),
-                    DB::raw("MAX(fees.name) AS fee_name")  // Use MAX to aggregate the fee name
-                )
-                ->whereNotNull('student_fees.fee_id'); // Ensure fee_id is not null
+            // Initialize empty data to prevent errors if no filter is applied
+            $incomes = collect();
+            $totalAmount = 0;
 
-            // Apply filters
-            if ($fee_id) {
-                $query->where('student_fees.fee_id', $fee_id); // Filter by selected fee type
+            // Check if any filter is applied
+            if ($fee_id || $year || $group_by || $from_date || $to_date) {
+                // Start query to get incomes based on selected fee type and filters
+                $query = DB::table('student_fees')
+                    ->join('fees', 'student_fees.fee_id', '=', 'fees.id')
+                    ->select(
+                        DB::raw("SUM(student_fees.amount) AS amount"),
+                        DB::raw("MAX(fees.name) AS fee_name")  // Use MAX to aggregate the fee name
+                    )
+                    ->whereNotNull('student_fees.fee_id'); // Ensure fee_id is not null
+
+                // Apply filters
+                if ($fee_id) {
+                    $query->where('student_fees.fee_id', $fee_id); // Filter by selected fee type
+                }
+
+                if ($year) {
+                    $query->whereYear('student_fees.paid_at', $year); // Filter by year
+                }
+
+                if ($from_date) {
+                    $query->whereDate('student_fees.paid_at', '>=', $from_date);
+                }
+
+                if ($to_date) {
+                    $query->whereDate('student_fees.paid_at', '<=', $to_date);
+                }
+
+                // Grouping logic based on user selection (daily, monthly, yearly)
+                if ($group_by == 'daily') {
+                    $query->selectRaw("DATE(student_fees.paid_at) AS day")
+                        ->groupBy(DB::raw("DATE(student_fees.paid_at), fees.name"));
+                } elseif ($group_by == 'monthly') {
+                    $query->selectRaw("DATE_FORMAT(student_fees.paid_at, '%M, %Y') AS month")
+                        ->groupBy(DB::raw("YEAR(student_fees.paid_at), MONTH(student_fees.paid_at), DATE_FORMAT(student_fees.paid_at, '%M, %Y'), fees.name"));
+                } elseif ($group_by == 'yearly') {
+                    $query->selectRaw("YEAR(student_fees.paid_at) AS year")
+                        ->groupBy(DB::raw("YEAR(student_fees.paid_at), fees.name"));
+                }
+
+                // Execute the query and get the incomes
+                $incomes = $query->get();
+
+                // Calculate total amount
+                $totalAmount = $incomes->sum('amount');
             }
-
-            if ($year) {
-                $query->whereYear('student_fees.created_at', $year); // Filter by year
-            }
-
-            if ($from_date) {
-                $query->where('student_fees.created_at', '>=', $from_date);
-            }
-
-            if ($to_date) {
-                $query->where('student_fees.created_at', '<=', $to_date);
-            }
-
-            // Grouping logic based on user selection (daily, monthly, yearly)
-            if ($group_by == 'daily') {
-                $query->selectRaw("DATE(student_fees.created_at) AS day")
-                    ->groupBy(DB::raw("DATE(student_fees.created_at), fees.name"));
-            } elseif ($group_by == 'monthly') {
-                $query->selectRaw("DATE_FORMAT(student_fees.created_at, '%M, %Y') AS month")
-                    ->groupBy(DB::raw("YEAR(student_fees.created_at), MONTH(student_fees.created_at), fees.name"));
-            } elseif ($group_by == 'yearly') {
-                $query->selectRaw("YEAR(student_fees.created_at) AS year")
-                    ->groupBy(DB::raw("YEAR(student_fees.created_at), fees.name"));
-            }
-
-            // Execute the query
-            $incomes = $query->get();
-
-            // Calculate total amount
-            $totalAmount = $incomes->sum('amount');
         } catch (\Exception $e) {
             // Log the error for debugging
             Log::error("Error in custom report query: " . $e->getMessage());
 
             // Return a user-friendly message and redirect back
-            return redirect()->back()->with('error', 'An error occurred while generating the report. Please try again later.');
+            return redirect()->back()->with('error', $e->getMessage());
         }
 
         // Return view with results
         return view('admin.pages.report.customReport', compact('incomes', 'totalAmount', 'fees', 'group_by', 'year', 'fee_id', 'from_date', 'to_date'));
     }
+
+
+
 
 
     public function dueFee(Request $request)
@@ -106,7 +115,7 @@ class ReportController extends Controller
         $class = $request->input('class');
         $student_id = $request->input('student_id');
 
-        // Initialize the result arrays
+        // Initialize the result arrays (empty by default)
         $dueMonthlyFees = [];
         $dueYearlyFees = [];
 
@@ -121,39 +130,17 @@ class ReportController extends Controller
             })
             ->get();
 
-        // Iterate over each student to calculate the due fees
-        foreach ($students as $student) {
-            // Get all fees based on the student's class and medium
-            $fees = Fee::whereJsonContains('class', $student->class)
-                ->where('medium', $student->medium)
-                ->get();
+        // Only process fees if there are students (after applying filters)
+        if ($students->isNotEmpty()) {
+            // Iterate over each student to calculate the due fees
+            foreach ($students as $student) {
+                // Get all fees based on the student's class and medium
+                $fees = Fee::whereJsonContains('class', $student->class)
+                    ->where('medium', $student->medium)
+                    ->get();
 
-            // Process monthly fees (Unpaid)
-            foreach ($fees as $fee) {
-                $paidFee = $student->studentFees()
-                    ->where('fee_id', $fee->id)
-                    ->where('status', 'Paid')
-                    ->first();
-
-                // If the fee has not been paid, add it to the due fees
-                if (!$paidFee) {
-                    if ($fee->fee_type === 'monthly') {
-                        // Prevent duplicate fees for the same student
-                        if (!in_array($fee->id, array_column($dueMonthlyFees, 'fee_id'))) {
-                            $dueMonthlyFees[$student->id][] = [
-                                'fee_id' => $fee->id, // store fee_id to check duplicates
-                                'fee' => $fee,
-                                'amount' => $fee->amount,
-                                'status' => 'Unpaid',
-                            ];
-                        }
-                    }
-                }
-            }
-
-            // Process yearly fees (Unpaid)
-            foreach ($fees as $fee) {
-                if ($fee->fee_type === 'yearly') {
+                // Process monthly fees (Unpaid)
+                foreach ($fees as $fee) {
                     $paidFee = $student->studentFees()
                         ->where('fee_id', $fee->id)
                         ->where('status', 'Paid')
@@ -161,23 +148,49 @@ class ReportController extends Controller
 
                     // If the fee has not been paid, add it to the due fees
                     if (!$paidFee) {
-                        // Prevent duplicate fees for the same student
-                        if (!in_array($fee->id, array_column($dueYearlyFees, 'fee_id'))) {
-                            $dueYearlyFees[$student->id][] = [
-                                'fee_id' => $fee->id, // store fee_id to check duplicates
-                                'fee' => $fee,
-                                'amount' => $fee->amount,
-                                'status' => 'Unpaid',
-                            ];
+                        if ($fee->fee_type === 'monthly') {
+                            // Prevent duplicate fees for the same student
+                            if (!in_array($fee->id, array_column($dueMonthlyFees[$student->id] ?? [], 'fee_id'))) {
+                                $dueMonthlyFees[$student->id][] = [
+                                    'fee_id' => $fee->id, // store fee_id to check duplicates
+                                    'fee' => $fee,
+                                    'amount' => $fee->amount,
+                                    'status' => 'Unpaid',
+                                ];
+                            }
+                        }
+                    }
+                }
+
+                // Process yearly fees (Unpaid)
+                foreach ($fees as $fee) {
+                    if ($fee->fee_type === 'yearly') {
+                        $paidFee = $student->studentFees()
+                            ->where('fee_id', $fee->id)
+                            ->where('status', 'Paid')
+                            ->first();
+
+                        // If the fee has not been paid, add it to the due fees
+                        if (!$paidFee) {
+                            // Prevent duplicate fees for the same student
+                            if (!in_array($fee->id, array_column($dueYearlyFees[$student->id] ?? [], 'fee_id'))) {
+                                $dueYearlyFees[$student->id][] = [
+                                    'fee_id' => $fee->id, // store fee_id to check duplicates
+                                    'fee' => $fee,
+                                    'amount' => $fee->amount,
+                                    'status' => 'Unpaid',
+                                ];
+                            }
                         }
                     }
                 }
             }
         }
 
-        // Return the view with the due fee data
+        // Return the view with the due fee data, including class and student filter options
         return view('admin.pages.report.dueFee', compact('students', 'dueMonthlyFees', 'dueYearlyFees', 'class', 'student_id'));
     }
+
 
 
 
@@ -191,41 +204,44 @@ class ReportController extends Controller
 
     public function accountingBalance(Request $request)
     {
-        // Validate incoming request
-        $validator = Validator::make($request->all(), [
-            'year' => 'nullable|integer|between:2023,2027',  // Ensure year is within a valid range
-            'group_by' => 'nullable|in:daily,monthly,yearly',
-            'from_date' => 'nullable|date|before_or_equal:to_date',
-            'to_date' => 'nullable|date|after_or_equal:from_date',
-        ]);
-
-        if ($validator->fails()) {
-            Session::flash('error', $validator);
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-
-        // Get filter inputs
-        $year = $request->input('year');
-        $group_by = $request->input('group_by');
-        $from_date = $request->input('from_date');
-        $to_date = $request->input('to_date');
-
         try {
+            // Validate incoming request
+            $validator = Validator::make($request->all(), [
+                'year'      => 'nullable|integer|between:2025,2030',  // Ensure year is within a valid range
+                'group_by'  => 'nullable|in:daily,monthly,yearly',
+                'from_date' => 'nullable|date',
+                'to_date'   => 'nullable|date|after_or_equal:from_date',
+            ]);
+
+            if ($validator->fails()) {
+                // Flash only the error messages
+                Session::flash('error', $validator->errors()->all());
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+
+            // Get filter inputs
+            $year      = $request->input('year');
+            $group_by  = $request->input('group_by');
+            $from_date = $request->input('from_date');
+            $to_date   = $request->input('to_date');
+
             // Start the query builder
             $query = DB::table('student_fees')
                 ->join('student_invoices', 'student_fees.invoice_number', '=', 'student_invoices.invoice_number')
                 ->select(
                     DB::raw("SUM(student_fees.amount) AS amount"),
                     DB::raw("CONCAT('January ', MAX(student_fees.year), ' - December ', MAX(student_fees.year)) AS academic_year")
-                )
-                ->whereYear('student_invoices.generated_at', $year); // Filter by selected academic year
+                );
 
-            // Apply date range filters if provided
+            // Only apply filters if they're provided
+            if ($year) {
+                $query->whereYear('student_invoices.generated_at', $year); // Filter by selected academic year
+            }
             if ($from_date) {
-                $query->where('student_invoices.generated_at', '>=', $from_date);
+                $query->whereDate('student_invoices.generated_at', '>=', $from_date);
             }
             if ($to_date) {
-                $query->where('student_invoices.generated_at', '<=', $to_date);
+                $query->whereDate('student_invoices.generated_at', '<=', $to_date);
             }
 
             // Adjust the query based on the "group_by" option
@@ -234,14 +250,19 @@ class ReportController extends Controller
                     ->groupBy(DB::raw("DATE(student_invoices.generated_at)"));
             } elseif ($group_by == 'monthly') {
                 $query->selectRaw("DATE_FORMAT(student_invoices.generated_at, '%M, %Y') AS month")
-                    ->groupBy(DB::raw("YEAR(student_invoices.generated_at), MONTH(student_invoices.generated_at)"));
+                    ->groupBy(DB::raw("YEAR(student_invoices.generated_at), MONTH(student_invoices.generated_at), student_invoices.generated_at"));
             } elseif ($group_by == 'yearly') {
                 $query->selectRaw("YEAR(student_invoices.generated_at) AS year")
                     ->groupBy(DB::raw("YEAR(student_invoices.generated_at)"));
             }
 
-            // Execute the query
-            $incomes = $query->get();
+            // Execute the query if any filters are applied
+            if ($year || $group_by || $from_date || $to_date) {
+                $incomes = $query->get();
+            } else {
+                // If no filter is applied, set the result to an empty collection
+                $incomes = collect();
+            }
 
             // Calculate total amount
             $totalAmount = $incomes->sum('amount');
@@ -250,11 +271,13 @@ class ReportController extends Controller
             Log::error("Error in Accounting Balance report query: " . $e->getMessage());
 
             // Return a user-friendly message and redirect back
-            return redirect()->back()->with('error', $e->getMessage());
+            return redirect()->back()->with('error', 'An error occurred while generating the report.');
         }
 
         return view('admin.pages.report.accountingBalance', compact('incomes', 'totalAmount', 'group_by', 'year', 'from_date', 'to_date'));
     }
+
+
 
     // Controller: AdminReportController.php (or your respective controller file)
     public function studentInvoice(Request $request)
@@ -291,7 +314,7 @@ class ReportController extends Controller
         });
 
         // Return the view with the filtered data
-        return view('admin.pages.report.studentInvoice', compact('students', 'invoices', 'total_balance'));
+        return view('admin.pages.report.studentInvoice', compact('students', 'invoices', 'total_balance', 'class', 'student_id'));
     }
 
 
@@ -299,67 +322,82 @@ class ReportController extends Controller
     public function income(Request $request)
     {
         // Validate incoming request
-        $validator = Validator::make($request->all(), [
-            'year' => 'nullable|integer|between:2023,2027',  // Ensure year is within a valid range
-            'group_by' => 'nullable|in:daily,monthly,yearly',
-            'from_date' => 'nullable|date|before_or_equal:to_date',
-            'to_date' => 'nullable|date|after_or_equal:from_date',
-        ]);
-
-        if ($validator->fails()) {
-            Session::flash('error', $validator);
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-
-        // Get filter inputs
-        $year = $request->input('year');
-        $group_by = $request->input('group_by');
-        $from_date = $request->input('from_date');
-        $to_date = $request->input('to_date');
-
         try {
-            // Start the query builder
-            $query = DB::table('student_fees')
-                ->join('student_invoices', 'student_fees.invoice_number', '=', 'student_invoices.invoice_number')
-                ->select(
-                    DB::raw("SUM(student_fees.amount) AS amount"),
-                    DB::raw("CONCAT('January ', MAX(student_fees.year), ' - December ', MAX(student_fees.year)) AS academic_year")
-                )
-                ->whereYear('student_invoices.generated_at', $year); // Filter by selected academic year
+            // Validate the request inputs
+            $validator = Validator::make($request->all(), [
+                'year'      => 'nullable|integer|between:2025,2030',  // Ensure year is within a valid range
+                'group_by'  => 'nullable|in:daily,monthly,yearly',
+                'from_date' => 'nullable|date',
+                'to_date'   => 'nullable|date|after_or_equal:from_date',
+            ]);
 
-            // Apply date range filters if provided
-            if ($from_date) {
-                $query->where('student_invoices.generated_at', '>=', $from_date);
-            }
-            if ($to_date) {
-                $query->where('student_invoices.generated_at', '<=', $to_date);
+            // Handle validation errors
+            if ($validator->fails()) {
+                // Flash the error messages
+                Session::flash('error', $validator->errors()->all());
+                return redirect()->back()->withErrors($validator)->withInput();
             }
 
-            // Adjust the query based on the "group_by" option
-            if ($group_by == 'daily') {
-                $query->selectRaw("DATE(student_invoices.generated_at) AS day")
-                    ->groupBy(DB::raw("DATE(student_invoices.generated_at)"));
-            } elseif ($group_by == 'monthly') {
-                $query->selectRaw("DATE_FORMAT(student_invoices.generated_at, '%M, %Y') AS month")
-                    ->groupBy(DB::raw("YEAR(student_invoices.generated_at), MONTH(student_invoices.generated_at)"));
-            } elseif ($group_by == 'yearly') {
-                $query->selectRaw("YEAR(student_invoices.generated_at) AS year")
-                    ->groupBy(DB::raw("YEAR(student_invoices.generated_at)"));
+            // Get filter inputs
+            $year      = $request->input('year');
+            $group_by  = $request->input('group_by');
+            $from_date = $request->input('from_date');
+            $to_date   = $request->input('to_date');
+
+            // Initialize variables
+            $incomes = collect();
+            $totalAmount = 0;
+
+            // Check if any filter is applied before running the query
+            if ($year || $group_by || $from_date || $to_date) {
+                // Start the query builder
+                $query = DB::table('student_fees')
+                    ->join('student_invoices', 'student_fees.invoice_number', '=', 'student_invoices.invoice_number')
+                    ->select(
+                        DB::raw("SUM(student_fees.amount) AS amount"),
+                        DB::raw("CONCAT('January ', MAX(student_fees.year), ' - December ', MAX(student_fees.year)) AS academic_year")
+                    );
+
+                // Apply academic year filter
+                if ($year) {
+                    $query->whereYear('student_invoices.generated_at', $year);
+                }
+
+                // Apply date range filters if provided
+                if ($from_date) {
+                    $query->whereDate('student_invoices.generated_at', '>=', $from_date);
+                }
+                if ($to_date) {
+                    $query->whereDate('student_invoices.generated_at', '<=', $to_date);
+                }
+
+                // Adjust the query based on the "group_by" option
+                if ($group_by == 'daily') {
+                    $query->selectRaw("DATE(student_invoices.generated_at) AS day")
+                        ->groupBy(DB::raw("DATE(student_invoices.generated_at)"));
+                } elseif ($group_by == 'monthly') {
+                    $query->selectRaw("DATE_FORMAT(student_invoices.generated_at, '%M, %Y') AS month")
+                        ->groupBy(DB::raw("YEAR(student_invoices.generated_at), MONTH(student_invoices.generated_at), student_invoices.generated_at"));
+                } elseif ($group_by == 'yearly') {
+                    $query->selectRaw("YEAR(student_invoices.generated_at) AS year")
+                        ->groupBy(DB::raw("YEAR(student_invoices.generated_at)"));
+                }
+
+                // Execute the query to get incomes
+                $incomes = $query->get();
+
+                // Calculate total amount
+                $totalAmount = $incomes->sum('amount');
             }
-
-            // Execute the query
-            $incomes = $query->get();
-
-            // Calculate total amount
-            $totalAmount = $incomes->sum('amount');
         } catch (\Exception $e) {
             // Log the error for debugging
-            Log::error("Error in income report query: " . $e->getMessage());
+            Log::error("Error in Accounting Balance report query: " . $e->getMessage());
 
             // Return a user-friendly message and redirect back
-            return redirect()->back()->with('error', 'An error occurred while generating the report. Please try again later.');
+            return redirect()->back()->with('error', $e->getMessage());
         }
 
+        // Return the view with the results
         return view('admin.pages.report.income', compact('incomes', 'totalAmount', 'group_by', 'year', 'from_date', 'to_date'));
     }
 }

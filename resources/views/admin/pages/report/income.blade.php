@@ -13,45 +13,8 @@
                         </div>
                         <div class="card-body">
                             <form action="{{ route('admin.report.income') }}" method="GET" class="filter-form">
-                                @csrf
-                                <div class="container-fluid" id="printContainer">
+                                <div class="container-fluid">
                                     <div style="padding-left:35px;padding-right:35px;">
-                                        <div class="row">
-                                            <div style="width:100%; padding:0px; margin:0px;">
-                                                <table
-                                                    style=" width:100%; -webkit-print-color-adjust: exact !important; background-color: #f0f3f5 !important; border-radius: 10px; margin-bottom: 20px; padding: 10px;">
-                                                    <tbody>
-                                                        <tr>
-                                                            <td style="width:10%;text-align:center;">
-                                                                <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('images/logo_color_no_bg.png'))) }}"
-                                                                    alt="" height="80px" width="80px">
-                                                            </td>
-                                                            <td style="width:80%;  text-align:center;">
-                                                                <span style="text-align: center ;">
-                                                                    <div class="clearfix">&nbsp;</div>
-                                                                    <h3 class="text-muted" style="margin-top:10px;">
-                                                                        <strong>Shamsul Hoque Khan School and
-                                                                            College</strong>
-                                                                    </h3>
-                                                                    <h6 class="text-muted" style="margin-top:10px;">
-                                                                        Paradogair, Matuail, Demra
-                                                                        Dhaka-1362
-                                                                    </h6>
-                                                                    <h3 class="head-title ptint-title text-info"
-                                                                        style="width: 100%;margin-top:10px;">
-                                                                        <i class="fa fa-bar-chart"></i>
-                                                                        <small> Student Invoice Report</small>
-                                                                    </h3>
-                                                                    <div class="clearfix">&nbsp;</div>
-                                                                    {{-- <div>Academic Year: {{ old('year', $year) }}</div> --}}
-                                                                </span>
-                                                            </td>
-                                                            <td style="width:10%;  text-align:center;"> </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
                                         <div class="row">
                                             <div class="col-lg-3 col-md-4">
                                                 <div class="mb-3">
@@ -60,10 +23,10 @@
                                                     <x-admin.select-option id="year" name="year"
                                                         :allowClear="true" required>
                                                         <option value="">Select Academic Year</option>
-                                                        @for ($year = 2025; $year <= 2030; $year++)
-                                                            <option value="{{ $year }}"
-                                                                @selected(date('Y', $year) == $year)>
-                                                                Academic Year {{ $year }}
+                                                        @for ($academic_year = 2025; $academic_year <= 2030; $academic_year++)
+                                                            <option value="{{ $academic_year }}"
+                                                                @selected($academic_year == date('Y') || $academic_year == $year)>
+                                                                Academic Year {{ $academic_year }}
                                                             </option>
                                                         @endfor
                                                     </x-admin.select-option>
@@ -108,120 +71,115 @@
                                             </div>
 
                                         </div>
-                                        <div class="row mt-3">
-                                            <div class="col-4 offset-4 text-center">
+                                        <div class="row my-3 align-items-center justify-content-center">
+                                            <div class="col-4 text-center">
                                                 <button type="submit" class="btn btn-primary"
                                                     style="width: 150px;">Filter</button>
                                             </div>
+                                            <div class="col-4 text-center">
+                                                <a href="{{ route('admin.report.income') }}" class="btn btn-primary"
+                                                    style="width: 150px;">Clear Filter</a>
+                                            </div>
                                         </div>
+                                    </div>
+                                </div>
                             </form>
-                            <div class="container-fluid" id="printContainer">
-                                <div style="padding-left:35px;padding-right:35px;">
-                                    <div class="row">
-                                        <div style="width:100%; padding:0px; margin:0px;">
-                                            <table
-                                                style=" width:100%; -webkit-print-color-adjust: exact !important; background-color: #f0f3f5 !important; border-radius: 10px; margin-bottom: 20px; padding: 10px;">
-                                                <tbody>
-                                                    <tr>
-                                                        <td style="width:10%;text-align:center;">
-                                                            <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('images/logo_color_no_bg.png'))) }}"
-                                                                alt="" height="80px" width="80px">
-                                                        </td>
-                                                        <td style="width:80%;  text-align:center;">
-                                                            <span style="text-align: center ;">
-                                                                <div class="clearfix">&nbsp;</div>
-                                                                <h4 class="text-muted" style="margin-top:10px;">
-                                                                    <strong>Shamsul Hoque Khan School and
-                                                                        College</strong>
-                                                                </h4>
-                                                                <h6 class="text-muted" style="margin-top:10px;">
-                                                                    Paradogair, Matuail, Demra
-                                                                    Dhaka-1362
-                                                                </h6>
-                                                                <h5 class="head-title ptint-title text-info"
-                                                                    style="width: 100%;margin-top:10px;">
-                                                                    <i class="fa fa-bar-chart"></i>
-                                                                    <small> Student Invoice Report</small>
-                                                                </h5>
-                                                                <div class="clearfix">&nbsp;</div>
-                                                                {{-- <div>Academic Year: {{ old('year', $year) }}</div> --}}
-                                                            </span>
-                                                        </td>
-                                                        <td style="width:10%;  text-align:center;"> </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <div class="row mt-3">
-                                        <div class="table-responsive p-3 pt-1">
-                                            <table class="table table-striped datatable" style="width:100%">
-                                                <thead>
-                                                    <tr>
-                                                        <th width="5%" class="text-center">SL</th>
-                                                        <th width="12%" class="text-center">Group by Data</th>
-                                                        <th width="12%" class="text-center">Amount</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach ($incomes as $income)
+                            @if (isset($incomes) && $incomes->isNotEmpty())
+                                <div class="container-fluid mt-3" id="printContainer">
+                                    <div style="padding-left:35px;padding-right:35px;">
+                                        <div class="row">
+                                            <div style="width:100%; padding:0px; margin:0px;">
+                                                <table
+                                                    style=" width:100%; -webkit-print-color-adjust: exact !important; background-color: #f0f3f5 !important; border-radius: 10px; margin-bottom: 20px; padding: 10px;">
+                                                    <tbody>
                                                         <tr>
-                                                            <td class="text-center">{{ $loop->iteration }}</td>
-
-                                                            @if ($group_by == 'daily')
-                                                                <td class="text-center">{{ $income->day }}</td>
-                                                            @elseif ($group_by == 'monthly')
-                                                                <td class="text-center">{{ $income->month }}</td>
-                                                            @elseif ($group_by == 'yearly')
-                                                                <td class="text-center">{{ $income->year }}</td>
-                                                            @else
-                                                                <td>N/A</td>
-                                                            @endif
-
-                                                            <td class="text-center">
-                                                                {{ number_format($income->amount, 2) }}</td>
+                                                            <td style="width:10%;text-align:center;border:0px;">
+                                                                <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('images/logo_color_no_bg.png'))) }}"
+                                                                    alt="" height="80px" width="80px">
+                                                            </td>
+                                                            <td style="width:80%;text-align:center;border:0px;">
+                                                                <span style="text-align: center ;">
+                                                                    <div class="clearfix">&nbsp;</div>
+                                                                    <h4 class="text-muted" style="margin-top:10px;">
+                                                                        <strong>Shamsul Hoque Khan School and
+                                                                            College</strong>
+                                                                    </h4>
+                                                                    <h6 class="text-muted" style="margin-top:10px;">
+                                                                        Paradogair, Matuail, Demra
+                                                                        Dhaka-1362
+                                                                    </h6>
+                                                                    <h5 class="head-title ptint-title text-info"
+                                                                        style="width: 100%;margin-top:10px;">
+                                                                        <i class="fa fa-bar-chart"></i>
+                                                                        <small> Income Report</small>
+                                                                    </h5>
+                                                                    <div class="clearfix">&nbsp;</div>
+                                                                    {{-- <div>Academic Year: {{ old('year', $year) }}</div> --}}
+                                                                </span>
+                                                            </td>
+                                                            <td style="width:10%;text-align:center;border:0px;"> </td>
                                                         </tr>
-                                                    @endforeach
-                                                </tbody>
-                                                <tfoot>
-                                                    <tr>
-                                                        <td colspan="2" style="text-align:end"><strong>Total
-                                                                Amount: </strong></td>
-                                                        <td class="text-center">{{ number_format($totalAmount, 2) }}
-                                                        </td>
-                                                    </tr>
-                                                </tfoot>
-                                            </table>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="table-responsive p-3 pt-1">
+                                                <table class="table table-striped" id="datatable" style="width:100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th style="font-size: 0.7rem;" width="5%" class="text-center">SL</th>
+                                                            <th style="font-size: 0.7rem;" width="12%" class="text-center">Group by Data</th>
+                                                            <th style="font-size: 0.7rem;" width="12%" class="text-center">Amount</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($incomes as $income)
+                                                            <tr>
+                                                                <td style="font-size: 0.7rem;" class="text-center">{{ $loop->iteration }}</td>
+
+                                                                @if ($group_by == 'daily')
+                                                                    <td style="font-size: 0.7rem;" class="text-center">{{ $income->day }}</td>
+                                                                @elseif ($group_by == 'monthly')
+                                                                    <td style="font-size: 0.7rem;" class="text-center">{{ $income->month }}</td>
+                                                                @elseif ($group_by == 'yearly')
+                                                                    <td style="font-size: 0.7rem;" class="text-center">{{ $income->year }}</td>
+                                                                @else
+                                                                    <td style="font-size: 0.7rem;">N/A</td>
+                                                                @endif
+
+                                                                <td style="font-size: 0.7rem;" class="text-center">
+                                                                    {{ number_format($income->amount, 2) }}</td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                    <tfoot>
+                                                        <tr>
+                                                            <td style="font-size: 0.8rem;" colspan="2" style="text-align:end"><strong>Total
+                                                                    Amount: </strong></td>
+                                                            <td style="font-size: 0.8rem;" class="text-center">
+                                                                {{ number_format($totalAmount, 2) }}
+                                                            </td>
+                                                        </tr>
+                                                    </tfoot>
+                                                </table>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="row mt-3">
-                                <div class="col-4 offset-4 text-center">
-                                    <button class="btn btn-primary" onclick="printInvoice();"
-                                        style="width: 150px;"><i class="fa fa-print"></i> Print</button>
+                                <div class="row mt-3">
+                                    <div class="col-4 offset-4 text-center">
+                                        <button class="btn btn-primary" onclick="printInvoice();"
+                                            style="width: 150px;"><i class="fa fa-print"></i> Print</button>
+                                    </div>
                                 </div>
-                            </div>
+                            @endif
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    @push('scripts')
-        <script>
-            function printInvoice() {
-                // Hide everything except the print container
-                var printContents = document.getElementById('printContainer').innerHTML;
-                var originalContents = document.body.innerHTML;
 
-                document.body.innerHTML = printContents;
-                window.print();
-
-                // Restore the original page content after printing
-                document.body.innerHTML = originalContents;
-            }
-        </script>
-    @endpush
 </x-admin-app-layout>

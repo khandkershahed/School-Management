@@ -515,24 +515,24 @@ class StudentFeeController extends Controller
 
             // Store the student invoice record in `student_invoices`
             StudentInvoice::create([
-                'student_id' => $student->id,
+                'student_id'     => $student->id,
                 'invoice_number' => $invoiceNumber,
-                'month' => $request->month,
-                'year' => $request->year,
-                'total_amount' => $totalAmount,
-                'generated_at' => Carbon::now(),
-                'invoice' => $studentPdfPath, // Path to student copy
+                'month'          => $request->month,
+                'year'           => $request->year,
+                'total_amount'   => $totalAmount,
+                'generated_at'   => Carbon::now(),
+                'invoice'        => $studentPdfPath, // Path to student copy
             ]);
 
             // Store the office invoice record in `office_invoices`
             OfficeInvoice::create([
-                'student_id' => $student->id,
+                'student_id'     => $student->id,
                 'invoice_number' => $invoiceNumber,
-                'month' => $request->month,
-                'year' => $request->year,
-                'total_amount' => $totalAmount,
-                'generated_at' => Carbon::now(),
-                'invoice' => $officePdfPath, // Path to office copy
+                'month'          => $request->month,
+                'year'           => $request->year,
+                'total_amount'   => $totalAmount,
+                'generated_at'   => Carbon::now(),
+                'invoice'        => $officePdfPath, // Path to office copy
             ]);
 
             // Commit the transaction after successful creation

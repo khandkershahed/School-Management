@@ -19,9 +19,7 @@ if (!function_exists('customUpload')) {
             $fileName = $currentTime . '.' . $fileExtention ;
             $fullUploadPath  = "public/$uploadPath";
 
-            // Ensure directory exists
             if (!Storage::exists($fullUploadPath)) {
-                // Create directory
                 $localPath = storage_path("app/$fullUploadPath");
                 if (!mkdir($localPath, 0755, true)) {
                     abort(404, "Failed to create the directory: $fullUploadPath");
@@ -38,15 +36,6 @@ if (!function_exists('customUpload')) {
                 abort(500, "Failed to store the file: " . $e->getMessage());
             }
 
-            // if (!is_dir("public/$uploadPath")) {
-            //     if (!mkdir("public/$uploadPath", 0777, true)) {
-            //         abort(404, "Failed to create the directory: public/$uploadPath");
-            //     }
-            //     chmod($uploadPath, 0777); // Reset umask to default (optional)
-            // }
-
-            // $mainFile->storeAs("public/$uploadPath", $fileName);
-            // $filePath = "$uploadPath/$fileName";
 
             $output = [
                 'status'         => 1,

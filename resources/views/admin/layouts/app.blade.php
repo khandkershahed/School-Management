@@ -20,7 +20,7 @@
     <meta property="og:title" content="{{ optional($setting)->site_title ?: config('app.name', 'AWS "|" Dashboard') }}">
     <meta property="og:description" content="{{ optional($setting)->meta_description ?: config('app.name') }}">
     <meta property="og:image"
-            content="{{ optional($setting)->site_black_logo && file_exists(public_path('storage/' . $setting->site_black_logo)) ? asset('storage/' . $setting->site_black_logo) : asset('frontend/images/brandPage-logo-no-img(217-55).jpg') }}" />
+        content="{{ optional($setting)->site_black_logo && file_exists(public_path('storage/' . $setting->site_black_logo)) ? asset('storage/' . $setting->site_black_logo) : asset('frontend/images/brandPage-logo-no-img(217-55).jpg') }}" />
 
     <!-- Twitter Meta Tags -->
     <meta property="twitter:card" content="summary_large_image">
@@ -50,7 +50,7 @@
     <link rel="stylesheet" href="{{ asset('admin/assets/css/custom.css') }}">
     <link rel="stylesheet" href="{{ asset('admin/assets/css/jquerydatatable.css') }}">
     <style>
-        th{
+        th {
             font-size: 0.9rem;
         }
     </style>
@@ -149,6 +149,66 @@
 
     @include('toastr')
     @stack('scripts')
+
+    <script>
+        var table;
+
+        // Initialize DataTable only after the document is fully loaded
+        $(document).ready(function() {
+            table = $('#datatable').DataTable();
+        });
+
+        function printInvoice() {
+            // Temporarily disable DataTable to make the table a normal static table
+            if (typeof table !== "undefined") {
+                table.destroy(); // Remove DataTable features
+            }
+
+            // Create an iframe element
+            var iframe = document.createElement('iframe');
+            iframe.style.position = 'absolute';
+            iframe.style.width = '0';
+            iframe.style.height = '0';
+            iframe.style.border = 'none';
+            document.body.appendChild(iframe);
+
+            // Access the iframe's document
+            var iframeDoc = iframe.contentWindow.document;
+
+            // Create and append the print-friendly styles to the iframe
+            var style = iframeDoc.createElement('style');
+            style.innerHTML = `
+                    table {
+                        width: 100%;
+                        border-collapse: collapse;
+                    }
+                    th, td {
+                        padding: 8px;
+                        text-align: center;
+                        border: 1px solid #ddd;
+                    }
+                `;
+            iframeDoc.head.appendChild(style);
+
+            // Clone the content from the print container and append it to the iframe
+            var printContents = document.getElementById('printContainer').innerHTML;
+            iframeDoc.body.innerHTML = printContents;
+
+            // Focus on the iframe and print the content
+            iframe.contentWindow.focus();
+            iframe.contentWindow.print();
+
+            // After printing, remove the iframe and reinitialize DataTable
+            iframe.contentWindow.onafterprint = function() {
+                document.body.removeChild(iframe); // Remove iframe after printing
+                $(document).ready(function() {
+                    table = $('#datatable').DataTable(); // Reinitialize DataTable
+                });
+            };
+        }
+    </script>
+
+
     <script>
         const SELECTOR_SIDEBAR_WRAPPER = ".sidebar-wrapper";
         const Default = {
@@ -303,7 +363,6 @@
         $(document).ready(function() {
             new DataTableInitializer('.my-datatable');
         });
-
     </script>
     <script>
         @if (Session::has('message'))

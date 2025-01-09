@@ -1,5 +1,4 @@
-<div class="card card-flash mt-5">
-    <!--begin::Card header-->
+
     <div class="card-header border-0 cursor-pointer">
         <div class="card-title m-0">
             <div class="row">
@@ -14,19 +13,18 @@
             </div>
         </div>
     </div>
-
     <div class="card-body border-top p-9">
-        <!--begin::Input group-->
+
         <div class="row">
             <div class="col-8">
                 <div class="menu-item px-3">
                     <div class="menu-content d-flex align-items-center px-3">
-                        <!--begin::Avatar-->
+
                         <div class="symbol symbol-50px me-5">
                             <img alt="Logo" src="{{ asset('admin/assets/media/svg/avatars/blank-dark.svg') }}" />
                         </div>
-                        <!--end::Avatar-->
-                        <!--begin::Username-->
+
+
                         <div class="d-flex flex-column">
                             <div class="fw-bolder d-flex align-items-center fs-5">
                                 {{ Auth::guard('admin')->user()->name }}
@@ -35,7 +33,7 @@
                                 {{ Auth::guard('admin')->user()->email }}
                             </a>
                         </div>
-                        <!--end::Username-->
+
                     </div>
                 </div>
             </div>
@@ -52,7 +50,7 @@
 
         </div>
     </div>
-</div>
+
 
 
 
