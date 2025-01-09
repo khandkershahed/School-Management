@@ -17,6 +17,12 @@ class RolePermissionSeeder extends Seeder
     {
         $permissions = [
             [
+                'group_name' => 'Dashboard',
+                'permissions' => [
+                    'view dashboard',
+                ],
+            ],
+            [
                 'group_name' => 'Role',
                 'permissions' => [
                     'view role',
@@ -37,26 +43,6 @@ class RolePermissionSeeder extends Seeder
                 ],
             ],
             [
-                'group_name' => 'Email Settings',
-                'permissions' => [
-                    'view email settings',
-                    'create email settings',
-                    'edit email settings',
-                    'delete email settings',
-                    'toggle status email settings',
-                ],
-            ],
-            [
-                'group_name' => 'User',
-                'permissions' => [
-                    'view user',
-                    'create user',
-                    'show user',
-                    'edit user',
-                    'delete user',
-                ],
-            ],
-            [
                 'group_name' => 'Staff',
                 'permissions' => [
                     'view staff',
@@ -67,13 +53,34 @@ class RolePermissionSeeder extends Seeder
                 ],
             ],
             [
-                'group_name' => 'Categories',
+                'group_name' => 'Student',
                 'permissions' => [
-                    'view categories',
-                    'show categories',
-                    'edit categories',
-                    'delete categories',
-                    'create categories',
+                    'view student',
+                    'create student',
+                    'show student',
+                    'edit student',
+                    'delete student',
+                ],
+            ],
+            [
+                'group_name' => 'Fee Waiver',
+                'permissions' => [
+                    'view fee-waiver',
+                    'create fee-waiver',
+                    'show fee-waiver',
+                    'edit fee-waiver',
+                    'delete fee-waiver',
+                ],
+            ],
+            [
+                'group_name' => 'Fee',
+                'permissions' => [
+                    'view fee',
+                    'create fee',
+                    'show fee',
+                    'edit fee',
+                    'delete fee',
+                    'fee collection',
                 ],
             ],
             [
@@ -83,36 +90,11 @@ class RolePermissionSeeder extends Seeder
                 ],
             ],
             [
-                'group_name' => 'Log',
+                'group_name' => 'Setting',
                 'permissions' => [
-                    'view log',
-                    'show log',
-                    'delete log',
-                    'download log',
-                ],
-            ],
-            [
-                'group_name' => 'Activity Logs',
-                'permissions' => [
-                    'view activity logs',
-                    'show activity logs',
-                    'delete activity logs',
-                ],
-            ],
-            [
-                'group_name' => 'Tags',
-                'permissions' => [
-                    'view tag',
-                    'show tag',
-                    'edit tag',
-                    'delete tag',
-                    'create tag',
-                ],
-            ],
-            [
-                'group_name' => 'Banners',
-                'permissions' => [
-                    'view banner',
+                    'view setup',
+                    'view setting',
+                    'update setting',
                 ],
             ],
 

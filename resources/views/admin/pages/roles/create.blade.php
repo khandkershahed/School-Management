@@ -1,4 +1,6 @@
 <x-admin-app-layout :title="'Role Add'">
+<div class="app-content">
+        <div class="container-fluid mt-3">
     <div class="card card-flush">
         <div class="card-header">
             <div class="card-title"></div>
@@ -90,5 +92,7 @@
 
         </form>
 
+    </div>
+     </div>
     </div>
 </x-admin-app-layout>

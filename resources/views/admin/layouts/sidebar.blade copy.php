@@ -14,13 +14,11 @@
                             'title' => 'Dashboard',
                             'icon' => 'fa-solid fa-home text-info',
                             'route' => 'admin.dashboard',
-                            'permissions' => ['view dashboard'],  // Add permissions for this menu item
                             'routes' => [],
                         ],
                         [
                             'title' => 'Student Management',
                             'icon' => 'fa-solid fa-users text-info',
-                            'permissions' => ['view student'],  // Add permissions for this menu item
                             'routes' => [
                                 'admin.students.index',
                                 'admin.education-medium.index',
@@ -28,9 +26,17 @@
                                 'admin.education-medium.edit',
                             ],
                             'subMenu' => [
+                                // [
+                                //     'title' => 'Education Medium',
+                                //     'routes' => [
+                                //         'admin.education-medium.index',
+                                //         'admin.education-medium.create',
+                                //         'admin.education-medium.edit',
+                                //     ],
+                                //     'route' => 'admin.education-medium.index',
+                                // ],
                                 [
                                     'title' => 'Students List',
-                                    'permissions' => ['view student'],  // Permission for sub-menu
                                     'routes' => [
                                         'admin.students.index',
                                         'admin.students.create',
@@ -43,23 +49,27 @@
                         [
                             'title' => 'Fee Management',
                             'icon' => 'fa-solid fa-wallet text-info',
-                            'permissions' => ['view fee'],  // Add permissions for this menu item
                             'routes' => [
                                 'admin.fees.index',
                                 'admin.fees.create',
                                 'admin.fees.edit',
+                                'admin.student-fee.index',
+                                'admin.student-fee.create',
+                                'admin.student-fee.edit',
+                                'admin.fee-waiver.index',
+                                'admin.students.show',
+                                'admin.invoice.list',
                             ],
                             'subMenu' => [
                                 [
                                     'title' => 'All Fees',
-                                    'permissions' => ['view fee'],  // Permission for sub-menu
                                     'routes' => ['admin.fees.index', 'admin.fees.create', 'admin.fees.edit'],
                                     'route' => 'admin.fees.index',
                                 ],
                                 [
                                     'title' => 'Fee Waiver',
-                                    'permissions' => ['view fee-waiver'],  // Permission for sub-menu
                                     'routes' => [
+                                        'admin.students.show',
                                         'admin.fee-waiver.index',
                                         'admin.fee-waiver.create',
                                         'admin.fee-waiver.edit',
@@ -68,7 +78,6 @@
                                 ],
                                 [
                                     'title' => 'Student Fee Collection',
-                                    'permissions' => ['fee collection'],  // Permission for sub-menu
                                     'routes' => [
                                         'admin.student-fee.index',
                                         'admin.student-fee.create',
@@ -78,16 +87,15 @@
                                 ],
                                 [
                                     'title' => 'Invoice List',
-                                    'permissions' => ['view fee'],  // Permission for sub-menu
                                     'routes' => ['admin.invoice.list'],
                                     'route' => 'admin.invoice.list',
                                 ],
                             ],
                         ],
+
                         [
                             'title' => 'Reports',
-                            'icon' => 'fa-solid fa-chart-line text-info',
-                            'permissions' => ['view report'],  // Add permissions for this menu item
+                            'icon' => 'fa-solid fa-wallet text-info',
                             'routes' => [
                                 'admin.fee-reports',
                                 'admin.report.studentinvoice',
@@ -97,33 +105,35 @@
                                 'admin.report.customreport',
                             ],
                             'subMenu' => [
+                                // [
+                                //     'title' => 'Report Dashboard',
+                                //     'routes' => [
+                                //         'admin.fee-reports',
+                                //     ],
+                                //     'route' => 'admin.fee-reports',
+                                // ],
                                 [
                                     'title' => 'Student Invoice Report',
-                                    'permissions' => ['view report'],  // Permission for sub-menu
                                     'routes' => ['admin.report.studentinvoice'],
                                     'route' => 'admin.report.studentinvoice',
                                 ],
                                 [
                                     'title' => 'Accounting Balance Report',
-                                    'permissions' => ['view report'],  // Permission for sub-menu
                                     'routes' => ['admin.report.accountingbalance'],
                                     'route' => 'admin.report.accountingbalance',
                                 ],
                                 [
                                     'title' => 'Due Fee Report',
-                                    'permissions' => ['view report'],  // Permission for sub-menu
                                     'routes' => ['admin.report.duefee'],
                                     'route' => 'admin.report.duefee',
                                 ],
                                 [
                                     'title' => 'Custom Report',
-                                    'permissions' => ['view report'],  // Permission for sub-menu
                                     'routes' => ['admin.report.customreport'],
                                     'route' => 'admin.report.customreport',
                                 ],
                                 [
                                     'title' => 'Income Report',
-                                    'permissions' => ['view report'],  // Permission for sub-menu
                                     'routes' => ['admin.report.income'],
                                     'route' => 'admin.report.income',
                                 ],
@@ -132,7 +142,6 @@
                         [
                             'title' => 'Staff Management',
                             'icon' => 'fa-solid fa-users text-info',
-                            'permissions' => ['view staff'],  // Add permissions for this menu item
                             'routes' => [
                                 'admin.staff.index',
                                 'admin.staff.create',
@@ -147,19 +156,16 @@
                             'subMenu' => [
                                 [
                                     'title' => 'All Staffs',
-                                    'permissions' => ['view staff'],  // Permission for sub-menu
                                     'routes' => ['admin.staff.index', 'admin.staff.create', 'admin.staff.edit'],
                                     'route' => 'admin.staff.index',
                                 ],
                                 [
                                     'title' => 'Role Manage',
-                                    'permissions' => ['view role'],  // Permission for sub-menu
                                     'routes' => ['admin.role.index', 'admin.role.create', 'admin.role.edit'],
                                     'route' => 'admin.role.index',
                                 ],
                                 [
                                     'title' => 'Permissions',
-                                    'permissions' => ['view permission'],  // Permission for sub-menu
                                     'routes' => [
                                         'admin.permission.index',
                                         'admin.permission.create',
@@ -172,22 +178,21 @@
                         [
                             'title' => 'Setup',
                             'icon' => 'fa-solid fa-gear text-info',
-                            'permissions' => ['view setup'],  // Add permissions for this menu item
                             'routes' => [
                                 'admin.settings.index',
+                                'admin.email-settings.index',
                                 'admin.email-settings.index',
                                 'admin.database.backup',
                             ],
                             'subMenu' => [
                                 [
                                     'title' => 'Website Setting',
-                                    'permissions' => ['update setting'],  // Permission for sub-menu
                                     'routes' => ['admin.settings.index'],
                                     'route' => 'admin.settings.index',
                                 ],
+
                                 [
                                     'title' => 'Database Backup',
-                                    'permissions' => ['download backup'],  // Permission for sub-menu
                                     'routes' => ['admin.database.backup'],
                                     'route' => 'admin.database.backup',
                                 ],
@@ -197,55 +202,51 @@
                 @endphp
 
                 @foreach ($menuItems as $item)
-                    @can($item['permissions']) <!-- Check permission dynamically for menu item -->
-                        <li class="nav-item {{ Route::is(...$item['routes'] ?? []) ? 'menu-open' : '' }}">
-                            <a href="{{ isset($item['route']) ? route($item['route']) : 'javascript:void(0)' }}"
-                                class="nav-link {{ Route::is($item['route'] ?? '') ? 'active' : '' }}">
-                                <i class="nav-icon {{ $item['icon'] ?? 'fa-solid fa-gauge-simple-high' }}"></i>
-                                <p>
-                                    {{ $item['title'] }}
-                                    @if (!empty($item['subMenu']))
-                                        <i class="nav-arrow fa-solid fa-chevron-right"></i>
-                                    @endif
-                                </p>
-                            </a>
-                            @if (!empty($item['subMenu']))
-                                <ul class="nav nav-treeview">
-                                    @foreach ($item['subMenu'] as $subItem)
-                                        @can($subItem['permissions']) <!-- Check permission dynamically for sub-menu -->
-                                            <li class="nav-item {{ Route::is(...$subItem['routes'] ?? []) ? 'menu-open' : '' }}">
-                                                <a href="{{ isset($subItem['route']) ? route($subItem['route']) : 'javascript:void(0)' }}"
-                                                    class="nav-link {{ Route::is($subItem['route'] ?? '') ? 'active' : '' }}">
-                                                    <i class="nav-icon {{ $subItem['icon'] ?? 'fa-solid fa-arrow-right-long' }}"></i>
-                                                    <p>
-                                                        {{ $subItem['title'] }}
-                                                        @if (!empty($subItem['subMenu']))
-                                                            <i class="nav-arrow fa-solid fa-chevron-right"></i>
-                                                        @endif
-                                                    </p>
-                                                </a>
+                    <li class="nav-item {{ Route::is(...$item['routes'] ?? []) ? 'menu-open' : '' }}">
+                        <a href="{{ isset($item['route']) ? route($item['route']) : 'javascript:void(0)' }}"
+                            class="nav-link {{ Route::is($item['route'] ?? '') ? 'active' : '' }}">
+                            <i class="nav-icon {{ $item['icon'] ?? 'fa-solid fa-gauge-simple-high' }}"></i>
+                            <p>
+                                {{ $item['title'] }}
+                                @if (!empty($item['subMenu']))
+                                    <i class="nav-arrow fa-solid fa-chevron-right"></i>
+                                @endif
+                            </p>
+                        </a>
+                        @if (!empty($item['subMenu']))
+                            <ul class="nav nav-treeview">
+                                @foreach ($item['subMenu'] as $subItem)
+                                    <li
+                                        class="nav-item {{ Route::is(...$subItem['routes'] ?? []) ? 'menu-open' : '' }}">
+                                        <a href="{{ isset($subItem['route']) ? route($subItem['route']) : 'javascript:void(0)' }}"
+                                            class="nav-link {{ Route::is($subItem['route'] ?? '') ? 'active' : '' }}">
+                                            <i
+                                                class="nav-icon {{ $subItem['icon'] ?? 'fa-solid fa-arrow-right-long' }}"></i>
+                                            <p>
+                                                {{ $subItem['title'] }}
                                                 @if (!empty($subItem['subMenu']))
-                                                    <ul class="nav nav-treeview">
-                                                        @foreach ($subItem['subMenu'] as $subSubItem)
-                                                            @can($subSubItem['permissions']) <!-- Check permission for nested sub-menu -->
-                                                                <li class="nav-item">
-                                                                    <a href="{{ isset($subSubItem['route']) ? route($subSubItem['route']) : 'javascript:void(0)' }}"
-                                                                        class="nav-link">
-                                                                        <i class="nav-icon fa-solid fa-circle"></i>
-                                                                        <p>{{ $subSubItem['title'] }}</p>
-                                                                    </a>
-                                                                </li>
-                                                            @endcan
-                                                        @endforeach
-                                                    </ul>
+                                                    <i class="nav-arrow fa-solid fa-chevron-right"></i>
                                                 @endif
-                                            </li>
-                                        @endcan
-                                    @endforeach
-                                </ul>
-                            @endif
-                        </li>
-                    @endcan
+                                            </p>
+                                        </a>
+                                        @if (!empty($subItem['subMenu']))
+                                            <ul class="nav nav-treeview">
+                                                @foreach ($subItem['subMenu'] as $subSubItem)
+                                                    <li class="nav-item">
+                                                        <a href="{{ isset($subSubItem['route']) ? route($subSubItem['route']) : 'javascript:void(0)' }}"
+                                                            class="nav-link">
+                                                            <i class="nav-icon fa-solid fa-circle"></i>
+                                                            <p>{{ $subSubItem['title'] }}</p>
+                                                        </a>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        @endif
+                                    </li>
+                                @endforeach
+                            </ul>
+                        @endif
+                    </li>
                 @endforeach
             </ul>
         </nav>

@@ -144,10 +144,7 @@ class StaffController extends Controller
             'photo'       => $uploadedFiles['photo']['status'] == 1 ? $uploadedFiles['photo']['file_path'] : $staff->photo,
             'password'    => $request->password ? Hash::make($request->password) : $staff->password,
         ]);
-
-        if ($request->roles) {
             $staff->syncRoles($request->roles);
-        }
 
         event(new ActivityLogged('Staff updated', $staff));
 

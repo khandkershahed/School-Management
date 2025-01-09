@@ -1,4 +1,6 @@
 <x-admin-app-layout :title="'Role Edit'">
+<div class="app-content">
+        <div class="container-fluid mt-3">
     <div class="card card-flush">
         <!--begin::Form-->
         <form class="form" action="{{ route('admin.role.update',$role->id) }}" method="POST">
@@ -88,5 +90,7 @@
             <!--end::Actions-->
         </form>
         <!--end::Form-->
+    </div>
+     </div>
     </div>
 </x-admin-app-layout>

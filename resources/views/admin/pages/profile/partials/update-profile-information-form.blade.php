@@ -65,7 +65,7 @@
                     <div class="d-flex fv-row">
                         <div class="form-check form-check-custom form-check-solid">
                             <input class="form-check-input @error('roles') is-invalid @enderror" id="role-name-{{ $role->id }}" type="checkbox" name="roles[]"
-                                :value="$role->name" @checked(in_array($role->name, old('roles', $user->getRoleNames()->toArray())))>
+                                value="{{ $role->name }}" @checked(in_array($role->name, old('roles', $user->getRoleNames()->toArray())))>
                             </input>
                             <x-admin.label for="role-name-{{ $role->id }}" class="form-check-label ms-2 mt-1">
                                 {{ $role->name }}
