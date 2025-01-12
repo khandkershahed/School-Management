@@ -344,7 +344,7 @@
                                             downloadFile(data.officePdfUrl, "office_receipt.pdf");
                                             setTimeout(function() {
                                                 location.reload(); // Reload the page after a brief delay
-                                        }, 20000);
+                                        }, 2000);
                                         });
 
 
