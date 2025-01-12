@@ -378,7 +378,7 @@ class StudentFeeController extends Controller
                 'student_id' => 'required|exists:users,id',
                 'year' => 'required|string',
                 'month' => 'required|string',
-                'fee_id' => 'nullable|array', // For non-monthly fees
+                'fee_id' => 'required|array', // For non-monthly fees
                 'fee_id.*' => 'exists:fees,id',
                 'months' => 'nullable|array', // For monthly fees
                 'months.*' => 'nullable|array', // For selecting months per fee
@@ -847,10 +847,15 @@ class StudentFeeController extends Controller
         }
 
         // Get the student fees based on medium and class
+        // $fees = Fee::where('medium', $student->medium)
+        //     ->whereJsonContains('class', $student->class)
+        //     ->where('status', 'active')
+        //     ->where('fee_type', 'yearly')
+        //     ->get();
         $fees = Fee::where('medium', $student->medium)
             ->whereJsonContains('class', $student->class)
             ->where('status', 'active')
-            ->where('fee_type', 'yearly')
+            ->whereNot('fee_type', 'monthly')
             ->get();
         $monthly_fees = Fee::where('medium', $student->medium)
             ->whereJsonContains('class', $student->class)
