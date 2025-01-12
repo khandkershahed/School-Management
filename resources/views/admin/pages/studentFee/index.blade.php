@@ -339,11 +339,16 @@
                                 if (data.success) {
                                     Swal.fire("Paid!", "Your payment has been processed successfully.", "success")
                                         .then(() => {
-                                            // Trigger both PDF downloads
+                                            // First, trigger both PDF downloads
                                             downloadFile(data.studentPdfUrl, "student_receipt.pdf");
                                             downloadFile(data.officePdfUrl, "office_receipt.pdf");
+
+                                            // After download, reload the page
+                                            setTimeout(function() {
+                                                location.reload(); // Reload the page after a brief delay
+                                            }, 3000); // Delay (in milliseconds) before reloading to give time for the download
                                         });
-                                        window.location.reload();
+
                                 } else {
                                     Swal.fire("Error!", data.message);
                                 }
@@ -365,5 +370,6 @@
                 a.click();
             }
         </script>
+
     @endpush
 </x-admin-app-layout>

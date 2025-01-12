@@ -58,13 +58,13 @@
                                                     <a href="javascript:void(0);"
                                                         class="btn btn-sm btn-warning text-white toltip mb-2"
                                                         data-tooltip="View" data-bs-toggle="modal"
-                                                        data-bs-target="#pdfModal"
+                                                        data-bs-target="#pdfModal_{{ $invoice->id }}"
                                                         data-pdf-url="{{ asset('storage/' . $invoice->invoice) }}">
                                                         <i class="fa-solid fa-expand"></i>
                                                     </a>
 
                                                     <!-- Modal for PDF -->
-                                                    <div class="modal fade" id="pdfModal" tabindex="-1"
+                                                    <div class="modal fade" id="pdfModal_{{ $invoice->id }}" tabindex="-1"
                                                         aria-labelledby="pdfModalLabel" aria-hidden="true">
                                                         <div class="modal-dialog modal-lg">
                                                             <div class="modal-content">
