@@ -77,7 +77,7 @@
                                                                 </div>
                                                                 <div class="modal-body">
                                                                     <!-- PDF Embed (iframe) -->
-                                                                    <iframe id="pdfFrame"
+                                                                    <iframe id="pdfFrame" src="{{ asset('storage/' . $invoice->invoice) }}"
                                                                         style="width: 100%; height: 500px;"
                                                                         frameborder="0"></iframe>
                                                                 </div>
