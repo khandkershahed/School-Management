@@ -16,7 +16,9 @@ use Illuminate\Support\Facades\DB;
 use Rmunate\Utilities\SpellNumber;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class StudentFeeController extends Controller
 {
@@ -374,7 +376,7 @@ class StudentFeeController extends Controller
         DB::beginTransaction();
         try {
             // Validate the incoming request
-            $request->validate([
+            $validator = Validator::make($request->all(), [
                 'student_id' => 'required|exists:users,id',
                 'year' => 'required|string',
                 'month' => 'required|string',
@@ -385,7 +387,12 @@ class StudentFeeController extends Controller
                 'waiver_amount' => 'nullable|array',
                 'waiver_amount.*' => 'numeric',
             ]);
-
+            if ($validator->fails()) {
+                // Flash only the error messages
+                // Session::flash('error', $validator->errors()->all());
+                return response()->json(['success' => false, 'message' =>  $validator->errors()->all()]);
+                // return redirect()->back()->withErrors($validator)->withInput();
+            }
             // Get the student
             $student = User::findOrFail($request->student_id);
 

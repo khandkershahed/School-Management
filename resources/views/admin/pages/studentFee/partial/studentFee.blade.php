@@ -115,7 +115,6 @@
                             $isMonthlyFee = $monthly_fee->fee_type === 'monthly';
                             $paidMonths = $monthly_fee->paidMonths($student->id);
                         @endphp
-                        <div class="col-lg-6 col-md-6">
                             <div class="form-check ps-0 border bg-light-primary p-3 rounded-2 text-center text-info">
                                 <label class="form-check-label mt-2" for="fee_id_{{ $monthly_fee->id }}">
                                     @if ($isMonthlyFee == false)
@@ -144,7 +143,7 @@
                                     <p class="mb-2 text-center"><strong>Select Months:</strong></p>
                                     <div class="row">
                                         @foreach (['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] as $index => $month)
-                                            <div class="col-6 mb-2">
+                                            <div class="col-lg-6 mb-2">
                                                 <div class="form-check ps-1">
                                                     <label class="form-check-label mt-2"
                                                         for="month_{{ $monthly_fee->id }}_{{ $index + 1 }}">
@@ -165,7 +164,6 @@
                                     </div>
                                 </div>
                             @endif
-                        </div>
                     @endforeach
                 </div>
             </div>
