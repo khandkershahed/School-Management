@@ -346,7 +346,7 @@
                                             // After download, reload the page
                                             setTimeout(function() {
                                                 location.reload(); // Reload the page after a brief delay
-                                            }, 3000); // Delay (in milliseconds) before reloading to give time for the download
+                                        }, 3000); // Delay (in milliseconds) before reloading to give time for the download
                                         });
 
                                 } else {

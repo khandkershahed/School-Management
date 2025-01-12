@@ -112,7 +112,7 @@
         <table class="info-table">
             <tr>
                 <td><strong>Receipt SN:</strong> #{{ $invoiceNumber }}</td>
-                <td><strong>Payment Received:</strong> {{ date('d M, Y') }}</td>
+                <td><strong>Student ID:</strong> {{ $student->student_id }}</td>
             </tr>
             <tr>
                 <td><strong>Receipt Created:</strong> {{ date('d M, Y') }}</td>
