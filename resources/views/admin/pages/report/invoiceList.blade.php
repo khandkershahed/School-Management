@@ -55,27 +55,35 @@
                                                         data-tooltip="Download Invoice">
                                                         <i class="fa-solid fa-file-download"></i>
                                                     </a>
-                                                    <a href="{{ asset('storage/' . $invoice->invoice) }}"
+                                                    <a href="javascript:void(0);"
                                                         class="btn btn-sm btn-warning text-white toltip mb-2"
-                                                        data-tooltip="View">
+                                                        data-tooltip="View" data-bs-toggle="modal"
+                                                        data-bs-target="#pdfModal"
+                                                        data-pdf-url="{{ asset('storage/' . $invoice->invoice) }}">
                                                         <i class="fa-solid fa-expand"></i>
                                                     </a>
-                                                    <div class="modal fade" id="excelImport" tabindex="-1"
-                                                        aria-labelledby="excelImportLabel" aria-hidden="true">
-                                                        <div class="modal-dialog">
+
+                                                    <!-- Modal for PDF -->
+                                                    <div class="modal fade" id="pdfModal" tabindex="-1"
+                                                        aria-labelledby="pdfModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog modal-lg">
                                                             <div class="modal-content">
                                                                 <div class="modal-header bg-dark text-white">
-                                                                    <h5 class="modal-title" id="excelImportLabel">Import
-                                                                        Excel</h5>
+                                                                    <h5 class="modal-title" id="pdfModalLabel">View
+                                                                        Invoice PDF</h5>
                                                                     <button type="button" class="btn-close"
                                                                         data-bs-dismiss="modal"
                                                                         aria-label="Close"></button>
                                                                 </div>
                                                                 <div class="modal-body">
-
+                                                                    <!-- PDF Embed (iframe) -->
+                                                                    <iframe id="pdfFrame"
+                                                                        style="width: 100%; height: 500px;"
+                                                                        frameborder="0"></iframe>
                                                                 </div>
                                                                 <div class="modal-footer">
-
+                                                                    <button type="button" class="btn btn-secondary"
+                                                                        data-bs-dismiss="modal">Close</button>
                                                                 </div>
                                                             </div>
                                                         </div>
