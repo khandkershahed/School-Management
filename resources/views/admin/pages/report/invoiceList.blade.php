@@ -55,7 +55,7 @@
                                                         data-tooltip="Download Invoice">
                                                         <i class="fa-solid fa-file-download"></i>
                                                     </a>
-                                                    <a href="#"
+                                                    <a href="{{ asset('storage/' . $invoice->invoice) }}"
                                                         class="btn btn-sm btn-warning text-white toltip mb-2"
                                                         data-tooltip="View">
                                                         <i class="fa-solid fa-expand"></i>
@@ -75,7 +75,7 @@
 
                                                                 </div>
                                                                 <div class="modal-footer">
-                                                                    
+
                                                                 </div>
                                                             </div>
                                                         </div>

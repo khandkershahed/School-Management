@@ -343,8 +343,9 @@
                                             downloadFile(data.studentPdfUrl, "student_receipt.pdf");
                                             downloadFile(data.officePdfUrl, "office_receipt.pdf");
                                         });
+                                        window.location.reload();
                                 } else {
-                                    Swal.fire("Error!", "There was an issue with your payment.", "error");
+                                    Swal.fire("Error!", data.message);
                                 }
                             })
                             .catch(error => {
