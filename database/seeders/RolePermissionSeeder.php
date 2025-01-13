@@ -23,6 +23,12 @@ class RolePermissionSeeder extends Seeder
                 ],
             ],
             [
+                'group_name' => 'Report',
+                'permissions' => [
+                    'view report',
+                ],
+            ],
+            [
                 'group_name' => 'Role',
                 'permissions' => [
                     'view role',
