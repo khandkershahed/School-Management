@@ -24,76 +24,6 @@
                                     </div>
                                 </div>
 
-                                <div class="tab-pane fade" id="footer" role="tabpanel">
-                                    <div class="row">
-                                        <div class="col-lg-12 footer_container">
-                                            @include('admin.pages.setting.partials.footer')
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="tab-pane fade" id="businessHours" role="tabpanel">
-                                    <div class="row">
-                                        <div class="col-lg-12 business_hours_container">
-                                            @include('admin.pages.setting.partials.business_hours')
-                                        </div>
-                                    </div>
-                                </div>
-                                {{-- <div class="tab-pane fade" id="companies" role="tabpanel">
-                                    <div class="row">
-                                        <div class="col-lg-12 company_container">
-                                            @include('admin.pages.setting.partials.companies')
-                                        </div>
-                                    </div>
-                                </div> --}}
-
-                                <div class="tab-pane fade" id="services" role="tabpanel">
-                                    <div class="row">
-                                        <div class="col-lg-12 service_container">
-                                            {{-- @include('admin.pages.setting.partials.services') --}}
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="tab-pane fade" id="products" role="tabpanel">
-                                    <div class="row">
-                                        <div class="col-lg-12 product_container">
-                                            {{-- @include('admin.pages.setting.partials.products') --}}
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="tab-pane fade" id="galleries" role="tabpanel">
-                                    <div class="row">
-                                        <div class="col-lg-12 gallery_container">
-                                            {{-- @include('admin.pages.setting.partials.galleries') --}}
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="tab-pane fade" id="banner" role="tabpanel">
-                                    <div class="row">
-                                        <div class="col-lg-12 banner_container">
-                                            {{-- @include('admin.pages.setting.partials.banner') --}}
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="tab-pane fade" id="testimonials" role="tabpanel">
-                                    <div class="row">
-                                        <div class="col-lg-12 testimonial_container">
-                                            {{-- @include('admin.pages.setting.partials.testimonials') --}}
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="tab-pane fade" id="seo" role="tabpanel">
-                                    <div class="row">
-                                        <div class="col-lg-12 seo_container">
-                                            @include('admin.pages.setting.partials.seo')
-                                        </div>
-                                    </div>
-                                </div>
 
                                 <div class="tab-pane fade" id="socialLinks" role="tabpanel">
                                     <div class="row">
@@ -103,36 +33,6 @@
                                     </div>
                                 </div>
 
-                                <div class="tab-pane fade" id="privacy" role="tabpanel">
-                                    <div class="row">
-                                        <div class="col-lg-12 privacy_container">
-                                            {{-- @include('admin.pages.setting.partials.privacy') --}}
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="tab-pane fade" id="terms" role="tabpanel">
-                                    <div class="row">
-                                        <div class="col-lg-12 terms_container">
-                                            {{-- @include('admin.pages.setting.partials.terms') --}}
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="tab-pane fade" id="fonts" role="tabpanel">
-                                    <div class="row">
-                                        <div class="col-lg-12 fonts_container">
-                                            {{-- @include('admin.pages.setting.partials.fonts') --}}
-                                        </div>
-                                    </div>
-                                </div>
-                                {{-- <div class="tab-pane fade" id="kt_vtab_pane_15" role="tabpanel">
-                                        <div class="row">
-                                            <div class="col-lg-12 terms_container">
-                                                @include('admin.pages.setting.partials.terms')
-                                            </div>
-                                        </div>
-                                </div> --}}
                                 <div class="tab-pane fade" id="advance" role="tabpanel">
                                     <div class="row">
                                         <div class="col-lg-12 advance_container">

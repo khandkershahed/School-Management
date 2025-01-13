@@ -9,21 +9,21 @@
     <div class="fv-row col-lg-6">
         <div class="mb-3">
             <x-admin.label class="fw-semibold fs-6 mb-2">Site Title</x-admin.label>
-            <x-admin.input type="text" name="site_title" value="{{ optional($setting)->site_title }}"
+            <x-admin.input type="text" name="seo_title" value="{{ optional($setting)->seo_title }}"
                 class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Site Title" />
         </div>
     </div>
-    <div class="fv-row col-lg-6">
+    {{-- <div class="fv-row col-lg-6">
         <div class="mb-3">
             <x-admin.label class="fw-semibold fs-6 mb-2">Site URL</x-admin.label>
             <x-admin.input type="text" name="site_url" value="{{ optional($setting)->site_url }}"
                 class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Site URL" />
         </div>
-    </div>
+    </div> --}}
     <div class="fv-row col-lg-6">
         <div class="mb-3">
             <x-admin.label class="fw-semibold fs-6 mb-2">Meta Keyword</x-admin.label>
-            <x-admin.input type="text" name="meta_keyword" value="{{ optional($setting)->meta_keyword }}"
+            <x-admin.input type="text" name="seo_keywords" value="{{ optional($setting)->seo_keywords }}"
                 class="form-control form-control-solid mb-3 mb-lg-0"
                 placeholder="keyword one, keyword two, keyword three, ...." />
         </div>

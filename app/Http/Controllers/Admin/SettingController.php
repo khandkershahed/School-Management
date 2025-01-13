@@ -117,11 +117,8 @@ class SettingController extends Controller
 
             // Check if validation fails
             if ($validator->fails()) {
-                // Flash error messages to session
                 Session::flash('error', $validator->errors()->all());
-
-                // Redirect back with errors and old input
-                return redirect()->back()->withErrors($validator)->withInput();
+                return redirect()->back()->withInput();
             }
 
             $webSetting = Setting::firstOrNew([]);

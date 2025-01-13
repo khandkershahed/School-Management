@@ -9,9 +9,9 @@
     <div class="row p-3 align-items-center">
         <div class="col-lg-3">
             <div class="mb-3">
-                <x-admin.label for="website_name" class="form-label">{{ __('Website Name') }}
+                <x-admin.label for="site_name" class="form-label">{{ __('Website Name') }}
                 </x-admin.label>
-                <x-admin.input id="website_name" type="text" name="website_name" :value="old('website_name', optional($setting)->website_name)"
+                <x-admin.input id="site_name" type="text" name="site_name" :value="old('site_name', optional($setting)->site_name)"
                     placeholder="Site Name"></x-admin.input>
             </div>
         </div>
@@ -63,20 +63,20 @@
 
         <div class="col-lg-3">
             <div class="mb-3">
-                <x-admin.label for="primary_phone" class="form-label">{{ __('Primary Phone') }}
+                <x-admin.label for="phone_one" class="form-label">{{ __('Primary Phone') }}
                 </x-admin.label>
 
-                <x-admin.input id="primary_phone" type="text" name="primary_phone" :value="old('primary_phone', optional($setting)->primary_phone)"
+                <x-admin.input id="phone_one" type="text" name="phone_one" :value="old('phone_one', optional($setting)->phone_one)"
                     placeholder="Primary phone"></x-admin.input>
             </div>
         </div>
 
         <div class="col-lg-3">
             <div class="mb-3">
-                <x-admin.label for="alternative_phone" class="form-label">{{ __('Alternative Phone') }}
+                <x-admin.label for="phone_two" class="form-label">{{ __('Alternative Phone') }}
                 </x-admin.label>
 
-                <x-admin.input id="alternative_phone" type="text" name="alternative_phone" :value="old('alternative_phone', optional($setting)->alternative_phone)"
+                <x-admin.input id="phone_two" type="text" name="phone_two" :value="old('phone_two', optional($setting)->phone_two)"
                     placeholder="Alternative phone"></x-admin.input>
             </div>
         </div>
@@ -98,12 +98,12 @@
         </div>
         <div class="col-lg-4">
             <div class="mb-3">
-                <x-admin.label for="site_logo_white"
+                <x-admin.label for="site_white_logo"
                     class="form-label">{{ __('Site Logo White (For Colorful Background)') }}
                 </x-admin.label>
 
-                <x-admin.file-input id="site_logo_white" name="site_logo_white" :source="asset('storage/' . optional($setting)->site_logo_white)"
-                    :value="old('site_logo_white', optional($setting)->site_logo_white)"></x-admin.file-input>
+                <x-admin.file-input id="site_white_logo" name="site_white_logo" :source="asset('storage/' . optional($setting)->site_white_logo)"
+                    :value="old('site_white_logo', optional($setting)->site_white_logo)"></x-admin.file-input>
             </div>
         </div>
         <div class="col-lg-4">
