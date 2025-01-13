@@ -1,6 +1,6 @@
 <ul class="nav nav-tabs nav-pills flex-row border-0 flex-md-column w-100" role="tablist">
     <li class="nav-item w-100 me-0" role="presentation">
-        <a class="nav-link active w-100 btn btn-flex btn-active-info fs-6 fw-normal" data-bs-toggle="tab"
+        <a class="nav-link text-start active w-100 btn btn-flex btn-active-info fs-6 fw-normal" data-bs-toggle="tab"
             href="#generalInfo" aria-selected="false" role="tab" tabindex="-1">
             <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"
                 width="20" height="20" x="0" y="0" viewBox="0 0 512 512"
@@ -36,7 +36,7 @@
             <span class="ps-2">General Information</span>
         </a>
     </li>
-    
+
     <li class="nav-item w-100 " role="presentation">
         <a class="nav-link w-100 btn btn-flex btn-active-info fs-6 fw-normal text-start text-black" data-bs-toggle="tab"
             href="#socialLinks" aria-selected="false" role="tab" tabindex="-1">
