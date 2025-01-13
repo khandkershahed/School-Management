@@ -22,8 +22,8 @@ return new class extends Migration
             $table->string('default_language', 50)->nullable();
             $table->string('default_currency', 100)->nullable();
             $table->string('currency_symbol', 10)->nullable();
-            $table->string('date_format', 50)->default('Y-m-d');
-            $table->string('time_format', 50)->default('H:i');
+            $table->string('date_format', 50)->default('Y-m-d')->nullable();
+            $table->string('time_format', 50)->default('H:i')->nullable();
 
             // Social Media
             $table->text('facebook_url')->nullable();
@@ -52,7 +52,7 @@ return new class extends Migration
             $table->string('contact_hours', 255)->nullable(); // e.g., "Mon-Fri, 9 AM - 5 PM"
 
             // Maintenance Mode
-            $table->boolean('maintenance_mode')->default(false);
+            $table->boolean('maintenance_mode')->default(false)->nullable();
             $table->string('system_timezone', 200)->nullable(); // e.g., UTC, EST
             $table->text('maintenance_message')->nullable();
             $table->longText('additional_script')->nullable();

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\Admin\SettingRequest;
 
 class SettingController extends Controller
@@ -28,6 +29,19 @@ class SettingController extends Controller
     {
 
         try {
+            $validator = Validator::make($request->all(), [
+                'student_id' => 'required|exists:users,id',
+                'year' => 'required|string',
+                'month' => 'required|string',
+                'fee_id' => 'required|array',
+                'waiver_amount' => 'nullable|array',
+            ]);
+            if ($validator->fails()) {
+                // Flash only the error messages
+                // Session::flash('error', $validator->errors()->all());
+                return response()->json(['success' => false, 'message' =>  $validator->errors()->all()]);
+                // return redirect()->back()->withErrors($validator)->withInput();
+            }
             $webSetting = Setting::firstOrNew([]);
 
             $files = [
@@ -140,7 +154,7 @@ class SettingController extends Controller
 
 
 
-            
+
 
 
 
