@@ -29,19 +29,101 @@ class SettingController extends Controller
     {
 
         try {
+
             $validator = Validator::make($request->all(), [
-                'student_id' => 'required|exists:users,id',
-                'year' => 'required|string',
-                'month' => 'required|string',
-                'fee_id' => 'required|array',
-                'waiver_amount' => 'nullable|array',
+                // General Settings
+                'site_name' => 'nullable|string|max:250', // Max length for site name
+                'site_motto' => 'nullable|string', // No specific length, just ensuring it's a string
+                'site_url' => 'nullable|url', // URL validation for the site URL
+                'address_line_one' => 'nullable|string',
+                'address_line_two' => 'nullable|string',
+                'default_language' => 'nullable|string|max:50', // Assuming 50 characters for language
+                'default_currency' => 'nullable|string|max:100',
+                'currency_symbol' => 'nullable|string|max:10',
+                'date_format' => 'nullable|string|max:50', // Example format: 'Y-m-d'
+                'time_format' => 'nullable|string|max:50', // Example format: 'H:i'
+
+                // Social Media URLs
+                'facebook_url' => 'nullable|url',
+                'twitter_url' => 'nullable|url',
+                'instagram_url' => 'nullable|url',
+                'linkedin_url' => 'nullable|url',
+                'youtube_url' => 'nullable|url',
+                'github_url' => 'nullable|url',
+                'portfolio_url' => 'nullable|url',
+                'fiverr_url' => 'nullable|url',
+                'upwork_url' => 'nullable|url',
+
+                // Logo & Favicon
+                'site_white_logo' => 'nullable|string|max:255', // File path or URL
+                'site_black_logo' => 'nullable|string|max:255', // File path or URL
+                'site_favicon' => 'nullable|string|max:255', // File path or URL
+
+                // Contact Information
+                'contact_email' => 'nullable|email|max:100',
+                'support_email' => 'nullable|email|max:100',
+                'info_email' => 'nullable|email|max:100',
+                'sales_email' => 'nullable|email|max:100',
+                'phone_one' => 'nullable|string|max:20', // Adjust length for phone numbers
+                'phone_two' => 'nullable|string|max:20',
+                'whatsapp_number' => 'nullable|string|max:20',
+                'contact_hours' => 'nullable|string|max:255', // E.g., "Mon-Fri, 9 AM - 5 PM"
+
+                // Maintenance Mode
+                'maintenance_mode' => 'nullable|boolean', // It should be either true or false
+                'system_timezone' => 'nullable|string|max:200', // E.g., 'UTC', 'EST'
+                'maintenance_message' => 'nullable|string',
+                'additional_script' => 'nullable|string',
+                'google_adsense' => 'nullable|string',
+                'google_tag_manager' => 'nullable|string',
+                'google_script' => 'nullable|string',
+                'google_business' => 'nullable|string',
+
+                // SEO Settings
+                'seo_title' => 'nullable|string|max:255',
+                'seo_keywords' => 'nullable|string|max:255',
+                'seo_meta_tags' => 'nullable|string',
+                'seo_description' => 'nullable|string',
+                'og_image' => 'nullable|string|max:255', // URL or file path
+                'og_title' => 'nullable|string|max:255',
+                'og_description' => 'nullable|string',
+                'canonical_url' => 'nullable|url',
+
+                // Advanced Settings
+                'theme_color' => 'nullable|string|max:50',
+                'dark_mode' => 'nullable|boolean',
+                'custom_css' => 'nullable|string',
+                'custom_js' => 'nullable|string',
+
+                // API Integration
+                'map_api_key' => 'nullable|string',
+                'payment_gateway_key' => 'nullable|string',
+
+                // Business Information
+                'company_name' => 'nullable|string|max:255',
+                'tax_number' => 'nullable|string|max:100',
+                'billing_address' => 'nullable|string',
+
+                // Service Info
+                'service_days' => 'nullable|string|max:255',
+                'service_time' => 'nullable|string|max:255',
+
+                // Meta Fields
+                'created_by' => 'nullable|exists:users,id', // Ensure created_by refers to a valid user ID
+                'updated_by' => 'nullable|exists:users,id', // Ensure updated_by refers to a valid user ID
+
+                // Timestamps (These can usually be skipped in validation, Laravel will handle them)
             ]);
+
+            // Check if validation fails
             if ($validator->fails()) {
-                // Flash only the error messages
-                // Session::flash('error', $validator->errors()->all());
-                return response()->json(['success' => false, 'message' =>  $validator->errors()->all()]);
-                // return redirect()->back()->withErrors($validator)->withInput();
+                // Flash error messages to session
+                Session::flash('error', $validator->errors()->all());
+
+                // Redirect back with errors and old input
+                return redirect()->back()->withErrors($validator)->withInput();
             }
+
             $webSetting = Setting::firstOrNew([]);
 
             $files = [
@@ -70,9 +152,9 @@ class SettingController extends Controller
 
             $setting = Setting::updateOrCreate([], [
                 'og_image'        => $uploadedFiles['og_image']['status']        == 1 ? $uploadedFiles['og_image']['file_path']   : $webSetting->og_image,
-                'site_white_logo' => $uploadedFiles['site_white_logo']['status'] == 1 ? $uploadedFiles['site_white_logo']['file_path']: $webSetting->site_white_logo,
-                'site_black_logo' => $uploadedFiles['site_black_logo']['status'] == 1 ? $uploadedFiles['site_black_logo']['file_path']: $webSetting->site_black_logo,
-                'site_favicon'    => $uploadedFiles['site_favicon']['status'] == 1 ? $uploadedFiles['site_favicon']['file_path']: $webSetting->site_favicon,
+                'site_white_logo' => $uploadedFiles['site_white_logo']['status'] == 1 ? $uploadedFiles['site_white_logo']['file_path'] : $webSetting->site_white_logo,
+                'site_black_logo' => $uploadedFiles['site_black_logo']['status'] == 1 ? $uploadedFiles['site_black_logo']['file_path'] : $webSetting->site_black_logo,
+                'site_favicon'    => $uploadedFiles['site_favicon']['status'] == 1 ? $uploadedFiles['site_favicon']['file_path'] : $webSetting->site_favicon,
 
                 // General Settings
                 'site_name'          => $request->site_name,
