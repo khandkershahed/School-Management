@@ -131,8 +131,23 @@ class StudentController extends Controller
             $fees = Fee::where('medium', $student->medium)
                 ->whereJsonContains('class', $student->class)
                 ->where('status', 'active')
+                ->where('fee_type', '!=' ,'yearly')
                 ->get();
-
+            if ($student->student_type == 'old') {
+                $package_fees = Fee::where('medium', $student->medium)
+                    ->whereJsonContains('class', $student->class)
+                    ->whereJsonContains('fee_package', 'session_charge')
+                    ->where('status', 'active')
+                    ->where('fee_type', 'yearly')->get();
+            } else {
+                // For new students: Include fees without 'admission_charge' and fees with NULL/empty 'fee_package'
+                $package_fees = Fee::where('medium', $student->medium)
+                    ->whereJsonContains('class', $student->class)
+                    ->whereJsonContains('fee_package', 'admission_charge')
+                    ->where('status', 'active')
+                    ->where('fee_type', 'yearly')->get();
+            }
+            $package = $student->student_type == "old" ? 'Session Charge' : 'Admission Charge';
             // Retrieve any waivers for the student
             $waivers = $student->waivers;
 
@@ -151,6 +166,8 @@ class StudentController extends Controller
                 'dueFees'       => $dueFees,
                 'waiversLookup' => $waiversLookup,
                 'fees'          => $fees,
+                'package'       => $package,
+                'package_fees'  => $package_fees,
             ];
 
             return view("admin.pages.students.show", $data);
@@ -290,27 +307,27 @@ class StudentController extends Controller
     public function fetchStudentData(Request $request)
     {
         $studentId = $request->student_id;
-            $pattern = '/^[MF]\d+$/';
-            if (preg_match($pattern, $studentId)) {
-                $student = User::where('student_id', $studentId)->first();
-                if (!$student) {
-                    return response()->json([
-                        'success' => false,
-                        'message' => 'No student found with the provided student_id.'
-                    ], 404);
-                }
-            } elseif (is_numeric($studentId)) {
-                // If only the numeric part is provided, search by the numeric part
-                $student = User::where('student_id', 'like', '%' . $studentId)->first();
-
-                // Check if the student exists
-                if (!$student) {
-                    return response()->json([
-                        'success' => false,
-                        'message' => 'No student found with the provided numeric part of student_id.'
-                    ], 404);
-                }
+        $pattern = '/^[MF]\d+$/';
+        if (preg_match($pattern, $studentId)) {
+            $student = User::where('student_id', $studentId)->first();
+            if (!$student) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No student found with the provided student_id.'
+                ], 404);
             }
+        } elseif (is_numeric($studentId)) {
+            // If only the numeric part is provided, search by the numeric part
+            $student = User::where('student_id', 'like', '%' . $studentId)->first();
+
+            // Check if the student exists
+            if (!$student) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No student found with the provided numeric part of student_id.'
+                ], 404);
+            }
+        }
 
         // Check if the student was found
         if ($student) {

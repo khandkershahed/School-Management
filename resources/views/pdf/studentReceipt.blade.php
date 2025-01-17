@@ -102,14 +102,14 @@
                 <td class="header-text">
                     <h1>Shamsul Hoque Khan School and College</h1>
                     <p>Paradogair, Matuail, Demra Dhaka -1362</p>
-                    <p>Email: info.shksc@gmail.com | Website: www.shksc.edu.bd/</p>
+                    <p>Email: info.shksc@gmail.com | Website: www.shksc.edu.bd</p>
                     <h2>PAYMENT RECEIPT (STUDENT COPY)</h2>
                 </td>
             </tr>
         </table>
 
         <!-- Receipt Info -->
-        <table class="info-table">
+        {{-- <table class="info-table">
             <tr>
                 <td><strong>Receipt SN:</strong> #{{ $invoiceNumber }}</td>
                 <td><strong>Student ID:</strong> {{ $student->student_id }}</td>
@@ -117,17 +117,25 @@
             <tr>
                 <td><strong>Receipt Created:</strong> {{ date('d M, Y') }}</td>
             </tr>
-        </table>
+
+        </table> --}}
 
         <!-- Student Info -->
         <table class="info-table" style="margin-top: 10px;">
+            <tr>
+                <td><strong>Receipt SN:</strong> #{{ $invoiceNumber }}</td>
+                <td><strong>Student ID:</strong> {{ $student->student_id }}</td>
+            </tr>
+            <tr>
+                <td><strong>Receipt Created:</strong> {{ date('d M, Y') }}</td>
+            </tr>
             <tr>
                 <td><strong>Name:</strong> {{ $student->name }}</td>
                 <td><strong>Roll:</strong> {{ $student->roll }}</td>
             </tr>
             <tr>
                 <td><strong>Medium:</strong> {{ $student->medium }}</td>
-                <td><strong>Class:</strong> {{ $student->class }}; <strong>Section:</strong> {{ ucfirst($student->section) }}</td>
+                <td><strong>Class:</strong> {{ $student->class }}</td>
             </tr>
             <tr>
                 <td><strong>Guardian Name:</strong> {{ $student->guardian_name }}</td>

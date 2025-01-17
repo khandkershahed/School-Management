@@ -34,60 +34,76 @@ class StudentFeeWaiverController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-{
-    // Validate the request
-    $validator = Validator::make($request->all(), [
-        'fee_id' => 'required|array',
-        'fee_id.*' => 'exists:fees,id',
-        'amount' => 'required|array',
-        'amount.*' => 'nullable|numeric|min:0',
-        'student_id' => 'required|exists:users,id',
-    ], [
-        // 'name.required'   => 'The name field is required.',
-        // 'class.required'  => 'The class field is required.',
-        // 'name.max'        => 'The name may not be greater than :max characters.',
-        // 'name.unique'     => 'This name has already been taken.',
-        // 'status.in'       => 'The status must be one of: active, inactive.',
-    ]);
+    {
+        try {
+            // Validate the request
+            $validator = Validator::make($request->all(), [
+                'fee_id' => 'required|array',
+                'fee_id.*' => 'exists:fees,id',
+                'amount' => 'required|array',
+                'amount.*' => 'nullable|numeric|min:0',
+                'percentage' => 'nullable|array',
+                'percentage.*' => 'nullable|numeric|min:0',
+                'student_id' => 'required|exists:users,id',
+                'package_amount' => 'nullable|numeric|min:0',
+                'package_percentage' => 'nullable|numeric|min:0',
+            ]);
 
-    if ($validator->fails()) {
-        Session::flash('error', $validator->messages()->all());
+            if ($validator->fails()) {
+                // If validation fails, flash the error messages and redirect back with input
+                Session::flash('error', $validator->messages()->all());
+                return redirect()->back()->withInput();
+            }
+
+            // Get the student ID and package details
+            $studentId = $request->input('student_id');
+            $packageAmount = $request->input('package_amount');
+            $packagePercentage = $request->input('package_percentage');
+            // dd($request->input('fee_id'));
+            // Loop through each selected fee ID and their corresponding waiver data
+            foreach ($request->input('fee_id') as $feeId) {
+                $waivedAmount = $request->input("amount.$feeId");
+                $waivedPercentage = $request->input("percentage.$feeId");
+
+                // If the waived amount is provided (non-zero), we create or update the waiver
+                if ($waivedAmount > 0 || $waivedPercentage > 0) {
+                    StudentFeeWaiver::updateOrCreate(
+                        [
+                            'student_id' => $studentId,
+                            'fee_id' => $feeId,
+                        ],
+                        [
+                            'amount' => $waivedAmount,
+                            'percentage' => $waivedPercentage,
+                            'package_amount' => $packageAmount,
+                            'package_percentage' => $packagePercentage,
+                            'added_by' => auth()->id(),
+                        ]
+                    );
+                } else {
+                    // If waived amount is zero or empty, we remove the waiver
+                    StudentFeeWaiver::where('student_id', $studentId)
+                        ->where('fee_id', $feeId)
+                        ->delete();
+                }
+            }
+
+            // If all is successful, flash a success message
+            Session::flash('success', 'Fee waivers updated successfully.');
+        } catch (\Exception $e) {
+            // If any exception occurs, catch it and flash an error message
+            Session::flash('error',$e->getMessage());
+
+            // Optionally log the exception for debugging
+            // \Log::error('Error updating fee waivers: ' . $e->getMessage());
+        }
+
+        // Redirect back with the input
         return redirect()->back()->withInput();
     }
 
-    // Get the student ID
-    $studentId = $request->input('student_id');
 
-    // Loop through the selected fee IDs and their corresponding waived amounts
-    foreach ($request->input('fee_id') as $feeId) {
-        // Get the corresponding waiver amount for this fee
-        $waivedAmount = $request->input("amount.$feeId");
 
-        // Check if the waived amount is null, empty, or zero, if so skip this fee
-        if ($waivedAmount !== null && $waivedAmount !== '' && $waivedAmount > 0) {
-            // If a waiver amount is provided (and not zero), create or update the waiver
-            StudentFeeWaiver::updateOrCreate(
-                [
-                    'student_id' => $studentId,
-                    'fee_id' => $feeId,
-                ],
-                [
-                    'amount' => $waivedAmount,  // The waived amount
-                    // 'status' => 'active',  // Set the waiver status to active
-                    'added_by' => auth()->id(),  // Set the ID of the logged-in admin
-                ]
-            );
-        } else {
-            // If waived amount is zero or empty, remove the waiver
-            StudentFeeWaiver::where('student_id', $studentId)
-                            ->where('fee_id', $feeId)
-                            ->delete();
-        }
-    }
-
-    // Redirect back with a success message
-    return redirect()->back()->with('success', 'Fee waivers updated successfully.');
-}
 
     // public function store(Request $request)
     // {

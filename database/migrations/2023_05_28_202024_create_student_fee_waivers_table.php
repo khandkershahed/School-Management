@@ -15,10 +15,13 @@ return new class extends Migration
             $table->id();
             $table->foreignId('student_id')->nullable()->constrained('users')->onDelete('set null')->onUpdate('no action');
             $table->foreignId('fee_id')->nullable()->constrained('fees')->onDelete('set null')->onUpdate('no action');
-            $table->decimal('amount', 10, 2);
+            $table->decimal('amount', 10, 2)->nullable();
+            $table->decimal('percentage', 10, 2)->nullable();
+            $table->decimal('package_amount', 10, 2)->nullable();
+            $table->decimal('package_percentage', 10, 2)->nullable();
             $table->string('status')->nullable();
             $table->foreignId('added_by')->nullable()->constrained('admins')->onDelete('set null')->onUpdate('no action');
-            $table->timestamps(); 
+            $table->timestamps();
         });
     }
 
