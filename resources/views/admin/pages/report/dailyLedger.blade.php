@@ -85,10 +85,6 @@
                                                     </table>
                                                 </div>
                                             </div>
-                                            <div style="margin-bottom:10px; display: flex; align-items:center; justify-content:space-between;">
-                                                <div style="border:1px solid black; padding: 5px 15px;">Specific Date</div>
-                                                <div style="border:1px solid black; padding: 5px 15px;"> Date: {{ $date }}</div>
-                                            </div>
                                             <div class="row mt-3">
                                                 <div class="table-responsive p-3 pt-1">
                                                     <table class="table table-striped" id="datatable"

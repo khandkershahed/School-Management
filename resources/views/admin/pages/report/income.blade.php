@@ -128,36 +128,36 @@
                                                 <table class="table table-striped" id="datatable" style="width:100%">
                                                     <thead>
                                                         <tr>
-                                                            <th style="font-size: 0.7rem;" width="5%" class="text-center">SL</th>
-                                                            <th style="font-size: 0.7rem;" width="12%" class="text-center">Group by Data</th>
-                                                            <th style="font-size: 0.7rem;" width="12%" class="text-center">Amount</th>
+                                                            <th width="5%" class="text-center">SL</th>
+                                                            <th width="12%" class="text-center">Group by Data</th>
+                                                            <th width="12%" class="text-center">Amount</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         @foreach ($incomes as $income)
                                                             <tr>
-                                                                <td style="font-size: 0.7rem;" class="text-center">{{ $loop->iteration }}</td>
+                                                                <td class="text-center">{{ $loop->iteration }}</td>
 
                                                                 @if ($group_by == 'daily')
-                                                                    <td style="font-size: 0.7rem;" class="text-center">{{ $income->day }}</td>
+                                                                    <td class="text-center">{{ $income->day }}</td>
                                                                 @elseif ($group_by == 'monthly')
-                                                                    <td style="font-size: 0.7rem;" class="text-center">{{ $income->month }}</td>
+                                                                    <td class="text-center">{{ $income->month }}</td>
                                                                 @elseif ($group_by == 'yearly')
-                                                                    <td style="font-size: 0.7rem;" class="text-center">{{ $income->year }}</td>
+                                                                    <td class="text-center">{{ $income->year }}</td>
                                                                 @else
-                                                                    <td style="font-size: 0.7rem;">N/A</td>
+                                                                    <td>N/A</td>
                                                                 @endif
 
-                                                                <td style="font-size: 0.7rem;" class="text-center">
+                                                                <td class="text-center">
                                                                     {{ number_format($income->amount, 2) }}</td>
                                                             </tr>
                                                         @endforeach
                                                     </tbody>
                                                     <tfoot>
                                                         <tr>
-                                                            <td style="font-size: 0.8rem;" colspan="2" style="text-align:end"><strong>Total
+                                                            <td colspan="2" style="text-align:end"><strong>Total
                                                                     Amount: </strong></td>
-                                                            <td style="font-size: 0.8rem;" class="text-center">
+                                                            <td class="text-center">
                                                                 {{ number_format($totalAmount, 2) }}
                                                             </td>
                                                         </tr>

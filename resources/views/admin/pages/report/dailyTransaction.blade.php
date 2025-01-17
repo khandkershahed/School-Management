@@ -125,13 +125,13 @@
                                                         </tbody>
                                                         <tfoot>
                                                             <tr>
-                                                                <td style="font-size: 0.8rem;" colspan="4"
+                                                                <td colspan="4"
                                                                     style="text-align:end"><strong>Total
                                                                         Amount: </strong></td>
-                                                                <td style="font-size: 0.8rem;" class="text-center">
+                                                                <td class="text-center">
                                                                     {{ number_format($incomes->sum('waived_amount'), 2) }}
                                                                 </td>
-                                                                <td style="font-size: 0.8rem;" class="text-center">
+                                                                <td class="text-center">
                                                                     {{ number_format($totalAmount, 2) }}
                                                                 </td>
                                                             </tr>
