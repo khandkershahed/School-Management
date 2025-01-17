@@ -644,15 +644,15 @@ class StudentFeeController extends Controller
 
         if ($request->has('student_id') && $request->student_id !== '') {
             $studentId = $request->student_id;
-            $pattern = '/^[MF]\d+$/';
-            if (preg_match($pattern, $studentId)) {
-                $student = User::where('student_id', $studentId)->first();
+            // $pattern = '/^[MF]\d+$/';
+            // if (preg_match($pattern, $studentId)) {
+            //     $student = User::where('student_id', $studentId)->first();
 
-            } elseif (is_numeric($studentId)) {
+            // } elseif (is_numeric($studentId)) {
                 $student = User::where('student_id', 'like', '%' . $studentId)->first();
 
 
-            }
+            // }
         } else {
             // If student_id is not provided, filter by other fields (name, roll, medium, class)
             if ($request->has('name') && !empty($request->name)) {
@@ -736,6 +736,7 @@ class StudentFeeController extends Controller
             // Exclude the paid fees from the list of available fees for the due fees section
             $dueFees = $fees->whereNotIn('id', $paidFees);
         } catch (\Exception $e) {
+            // dd($e->getMessage());
             // Handle any errors that might occur during the database queries
             // return response()->json([
             //     'success' => false,
