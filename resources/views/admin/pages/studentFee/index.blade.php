@@ -93,14 +93,9 @@
                     .then(data => {
                         if (data.success) {
                             const student = data.student;
-
-                            // Populate fields with student data
                             document.getElementById('name').value = student.name;
                             document.getElementById('roll').value = student.roll;
                             document.getElementById('guardian_contact').value = student.guardian_contact;
-
-
-
                         } else {
                             alert(data.message);
                         }
@@ -191,7 +186,6 @@
             function fetchFilteredData(e) {
                 e.preventDefault(); // Prevent form submission
                 var formData = $('#filterForm').serialize(); // Serialize the form data
-
                 $.ajax({
                     url: '{{ route('admin.student.filter') }}', // Your route here
                     method: 'GET',
@@ -205,7 +199,6 @@
                         }
                     },
                     error: function(xhr, status, error) {
-                        // Log any error in the request
                         console.error("Error in AJAX request:", status, error);
                         alert('Error fetching data');
                     }
@@ -214,13 +207,10 @@
         </script>
         <script>
             function confirmPayment(event) {
-                event.preventDefault(); // Prevent the form from submitting immediately
+                event.preventDefault();
 
-                // Get the form and action URL
                 var form = document.getElementById("paymentForm");
                 var payURL = form.getAttribute("action");
-
-                // Show the SweetAlert confirmation
                 Swal.fire({
                     title: "Are you sure?",
                     text: "You won't be able to revert this!",
@@ -283,21 +273,15 @@
         </script>
         <script>
             function toggleFeeCheckboxes(checkbox) {
-                // Get the state of the "packageCheck" checkbox (checked or unchecked)
                 var isChecked = checkbox.checked;
-
-                // Select or deselect all checkboxes with the "fee-checkbox" class
                 var feeCheckboxes = document.querySelectorAll('.fee-Package');
                 feeCheckboxes.forEach(function(feeCheckbox) {
-                    feeCheckbox.checked = isChecked; // Check or uncheck based on "packageCheck" state
+                    feeCheckbox.checked = isChecked;
                 });
-
-                // Optional: If you want to trigger the "updatePaySlip" function whenever a checkbox is changed
                 if (isChecked) {
                     feeCheckboxes.forEach(function(feeCheckbox) {
                         feeCheckbox.dispatchEvent(new Event('change'));
                     });
-
                 }
                 updatePaySlip();
             }

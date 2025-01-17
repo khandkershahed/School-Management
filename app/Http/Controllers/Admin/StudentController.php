@@ -290,19 +290,27 @@ class StudentController extends Controller
     public function fetchStudentData(Request $request)
     {
         $studentId = $request->student_id;
+            $pattern = '/^[MF]\d+$/';
+            if (preg_match($pattern, $studentId)) {
+                $student = User::where('student_id', $studentId)->first();
+                if (!$student) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'No student found with the provided student_id.'
+                    ], 404);
+                }
+            } elseif (is_numeric($studentId)) {
+                // If only the numeric part is provided, search by the numeric part
+                $student = User::where('student_id', 'like', '%' . $studentId)->first();
 
-        $pattern = '/^[A-Za-z]{3}-\d+$/';
-        if (preg_match($pattern, $studentId)) {
-            $student = User::where('student_id', $studentId)->select('id', 'student_id', 'roll', 'guardian_contact', 'name')->first();
-        } elseif (is_numeric($studentId)) {
-            $student = User::where('student_id', 'like', '%' . $studentId)->select('id', 'student_id', 'roll', 'guardian_contact', 'name')->first();
-        } else {
-            // Invalid format, return a 400 response
-            return response()->json([
-                'success' => false,
-                'message' => 'Invalid student_id format'
-            ], 400);
-        }
+                // Check if the student exists
+                if (!$student) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'No student found with the provided numeric part of student_id.'
+                    ], 404);
+                }
+            }
 
         // Check if the student was found
         if ($student) {
