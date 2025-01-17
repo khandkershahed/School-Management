@@ -92,6 +92,17 @@
 
                                     <div class="col-lg-3 col-md-6">
                                         <div class="mb-3">
+                                            <x-admin.label for="student_type" class="form-label">Student Type <span
+                                                    class="text-danger">*</span></x-admin.label>
+                                            <x-admin.select-option class="form-control-solid" id="student_type"
+                                                name="student_type" data-placeholder="Select Student Type" :allowClear="true" required>
+                                                <option value="old" @selected(old('student_type') == 'old')>Old</option>
+                                                <option value="new" @selected(old('student_type') == 'new')>New</option>
+                                            </x-admin.select-option>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-6">
+                                        <div class="mb-3">
                                             <x-admin.label for="gender" class="form-label">Gender <span
                                                     class="text-danger">*</span></x-admin.label>
                                             <x-admin.select-option class="form-control-solid" id="gender"

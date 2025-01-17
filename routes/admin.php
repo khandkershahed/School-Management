@@ -163,6 +163,10 @@ Route::middleware('auth:admin')->name('admin.')->group(function () {
 
 
     //Reports
+    Route::get('report/daily-transaction', [ReportController::class, 'dailyTransaction'])->name('report.daily-transaction');
+    Route::get('report/daily-netincome', [ReportController::class, 'dailynetIncome'])->name('report.daily-netincome');
+    Route::get('report/daily-ledger', [ReportController::class, 'dailyLedger'])->name('report.daily-ledger');
+
     Route::get('report/duefee', [ReportController::class, 'dueFee'])->name('report.duefee');
     Route::get('report/studentdue', [ReportController::class, 'studentDue'])->name('report.studentdue');
     Route::get('report/studentinvoice', [ReportController::class, 'studentInvoice'])->name('report.studentinvoice');

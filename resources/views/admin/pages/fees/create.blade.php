@@ -18,6 +18,16 @@
                                 <div class="row">
                                     <div class="col-lg-4 col-md-6">
                                         <div class="mb-3">
+                                            <x-admin.label for="fee_package" class="form-label">Fee Package</x-admin.label>
+                                            <x-admin.select-option class="form-control-solid" id="fee_package" name="fee_package[]" :allowClear="true" multiple>
+                                                <option value=""></option>
+                                                <option value="session_charge" @selected(old('fee_package') == 'session_charge')>Session Charge</option>
+                                                <option value="admission_charge" @selected(old('fee_package') == 'admission_charge')>Admission Charge</option>
+                                            </x-admin.select-option>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-6">
+                                        <div class="mb-3">
                                             <x-admin.label for="name" class="form-label">Name <span class="text-danger">*</span></x-admin.label>
                                             <x-admin.input type="text" :value="old('name')" id="name" name="name" required></x-admin.input>
                                         </div>

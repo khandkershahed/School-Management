@@ -90,6 +90,9 @@
                             'permissions' => ['view report'],  // Add permissions for this menu item
                             'routes' => [
                                 'admin.fee-reports',
+                                'admin.report.daily-transaction',
+                                'admin.report.daily-netincome',
+                                'admin.report.daily-ledger',
                                 'admin.report.studentinvoice',
                                 'admin.report.income',
                                 'admin.report.duefee',
@@ -97,6 +100,30 @@
                                 'admin.report.customreport',
                             ],
                             'subMenu' => [
+                                [
+                                    'title' => 'Daily Transaction Report',
+                                    'permissions' => ['view report'],  // Permission for sub-menu
+                                    'routes' => ['admin.report.daily-transaction'],
+                                    'route' => 'admin.report.daily-transaction',
+                                ],
+                                [
+                                    'title' => 'Daily Net Income',
+                                    'permissions' => ['view report'],  // Permission for sub-menu
+                                    'routes' => ['admin.report.daily-netincome'],
+                                    'route' => 'admin.report.daily-netincome',
+                                ],
+                                [
+                                    'title' => 'Ledger Report',
+                                    'permissions' => ['view report'],  // Permission for sub-menu
+                                    'routes' => ['admin.report.daily-ledger'],
+                                    'route' => 'admin.report.daily-ledger',
+                                ],
+                                [
+                                    'title' => 'Student Monthly Due Report',
+                                    'permissions' => ['view report'],  // Permission for sub-menu
+                                    'routes' => ['admin.report.studentinvoice'],
+                                    'route' => 'admin.report.studentinvoice',
+                                ],
                                 [
                                     'title' => 'Student Invoice Report',
                                     'permissions' => ['view report'],  // Permission for sub-menu

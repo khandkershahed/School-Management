@@ -21,6 +21,10 @@ class Fee extends Model
     {
         return $this->belongsTo(EducationMedium::class, 'medium_id');
     }
+    public function feePackage()
+    {
+        return $this->belongsTo(FeePackage::class, 'package_id');
+    }
 
     public function studentFees()
     {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Carbon\Carbon;
 use App\Models\Fee;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -202,6 +203,7 @@ class ReportController extends Controller
     }
 
 
+
     public function accountingBalance(Request $request)
     {
         try {
@@ -399,5 +401,218 @@ class ReportController extends Controller
 
         // Return the view with the results
         return view('admin.pages.report.income', compact('incomes', 'totalAmount', 'group_by', 'year', 'from_date', 'to_date'));
+    }
+
+
+    public function dailyTransaction(Request $request)
+    {
+        try {
+            // Validate the request inputs
+            $validator = Validator::make($request->all(), [
+                'date' => 'nullable|date',
+            ]);
+
+            // Handle validation errors
+            if ($validator->fails()) {
+                Session::flash('error', $validator->errors()->all());
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+
+            // Get filter inputs
+            $date = $request->input('date');
+            $incomes = collect();
+            $totalAmount = 0;
+
+            // Check if any filter is applied before running the query
+            if ($date) {
+                // Ensure the date is formatted correctly as 'Y-m-d'
+                $date = Carbon::parse($date)->format('Y-m-d');
+                Log::info('Formatted Date: ' . $date);  // Log the formatted date for debugging
+
+                // Start the query builder
+                $query = DB::table('student_invoices')
+                    ->join('student_fees', 'student_invoices.student_id', '=', 'student_fees.student_id')
+                    ->join('fees', 'student_fees.fee_id', '=', 'fees.id')
+                    ->join('users', 'student_invoices.student_id', '=', 'users.id')
+                    ->leftJoin('student_fee_waivers', function ($join) {
+                        $join->on('student_fees.fee_id', '=', 'student_fee_waivers.fee_id')
+                            ->on('student_invoices.student_id', '=', 'student_fee_waivers.student_id');
+                    })
+                    ->select(
+                        'users.student_id',
+                        'fees.name AS fee_type',
+                        DB::raw('IFNULL(student_fee_waivers.amount, 0) AS waived_amount'),
+                        DB::raw('SUM(fees.amount) AS total_amount')
+                    )
+                    // Use whereDate to compare only the date part
+                    ->whereDate('student_invoices.generated_at', '=', $date)
+                    ->groupBy('users.student_id', 'fees.name', 'student_fee_waivers.amount');
+
+                // Get the results
+                $incomes = $query->get();
+
+                $totalAmount = $incomes->sum(function ($income) {
+                    return $income->total_amount - $income->waived_amount;
+                });
+            } else {
+                // If no date is provided, you can optionally return all data or handle it differently
+                $incomes = collect();  // Empty collection if no date filter
+            }
+
+            // Log the result to check if there is any data
+            Log::info('Incomes Data: ', $incomes->toArray());
+        } catch (\Exception $e) {
+            // Log the error for debugging
+            Log::error("Error in dailyTransaction query: " . $e->getMessage());
+            Session::flash('error', $e->getMessage());
+            // Return a user-friendly message and redirect back
+            return redirect()->back();
+        }
+
+        // Return the view with the incomes data
+        return view('admin.pages.report.dailyTransaction', compact('date', 'incomes', 'totalAmount'));
+    }
+
+    public function dailynetIncome(Request $request)
+    {
+        try {
+            // Validate the request inputs
+            $validator = Validator::make($request->all(), [
+                'date' => 'nullable|date',
+            ]);
+
+            if ($validator->fails()) {
+                Session::flash('error', $validator->errors()->all());
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+
+            $date = $request->input('date');
+            $invoices = collect();
+
+            if ($date) {
+                $date = Carbon::parse($date)->format('Y-m-d');
+                Log::info('Formatted Date: ' . $date);
+                $invoices = DB::table('student_invoices')
+                    ->whereDate('student_invoices.generated_at', '=', $date)
+                    ->get();
+            } else {
+                $invoices = collect();  // Return empty collection if no date filter is applied
+            }
+        } catch (\Exception $e) {
+            Log::error("Error in Daily Net Income query: " . $e->getMessage());
+            Session::flash('error', $e->getMessage());
+            return redirect()->back();
+        }
+
+        // Return the view with the invoices data
+        return view('admin.pages.report.dailynetIncome', compact('date', 'invoices'));
+    }
+
+    // public function dailyLedger(Request $request)
+    // {
+    //     try {
+    //         // Validate date input
+    //         $validator = Validator::make($request->all(), [
+    //             'date' => 'nullable|date',
+    //         ]);
+
+    //         if ($validator->fails()) {
+    //             Session::flash('error', $validator->errors()->all());
+    //             return redirect()->back()->withErrors($validator)->withInput();
+    //         }
+
+    //         $date = $request->input('date');
+    //         $incomes = collect();
+    //         $totalAmount = 0;
+
+    //         if ($date) {
+    //             // Ensure the date is formatted correctly as 'Y-m-d'
+    //             $date = Carbon::parse($date)->format('Y-m-d');
+    //             Log::info('Formatted Date: ' . $date);  // Log the formatted date for debugging
+
+    //             // Fetch all fee types and their total amounts for the selected date
+    //             $incomes = DB::table('student_invoices')
+    //                 ->join('student_fees', 'student_invoices.student_id', '=', 'student_fees.student_id')
+    //                 ->join('fees', 'student_fees.fee_id', '=', 'fees.id')
+    //                 ->leftJoin('student_fee_waivers', function ($join) {
+    //                     $join->on('student_fees.fee_id', '=', 'student_fee_waivers.fee_id')
+    //                         ->on('student_invoices.student_id', '=', 'student_fee_waivers.student_id');
+    //                 })
+    //                 ->select(
+    //                     'fees.name AS fee_type',
+    //                     DB::raw('SUM(fees.amount) AS total_amount'),
+    //                     DB::raw('IFNULL(SUM(student_fee_waivers.amount), 0) AS waived_amount')
+    //                 )
+    //                 ->whereDate('student_invoices.generated_at', '=', $date)
+    //                 ->groupBy('fees.name')
+    //                 ->get();
+
+    //             // Calculate total amount after waivers
+    //             $totalAmount = $incomes->sum(function ($income) {
+    //                 return $income->total_amount - $income->waived_amount;
+    //             });
+    //         }
+
+    //         // Handle case where no date is selected
+    //         if (!$date) {
+    //             $incomes = collect();
+    //         }
+    //     } catch (\Exception $e) {
+    //         Log::error("Error in Ledger Report query: " . $e->getMessage());
+    //         Session::flash('error', $e->getMessage());
+    //         return redirect()->back();
+    //     }
+
+    //     return view('admin.pages.report.dailyLedger', compact('date', 'incomes', 'totalAmount'));
+    // }
+    public function dailyLedger(Request $request)
+    {
+        try {
+            // Validate date input
+            $validator = Validator::make($request->all(), [
+                'date' => 'nullable|date',
+            ]);
+
+            if ($validator->fails()) {
+                Session::flash('error', $validator->errors()->all());
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+
+            $date = $request->input('date');
+            $incomes = collect();
+            $totalAmount = 0;
+
+            if ($date) {
+                // Ensure the date is formatted correctly as 'Y-m-d'
+                $date = Carbon::parse($date)->format('Y-m-d');
+                Log::info('Formatted Date: ' . $date);  // Log the formatted date for debugging
+
+                // Fetch all fees from the fees table along with the total amount based on the selected date
+                $incomes = DB::table('fees')
+                    ->leftJoin('student_fees', 'fees.id', '=', 'student_fees.fee_id')
+                    ->select(
+                        'fees.name AS fee_type',
+                        DB::raw('IFNULL(SUM(student_fees.amount), 0) AS total_amount')
+                    )
+                    ->whereDate('student_fees.paid_at', '=', $date)
+                    ->orWhereNull('student_fees.paid_at')  // Include fees even if no invoice exists for the date
+                    ->groupBy('fees.id', 'fees.name')
+                    ->get();
+
+                // Calculate total amount for the report
+                $totalAmount = $incomes->sum('total_amount');
+            }
+
+            // Handle case where no date is selected
+            if (!$date) {
+                $incomes = collect();
+            }
+        } catch (\Exception $e) {
+            Log::error("Error in Ledger Report query: " . $e->getMessage());
+            Session::flash('error', $e->getMessage());
+            return redirect()->back();
+        }
+
+        return view('admin.pages.report.dailyLedger', compact('date', 'incomes', 'totalAmount'));
     }
 }

@@ -92,6 +92,7 @@ class StudentController extends Controller
                 // 'medium_id'        => $request->medium_id,
                 'class'            => $request->class,
                 'section'          => $request->section,
+                'student_type'     => $request->student_type,
                 'gender'           => $request->gender,
                 'group'            => $request->group,
                 'year'             => $request->year,
@@ -223,6 +224,7 @@ class StudentController extends Controller
                 // 'medium_id'        => $request->medium_id,
                 'class'            => $request->class,
                 'section'          => $request->section,
+                'student_type'     => $request->student_type,
                 'gender'           => $request->gender,
                 'group'            => $request->group,
                 'year'             => $request->year,
@@ -264,20 +266,28 @@ class StudentController extends Controller
 
     public function import(Request $request)
     {
-        // Validate the uploaded file
-        $request->validate([
-            'file' => 'required|mimes:xlsx,xls,csv', // Ensure the file is an Excel file
+
+        $validator = Validator::make($request->all(), [
+            'file' => 'required|mimes:xlsx,xls,csv',
         ]);
 
+        if ($validator->fails()) {
+            Session::flash('error', $validator->messages()->all());
+            return redirect()->back()->withInput();
+        }
         // Get the uploaded file
         $file = $request->file('file');
 
-        // Import the file using the import class
-        Excel::import(new StudentsImport, $file);
-
-        // Redirect back with success message
-        redirectWithSuccess('Student Data Imported successfully');
-        return redirect()->route('admin.students.index');
+        try {
+            // Import the file using the import class
+            Excel::import(new StudentsImport, $file);
+            redirectWithSuccess('Student Data Imported successfully');
+            return redirect()->route('admin.students.index');
+        } catch (\Exception $e) {
+            \Log::error('Error during student data import: ' . $e->getMessage());
+            Session::flash('error', $e->getMessage());
+            return redirect()->route('admin.students.index');
+        }
     }
 
     public function fetchStudentData(Request $request)
@@ -286,9 +296,9 @@ class StudentController extends Controller
 
         $pattern = '/^[A-Za-z]{3}-\d+$/';
         if (preg_match($pattern, $studentId)) {
-            $student = User::where('student_id', $studentId)->select('id','student_id','roll','guardian_contact','name')->first();
+            $student = User::where('student_id', $studentId)->select('id', 'student_id', 'roll', 'guardian_contact', 'name')->first();
         } elseif (is_numeric($studentId)) {
-            $student = User::where('student_id', 'like', '%' . $studentId)->select('id','student_id','roll','guardian_contact','name')->first();
+            $student = User::where('student_id', 'like', '%' . $studentId)->select('id', 'student_id', 'roll', 'guardian_contact', 'name')->first();
         } else {
             // Invalid format, return a 400 response
             return response()->json([

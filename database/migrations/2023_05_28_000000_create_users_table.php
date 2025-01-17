@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('class')->nullable();
             $table->string('group')->nullable();
             $table->string('section')->nullable();
+            $table->string('student_type')->nullable();
             $table->string('guardian_name')->nullable();
             $table->string('guardian_contact')->nullable();
             $table->text('address')->nullable();

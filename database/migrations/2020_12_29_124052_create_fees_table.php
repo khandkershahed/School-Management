@@ -13,12 +13,14 @@ return new class extends Migration
     {
         Schema::create('fees', function (Blueprint $table) {
             $table->id();
+            // $table->foreignId('package_id')->nullable()->constrained('fee_packages')->onDelete('set null')->onUpdate('no action');
             $table->string('name');
             $table->string('slug');
             $table->json('class')->nullable();
             $table->text('description')->nullable();
-            $table->decimal('amount', 10, 2);
-            $table->string('medium');
+            $table->decimal('amount', 10, 2)->nullable();
+            $table->string('medium')->nullable();
+            $table->json('fee_package')->nullable();
             $table->enum('fee_type', ['monthly', 'yearly', 'recurring'])->default('yearly')->nullable();  // Monthly or Yearly
             $table->string('status');
             $table->timestamps();

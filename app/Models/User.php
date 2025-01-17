@@ -40,7 +40,16 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+    public function isOld()
+    {
+        return $this->student_type === 'old';
+    }
 
+    // Check if student is new
+    public function isNew()
+    {
+        return $this->student_type === 'new';
+    }
     public function medium()
     {
         return $this->belongsTo(EducationMedium::class, 'medium_id');

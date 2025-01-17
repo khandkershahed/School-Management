@@ -70,6 +70,7 @@ class FeeController extends Controller
             $fee = Fee::create([
                 'name'        => $request->name,
                 'class'       => json_encode($request->class),
+                'fee_package' => json_encode($request->fee_package),
                 'description' => $request->description,
                 'amount'      => $request->amount,
                 'status'      => $request->status,
@@ -142,6 +143,7 @@ class FeeController extends Controller
             $fee->update([
                 'name'        => $request->name,
                 'class'       => json_encode($request->class),
+                'fee_package' => json_encode($request->fee_package),
                 'description' => $request->description,
                 'amount'      => $request->amount,
                 'status'      => $request->status,
