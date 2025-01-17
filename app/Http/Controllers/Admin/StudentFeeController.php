@@ -914,16 +914,9 @@ class StudentFeeController extends Controller
         // Check if the student_id is provided
         if ($request->has('student_id') && $request->student_id !== '') {
             $studentId = $request->student_id;
-
-            // Regular expression to match "MYYYYYYYYY" or "FYYYYYYYYY" format (M/F followed by digits)
             $pattern = '/^[MF]\d+$/';
-
-            // Check if the student_id matches the full format (e.g., M20259796, F20259756)
             if (preg_match($pattern, $studentId)) {
-                // If full ID format (M/F + digits), search exactly
                 $student = User::where('student_id', $studentId)->first();
-
-                // Check if the student exists
                 if (!$student) {
                     return response()->json([
                         'success' => false,
@@ -941,12 +934,6 @@ class StudentFeeController extends Controller
                         'message' => 'No student found with the provided numeric part of student_id.'
                     ], 404);
                 }
-            } else {
-                // Invalid student_id format, return a 400 response
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Invalid student_id format. The format should be "M" or "F" followed by digits.'
-                ], 400);
             }
         } else {
             // If student_id is not provided, filter by other fields (name, roll, medium, class)
