@@ -647,21 +647,11 @@ class StudentFeeController extends Controller
             $pattern = '/^[MF]\d+$/';
             if (preg_match($pattern, $studentId)) {
                 $student = User::where('student_id', $studentId)->first();
-                if (!$student) {
-                    return response()->json([
-                        'success' => false,
-                        'message' => 'No student found with the provided student_id.'
-                    ], 404);
-                }
+                
             } elseif (is_numeric($studentId)) {
                 $student = User::where('student_id', 'like', '%' . $studentId)->first();
 
-                if (!$student) {
-                    return response()->json([
-                        'success' => false,
-                        'message' => 'No student found with the provided numeric part of student_id.'
-                    ], 404);
-                }
+
             }
         } else {
             // If student_id is not provided, filter by other fields (name, roll, medium, class)
