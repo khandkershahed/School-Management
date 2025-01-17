@@ -197,9 +197,7 @@
                     method: 'GET',
                     data: formData, // Send serialized form data
                     success: function(response) {
-                        // Check if the response contains an error message
                         if (response.error) {
-                            // Show the alert if the student is not found
                             alert(response.error);
                         } else {
                             $('#studentFeeContainer').html(response);
@@ -297,11 +295,11 @@
                 // Optional: If you want to trigger the "updatePaySlip" function whenever a checkbox is changed
                 if (isChecked) {
                     feeCheckboxes.forEach(function(feeCheckbox) {
-                        // You can trigger the updatePaySlip function here if needed
-                        // If you want to fire the 'change' event for each checkbox, you can do it like this:
                         feeCheckbox.dispatchEvent(new Event('change'));
                     });
+
                 }
+                updatePaySlip();
             }
         </script>
     @endpush
