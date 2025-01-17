@@ -637,11 +637,281 @@ class StudentFeeController extends Controller
         //
     }
 
+    // public function filter(Request $request)
+    // {
+    //     // Start with the query builder to find the student
+    //     $query = User::query();
 
+    //     // Apply search filters based on the request parameters
+    //     if ($request->has('student_id') && $request->student_id !== '') {
+    //         $query->where('student_id', $request->student_id);
+    //     }
+
+    //     if ($request->has('name') && !empty($request->name)) {
+    //         $query->orWhere('name', 'like', '%' . $request->name . '%');
+    //     }
+
+    //     if ($request->has('roll') && $request->roll !== '') {
+    //         $query->orWhere('roll', $request->roll);
+    //     }
+
+    //     if ($request->has('medium') && $request->medium !== '') {
+    //         $query->orWhere('medium', $request->medium);
+    //     }
+
+    //     if ($request->has('class') && $request->class !== '') {
+    //         $query->orWhereJsonContains('class', $request->class);
+    //     }
+
+    //     // dd($query);
+
+    //     // Execute the query to find the student (first or null)
+    //     $student = $query->first();
+
+    //     if (!$student) {
+    //         // If no student is found, return a special message
+    //         return response()->json(['error' => 'Student not found']);
+    //     }
+
+    //     // Get the student fees based on medium and class
+    //     $fees = Fee::where('medium', $student->medium)
+    //         ->whereJsonContains('class', $student->class)
+    //         ->where('status', 'active')
+    //         ->get();
+
+    //     // Return the partial view with data
+    //     return response()->view('admin.pages.studentFee.partial.studentFee', compact('student', 'fees'));
+    // }
+
+    // public function filter(Request $request)
+    // {
+    //     // Start with the query builder to find the student
+    //     $query = User::query();
+
+    //     // Apply search filters based on the request parameters
+    //     if ($request->has('student_id') && $request->student_id !== '') {
+    //         $query->where('student_id', $request->student_id);
+    //     }
+
+    //     if ($request->has('name') && !empty($request->name)) {
+    //         $query->orWhere('name', 'like', '%' . $request->name . '%');
+    //     }
+
+    //     if ($request->has('roll') && $request->roll !== '') {
+    //         $query->orWhere('roll', $request->roll);
+    //     }
+
+    //     if ($request->has('medium') && $request->medium !== '') {
+    //         $query->orWhere('medium', $request->medium);
+    //     }
+
+    //     if ($request->has('class') && $request->class !== '') {
+    //         $query->orWhereJsonContains('class', $request->class);
+    //     }
+
+    //     // Execute the query to find the student (first or null)
+    //     $student = $query->first();
+
+    //     if (!$student) {
+    //         // If no student is found, return a special message
+    //         return response()->json(['error' => 'Student not found']);
+    //     }
+
+    //     // Get the student fees based on medium and class
+    //     $fees = Fee::where('medium', $student->medium)
+    //         ->whereJsonContains('class', $student->class)
+    //         ->where('status', 'active')
+    //         ->get();
+
+    //     // Retrieve any waivers for the student
+    //     $waivers = DB::table('student_fee_waivers')
+    //         ->where('student_id', $student->id)
+    //         ->get();
+
+    //     // Create a lookup for the waivers to easily access by fee ID
+    //     $waiversLookup = $waivers->keyBy('fee_id');
+
+    //     // Return the partial view with data
+    //     return response()->view('admin.pages.studentFee.partial.studentFee', compact('student', 'fees', 'waiversLookup'));
+    // }
+
+
+    // public function filter(Request $request)
+    // {
+    //     $query = User::query();
+
+    //     if ($request->has('student_id') && $request->student_id !== '') {
+    //         $studentId = $request->student_id;
+
+    //         if (strpos($studentId, '-') !== false) {
+    //             // Extract only the numeric part (e.g., 20259640 from EMM-20259640)
+    //             $studentId = substr($studentId, strpos($studentId, '-') + 1);
+    //         }
+
+    //         // Search using the student_id (whether numeric part or full ID)
+    //         // $query->where('student_id', 'like', '%' . $studentId . '%');
+    //         $query->whereRaw("SUBSTRING(student_id, 5) = ?", [$studentId]);
+    //     }
+
+    //     // Search by other fields (name, roll, medium, class)
+    //     if ($request->has('name') && !empty($request->name)) {
+    //         $query->orWhere('name', 'like', '%' . $request->name . '%');
+    //     }
+
+    //     if ($request->has('roll') && $request->roll !== '') {
+    //         $query->orWhere('roll', $request->roll);
+    //     }
+
+    //     if ($request->has('medium') && $request->medium !== '') {
+    //         $query->orWhere('medium', $request->medium);
+    //     }
+
+    //     if ($request->has('class') && $request->class !== '') {
+    //         $query->orWhereJsonContains('class', $request->class);
+    //     }
+
+    //     // Execute the query to find the student (first or null)
+    //     $student = $query->first();
+
+    //     if (!$student) {
+    //         // If no student is found, return a special message
+    //         return response()->json(['error' => 'Student not found']);
+    //     }
+
+    //     // Get the student fees based on medium and class
+    //     $fees = Fee::where('medium', $student->medium)
+    //         ->whereJsonContains('class', $student->class)
+    //         ->where('status', 'active')
+    //         ->get();
+
+    //     // Retrieve any waivers for the student
+    //     $waivers = DB::table('student_fee_waivers')
+    //         ->where('student_id', $student->id)
+    //         ->get();
+
+    //     // Create a lookup for the waivers to easily access by fee ID
+    //     $waiversLookup = $waivers->keyBy('fee_id');
+
+    //     // Get the paid fees for the student (these should not show in the due fees section)
+    //     $paidFees = StudentFee::where('student_id', $student->id)
+    //         ->where('status', 'Paid')
+    //         ->pluck('fee_id'); // Get only the fee IDs of the paid fees
+
+    //     // Exclude the paid fees from the list of available fees for the due fees section
+    //     $dueFees = $fees->whereNotIn('id', $paidFees);
+
+    //     // Return the partial view with data
+    //     return response()->view('admin.pages.studentFee.partial.studentFee', compact('student', 'dueFees', 'waiversLookup', 'paidFees'));
+    // }
+
+    // public function filter(Request $request)
+    // {
+    //     $query = User::query();
+
+    //     // Check if the student_id is provided
+    //     if ($request->has('student_id') && $request->student_id !== '') {
+    //         $studentId = $request->student_id;
+
+    //         // Regular expression to match "XXX-YYYYYYYYY" format (3 letters, dash, and digits)
+    //         $pattern = '/^[A-Za-z]{3}-\d+$/';
+    //         // dd($studentId);
+    //         if (preg_match($pattern, $studentId)) {
+    //             $student = User::where('student_id', $studentId)->first();
+    //         } elseif (is_numeric($studentId)) {
+    //             $student = User::where('student_id', 'like', '%' . $studentId)->first();
+    //         } else {
+    //             // Invalid format, return a 400 response
+    //             return response()->json([
+    //                 'success' => false,
+    //                 'message' => 'Invalid student_id format'
+    //             ], 400);
+    //         }
+    //     } else {
+
+    //         // Filter by other fields (name, roll, medium, class)
+    //         if ($request->has('name') && !empty($request->name)) {
+    //             $query->where('name', 'like', '%' . $request->name . '%');
+    //         }
+
+    //         if ($request->has('roll') && $request->roll !== '') {
+    //             $query->where('roll', $request->roll);
+    //         }
+
+    //         if ($request->has('medium') && $request->medium !== '') {
+    //             $query->where('medium', $request->medium);
+    //         }
+
+    //         if ($request->has('class') && $request->class !== '') {
+    //             $query->whereJsonContains('class', $request->class);
+    //         }
+
+    //         // Execute the query to find the student (first or null)
+    //         $student = $query->first();
+    //     }
+    //     if (!$student) {
+    //         // If no student is found, return a special message
+    //         return response()->json(['error' => 'Student not found']);
+    //     }
+
+    //     // Get the student fees based on medium and class
+    //     // $fees = Fee::where('medium', $student->medium)
+    //     //     ->whereJsonContains('class', $student->class)
+    //     //     ->where('status', 'active')
+    //     //     ->where('fee_type', 'yearly')
+    //     //     ->get();
+    //     if ($student->student_type == 'old') {
+    //         // For old students
+    //         $fees = Fee::where('medium', $student->medium)
+    //             ->whereJsonContains('class', $student->class)
+    //             ->where('status', 'active')
+    //             ->where('fee_type', '!=', 'monthly')  // Exclude monthly fees
+    //             ->whereNotJsonContains('fee_package', 'admission_charge')  // Exclude 'admission_charge' from the fee_package
+    //             ->get();
+    //     } else {
+    //         // For new students
+    //         $fees = Fee::where('medium', $student->medium)
+    //             ->whereJsonContains('class', $student->class)
+    //             ->where('status', 'active')
+    //             ->where('fee_type', '!=', 'monthly')  // Exclude monthly fees
+    //             ->whereNotJsonContains('fee_package', 'session_charge')  // Exclude 'session_charge' from the fee_package
+    //             ->get();
+    //     }
+
+
+    //     $monthly_fees = Fee::where('medium', $student->medium)
+    //         ->whereJsonContains('class', $student->class)
+    //         ->where('status', 'active')
+    //         ->where('fee_type', 'monthly')
+    //         ->get();
+
+    //     // Retrieve any waivers for the student
+    //     $waivers = DB::table('student_fee_waivers')
+    //         ->where('student_id', $student->id)
+    //         ->get();
+
+    //     // Create a lookup for the waivers to easily access by fee ID
+    //     $waiversLookup = $waivers->keyBy('fee_id');
+
+    //     // Get the paid fees for the student (these should not show in the due fees section)
+    //     $studentpaidFees = StudentFee::where('student_id', $student->id)
+    //         ->where('status', 'Paid')
+    //         ->get(); // Get only the fee IDs of the paid fees
+    //     $paidFees = StudentFee::where('student_id', $student->id)
+    //         ->where('status', 'Paid')
+    //         ->pluck('fee_id'); // Get only the fee IDs of the paid fees
+
+    //     // Exclude the paid fees from the list of available fees for the due fees section
+
+    //     $dueFees = $fees->whereNotIn('id', $paidFees);
+
+    //     // Return the partial view with data
+    //     return response()->view('admin.pages.studentFee.partial.studentFee', compact('student', 'dueFees', 'waiversLookup', 'paidFees', 'monthly_fees', 'studentpaidFees'));
+    // }
     public function filter(Request $request)
     {
         $query = User::query();
 
+        // Check if the student_id is provided
         if ($request->has('student_id') && $request->student_id !== '') {
             $studentId = $request->student_id;
             $pattern = '/^[MF]\d+$/';
@@ -654,8 +924,10 @@ class StudentFeeController extends Controller
                     ], 404);
                 }
             } elseif (is_numeric($studentId)) {
+                // If only the numeric part is provided, search by the numeric part
                 $student = User::where('student_id', 'like', '%' . $studentId)->first();
 
+                // Check if the student exists
                 if (!$student) {
                     return response()->json([
                         'success' => false,
