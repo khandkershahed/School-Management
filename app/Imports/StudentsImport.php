@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
@@ -62,7 +63,7 @@ class StudentsImport implements ToModel, WithHeadingRow
     public function model(array $row)
     {
         // \Log::info('Importing Row:', $row);
-// dd($row);
+        // dd($row);
         $medium = isset($row['medium']) ? $row['medium'] : null;
         $group = isset($row['group']) ? $row['group'] : null;
         $section = isset($row['section']) ? $row['section'] : null;
@@ -109,7 +110,7 @@ class StudentsImport implements ToModel, WithHeadingRow
                 'gender'           => $row['gender'],
                 'guardian_name'    => $row['fathers_name'],
                 'guardian_contact' => $row['fathers_number'],
-                'student_type'     => $row['student_typeoldnew'],
+                'student_type'     => $row['student_type_oldnew'],
                 'class'            => $row['class'],
                 'section'          => $section,
                 'year'             => $year,
@@ -119,7 +120,7 @@ class StudentsImport implements ToModel, WithHeadingRow
             ]);
         } catch (\Exception $e) {
             // Log the error for this specific row
-            \Log::error('Error processing row: ' . json_encode($row) . ' Error: ' . $e->getMessage());
+            Log::error('Error processing row: ' . json_encode($row) . ' Error: ' . $e->getMessage());
             // Skip this row if error occurs
             return null;
         }

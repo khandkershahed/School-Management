@@ -281,7 +281,7 @@ class StudentController extends Controller
             redirectWithSuccess('Student Data Imported successfully');
             return redirect()->route('admin.students.index');
         } catch (\Exception $e) {
-            \Log::error('Error during student data import: ' . $e->getMessage());
+            // \Log::error('Error during student data import: ' . $e->getMessage());
             Session::flash('error', $e->getMessage());
             return redirect()->route('admin.students.index');
         }

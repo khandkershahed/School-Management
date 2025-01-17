@@ -655,7 +655,6 @@ class ReportController extends Controller
                 $dueMonths = [];
                 $totalDueAmount = 0;
 
-                // Step 1: Get all fees for the student based on their medium and class
                 $fees = Fee::where('medium', $student->medium)  // Filter by medium
                     ->whereJsonContains('class', $student->class)  // Filter by class
                     ->where('status', 'active')  // Only active fees
