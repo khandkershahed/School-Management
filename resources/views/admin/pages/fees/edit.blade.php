@@ -18,14 +18,22 @@
                                 enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
+                                @php
+                                    $classes = isset($fee->class) ? json_decode($fee->class, true) : [];
+                                    $fee_packages = isset($fee->fee_package) ? json_decode($fee->fee_package, true) : [];
+                                @endphp
                                 <div class="row">
                                     <div class="col-lg-4 col-md-6">
                                         <div class="mb-3">
-                                            <x-admin.label for="fee_package" class="form-label">Fee Package</x-admin.label>
-                                            <x-admin.select-option class="form-control-solid" id="fee_package" name="fee_package[]" :allowClear="true" multiple>
+                                            <x-admin.label for="fee_package" class="form-label">Fee
+                                                Package</x-admin.label>
+                                            <x-admin.select-option class="form-control-solid" id="fee_package"
+                                                name="fee_package[]" :allowClear="true" multiple>
                                                 <option value=""></option>
-                                                <option value="session_charge" @selected(old('fee_package', $fee->fee_package) == 'session_charge')>Session Charge</option>
-                                                <option value="admission_charge" @selected(old('fee_package', $fee->fee_package) == 'admission_charge')>Admission Charge</option>
+                                                <option value="session_charge" @selected(is_array($fee_packages) && in_array('session_charge', $fee_packages))>Session
+                                                    Charge</option>
+                                                <option value="admission_charge" @selected(is_array($fee_packages) && in_array('admission_charge', $fee_packages))>Admission
+                                                    Charge</option>
                                             </x-admin.select-option>
                                         </div>
                                     </div>
@@ -65,9 +73,7 @@
 
                                     <div class="col-lg-4 col-md-6">
                                         <div class="mb-3">
-                                            @php
-                                                $classes = isset($fee->class) ? json_decode($fee->class, true) : [];
-                                            @endphp
+
                                             <x-admin.label for="class_id" class="form-label">Class <span
                                                     class="text-danger">*</span></x-admin.label>
                                             <x-admin.select-option class="form-control-solid" id="class"
@@ -106,12 +112,15 @@
                                     </div>
                                     <div class="col-lg-4 col-md-6">
                                         <div class="mb-3">
-                                            <x-admin.label for="fee_type" class="form-label">Fee Type <span class="text-danger">*</span></x-admin.label>
-                                            <x-admin.select-option id="fee_type" name="fee_type" :allowClear="true" required>
+                                            <x-admin.label for="fee_type" class="form-label">Fee Type <span
+                                                    class="text-danger">*</span></x-admin.label>
+                                            <x-admin.select-option id="fee_type" name="fee_type" :allowClear="true"
+                                                required>
                                                 <option value="">-- Select Fee type --</option>
                                                 <option value="yearly" @selected(old('fee_type', $fee->fee_type) == 'yearly')>Yearly</option>
                                                 <option value="monthly" @selected(old('fee_type', $fee->fee_type) == 'monthly')>Monthly</option>
-                                                <option value="recurring" @selected(old('fee_type', $fee->fee_type) == 'recurring')>Recurring</option>
+                                                <option value="recurring" @selected(old('fee_type', $fee->fee_type) == 'recurring')>Recurring
+                                                </option>
                                             </x-admin.select-option>
                                         </div>
                                     </div>

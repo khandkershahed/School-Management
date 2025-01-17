@@ -99,39 +99,7 @@
                             document.getElementById('roll').value = student.roll;
                             document.getElementById('guardian_contact').value = student.guardian_contact;
 
-                            // // Enable and populate the 'medium' select
-                            // const mediumSelect = document.getElementById('medium');
-                            // mediumSelect.disabled = false;
-                            // mediumSelect.value = student.medium;
 
-                            // // Enable and populate the 'class' select
-                            // const classSelect = document.getElementById('class');
-                            // classSelect.disabled = false;
-                            // // Set selected values for multiple select if necessary
-                            // classSelect.value = student.class;
-
-                            // // Enable and populate the 'section' select
-                            // const sectionSelect = document.getElementById('section');
-                            // sectionSelect.disabled = false;
-                            // sectionSelect.value = student.section;
-
-                            // Array.from(mediumSelect.options).forEach(option => {
-                            //     if (option.value === student.medium) {
-                            //         option.selected = true;
-                            //     }
-                            // });
-
-                            // Array.from(classSelect.options).forEach(option => {
-                            //     if (option.value === student.class) {
-                            //         option.selected = true;
-                            //     }
-                            // });
-
-                            // Array.from(sectionSelect.options).forEach(option => {
-                            //     if (option.value === student.section) {
-                            //         option.selected = true;
-                            //     }
-                            // });
 
                         } else {
                             alert(data.message);
@@ -204,61 +172,6 @@
             });
         </script>
         <script>
-            // function updatePaySlip() {
-            //     let totalAmount = 0;
-            //     const selectedFees = [];
-            //     const selectedMonths = {}; // For storing months selection
-
-            //     $(".fee-checkbox:checked").each(function() {
-            //         const feeId = $(this).val();
-            //         const feeAmount = $(this).data("amount");
-            //         const feeName = $(this).data("name");
-            //         const feeType = $(this).data("type");
-            //         const feeId = $(this).val(); // Get the fee ID
-            //         // Track the selected months for monthly fees
-
-            //         selectedFees.push({
-            //             name: feeName,
-            //             amount: feeAmount,
-            //             feeId: feeId,
-            //             type: feeType
-            //         });
-
-            //         totalAmount += feeAmount;
-            //     });
-
-            //     // Update hidden fields for selected months and amount
-            //     $("input[name='months']").val(JSON.stringify(selectedMonths));
-            //     $("input[name='amount']").val(totalAmount);
-
-            //     // Update the pay slip with the selected fees and total amount
-            //     let paySlipHtml = '';
-            //     if (selectedFees.length > 0) {
-            //         paySlipHtml +=
-            //             '<div class="card shadow-none mb-5"><div class="card-body"><h4 class="text-center mb-3">Payment Receipt</h4>';
-
-            //         paySlipHtml += '<table class="table table-borderless">';
-            //         selectedFees.forEach(function(fee) {
-            //             // If it's a monthly fee, display the fee amount and selected month
-            //             paySlipHtml +=
-            //                 `<tr><td style="text-align: left;">${fee.feeName}</td><td style="text-align: right;">${fee.feeAmount}</td></tr>`;
-            //         });
-
-            //         // Add a total row
-            //         paySlipHtml +=
-            //             `<tr style="border-top: 1px solid black;"><td style="text-align: right;"><strong>Total</strong></td><td style="text-align: right;"><strong>${totalAmount}</strong></td></tr></div></div>`;
-
-            //         paySlipHtml += '</table>';
-            //     } else {
-            //         paySlipHtml =
-            //             '<div class="d-flex align-items-center justify-content-center"><h4 class="text-danger text-center">No fees selected.</h4></div>';
-            //     }
-
-            //     // Update the Pay Slip
-            //     $('#paySlip').html(paySlipHtml);
-            //     $('.amount').val(totalAmount);
-            // }
-
             function confirmPayment(event) {
                 // This function can be expanded to confirm the payment, show a confirmation popup, etc.
                 alert('Payment Confirmation Process');
@@ -343,8 +256,9 @@
                                             downloadFile(data.studentPdfUrl, "student_receipt.pdf");
                                             downloadFile(data.officePdfUrl, "office_receipt.pdf");
                                             setTimeout(function() {
-                                                location.reload(); // Reload the page after a brief delay
-                                        }, 2000);
+                                                location
+                                                    .reload(); // Reload the page after a brief delay
+                                            }, 2000);
                                         });
 
 
@@ -367,6 +281,27 @@
                 a.href = url;
                 a.download = filename;
                 a.click();
+            }
+        </script>
+        <script>
+            function toggleFeeCheckboxes(checkbox) {
+                // Get the state of the "packageCheck" checkbox (checked or unchecked)
+                var isChecked = checkbox.checked;
+
+                // Select or deselect all checkboxes with the "fee-checkbox" class
+                var feeCheckboxes = document.querySelectorAll('.fee-Package');
+                feeCheckboxes.forEach(function(feeCheckbox) {
+                    feeCheckbox.checked = isChecked; // Check or uncheck based on "packageCheck" state
+                });
+
+                // Optional: If you want to trigger the "updatePaySlip" function whenever a checkbox is changed
+                if (isChecked) {
+                    feeCheckboxes.forEach(function(feeCheckbox) {
+                        // You can trigger the updatePaySlip function here if needed
+                        // If you want to fire the 'change' event for each checkbox, you can do it like this:
+                        feeCheckbox.dispatchEvent(new Event('change'));
+                    });
+                }
             }
         </script>
     @endpush

@@ -380,7 +380,7 @@ class StudentFeeController extends Controller
                 'student_id' => 'required|exists:users,id',
                 'year' => 'required|string',
                 'month' => 'required|string',
-                'fee_id' => 'required|array', // For non-monthly fees
+                'fee_id' => 'nullable|array', // For non-monthly fees
                 'fee_id.*' => 'exists:fees,id',
                 'months' => 'nullable|array', // For monthly fees
                 'months.*' => 'nullable|array', // For selecting months per fee
@@ -922,14 +922,30 @@ class StudentFeeController extends Controller
             if (preg_match($pattern, $studentId)) {
                 // If full ID format (M/F + digits), search exactly
                 $student = User::where('student_id', $studentId)->first();
+
+                // Check if the student exists
+                if (!$student) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'No student found with the provided student_id.'
+                    ], 404);
+                }
             } elseif (is_numeric($studentId)) {
                 // If only the numeric part is provided, search by the numeric part
                 $student = User::where('student_id', 'like', '%' . $studentId)->first();
+
+                // Check if the student exists
+                if (!$student) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'No student found with the provided numeric part of student_id.'
+                    ], 404);
+                }
             } else {
-                // Invalid format, return a 400 response
+                // Invalid student_id format, return a 400 response
                 return response()->json([
                     'success' => false,
-                    'message' => 'Invalid student_id format'
+                    'message' => 'Invalid student_id format. The format should be "M" or "F" followed by digits.'
                 ], 400);
             }
         } else {
@@ -952,58 +968,77 @@ class StudentFeeController extends Controller
 
             // Execute the query to find the student (first or null)
             $student = $query->first();
+
+            // If no student is found, return an error
+            if (!$student) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No student found matching the provided criteria.'
+                ], 404);
+            }
         }
 
-        // If no student is found, return an error message
-        if (!$student) {
-            return response()->json(['error' => 'Student not found']);
-        }
+        try {
+            if ($student->student_type == 'old') {
+                $fees = Fee::where('medium', $student->medium)
+                    ->whereJsonContains('class', $student->class)
+                    ->whereJsonContains('fee_package', 'session_charge')
+                    ->where('status', 'active')
+                    ->where('fee_type', '!=', 'monthly')->get();
 
-        // Get the student fees based on medium and class
-        if ($student->student_type == 'old') {
-            // For old students
-            $fees = Fee::where('medium', $student->medium)
+                $package_name = 'Session Charge';
+            } else {
+                // For new students: Include fees without 'admission_charge' and fees with NULL/empty 'fee_package'
+                $fees = Fee::where('medium', $student->medium)
+                    ->whereJsonContains('class', $student->class)
+                    ->whereJsonContains('fee_package', 'admission_charge')
+                    ->where('status', 'active')
+                    ->where('fee_type', '!=', 'monthly')->get();
+
+                $package_name = 'Admission Charge';
+            }
+
+            // dd($fees);
+
+            // Get monthly fees
+            $monthly_fees = Fee::where('medium', $student->medium)
                 ->whereJsonContains('class', $student->class)
                 ->where('status', 'active')
-                ->where('fee_type', '!=', 'monthly')  // Exclude monthly fees
-                ->whereNotJsonContains('fee_package', 'admission_charge')  // Exclude 'admission_charge' from the fee_package
+                ->where('fee_type', 'monthly')
                 ->get();
-        } else {
-            // For new students
-            $fees = Fee::where('medium', $student->medium)
+            $recurring_fees = Fee::where('medium', $student->medium)
                 ->whereJsonContains('class', $student->class)
                 ->where('status', 'active')
-                ->where('fee_type', '!=', 'monthly')  // Exclude monthly fees
-                ->whereNotJsonContains('fee_package', 'session_charge')  // Exclude 'session_charge' from the fee_package
+                ->where('fee_type', 'recurring')
                 ->get();
+            // dd($recurring_fees);
+            // Retrieve any waivers for the studentdd
+            $waivers = DB::table('student_fee_waivers')
+                ->where('student_id', $student->id)
+                ->get();
+
+            // Create a lookup for the waivers to easily access by fee ID
+            $waiversLookup = $waivers->keyBy('fee_id');
+
+            // Get the paid fees for the student (these should not show in the due fees section)
+            $studentpaidFees = StudentFee::where('student_id', $student->id)
+                ->where('status', 'Paid')
+                ->get(); // Get only the fee IDs of the paid fees
+            $paidFees = StudentFee::where('student_id', $student->id)
+                ->where('status', 'Paid')
+                ->pluck('fee_id'); // Get only the fee IDs of the paid fees
+
+            // Exclude the paid fees from the list of available fees for the due fees section
+            $dueFees = $fees->whereNotIn('id', $paidFees);
+        } catch (\Exception $e) {
+            // Handle any errors that might occur during the database queries
+            return response()->json([
+                'success' => false,
+                'message' => 'An error occurred while fetching data: ' . $e->getMessage()
+            ], 500);
         }
-
-        $monthly_fees = Fee::where('medium', $student->medium)
-            ->whereJsonContains('class', $student->class)
-            ->where('status', 'active')
-            ->where('fee_type', 'monthly')
-            ->get();
-
-        // Retrieve any waivers for the student
-        $waivers = DB::table('student_fee_waivers')
-            ->where('student_id', $student->id)
-            ->get();
-
-        // Create a lookup for the waivers to easily access by fee ID
-        $waiversLookup = $waivers->keyBy('fee_id');
-
-        // Get the paid fees for the student (these should not show in the due fees section)
-        $studentpaidFees = StudentFee::where('student_id', $student->id)
-            ->where('status', 'Paid')
-            ->get(); // Get only the fee IDs of the paid fees
-        $paidFees = StudentFee::where('student_id', $student->id)
-            ->where('status', 'Paid')
-            ->pluck('fee_id'); // Get only the fee IDs of the paid fees
-
-        // Exclude the paid fees from the list of available fees for the due fees section
-        $dueFees = $fees->whereNotIn('id', $paidFees);
 
         // Return the partial view with data
-        return response()->view('admin.pages.studentFee.partial.studentFee', compact('student', 'dueFees', 'waiversLookup', 'paidFees', 'monthly_fees', 'studentpaidFees'));
+        return response()->view('admin.pages.studentFee.partial.studentFee', compact('student', 'package_name', 'dueFees', 'recurring_fees', 'waiversLookup', 'paidFees', 'monthly_fees', 'studentpaidFees'));
     }
 }
