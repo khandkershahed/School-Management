@@ -4,7 +4,8 @@
         <table class="table table-bordered table-striped">
             @php
                 $packagewaiver = \App\Models\StudentFeeWaiver::where('student_id', $student->id)
-                    ->where('fee_id', $package_fees->first()->id)->select('package_percentage','package_amount')
+                    ->where('fee_id', $package_fees->first()->id)
+                    ->select('package_percentage', 'package_amount')
                     ->first();
             @endphp
             <thead>
@@ -15,13 +16,13 @@
                         <input type="hidden" name="student_id" value="{{ $student->id }}">
                         <x-admin.input type="number" step="0.01" placeholder="Waived Percentage"
                             data-amount="{{ $package_fees->sum('amount') }}" id="package_waived_percentage"
-                            name="package_percentage" :value="$packagewaiver->package_percentage" required>
+                            name="package_percentage" :value="optional($packagewaiver)->package_percentage" required>
                         </x-admin.input>
                     </td>
                     <td>
                         <input type="hidden" name="student_id" value="{{ $student->id }}">
                         <x-admin.input type="number" step="0.01" placeholder="Waived Amount"
-                            id="package_waived_amount" name="package_amount" :value="$packagewaiver->package_amount" required>
+                            id="package_waived_amount" name="package_amount" :value="optional($packagewaiver)->package_amount" required>
                         </x-admin.input>
                     </td>
                 </tr>
