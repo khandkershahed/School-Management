@@ -79,8 +79,8 @@
                                             <x-admin.select-option class="form-control-solid" id="class"
                                                 name="class[]" :allowClear="true" multiple required>
                                                 <option value=""></option>
-                                                <option value="kg" @selected(is_array($classes) && in_array('kg', $classes))>KG </option>
-                                                <option value="0" @selected(is_array($classes) && in_array('0', $classes))>Nursery </option>
+                                                <option value="00" @selected(is_array($classes) && in_array('00', $classes))>Nursery </option>
+                                                <option value="0" @selected(is_array($classes) && in_array('0', $classes))>KG </option>
                                                 <option value="1" @selected(is_array($classes) && in_array('1', $classes))>One </option>
                                                 <option value="2" @selected(is_array($classes) && in_array('2', $classes))>Two</option>
                                                 <option value="3" @selected(is_array($classes) && in_array('3', $classes))>Three </option>
