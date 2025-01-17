@@ -647,7 +647,7 @@ class StudentFeeController extends Controller
             $pattern = '/^[MF]\d+$/';
             if (preg_match($pattern, $studentId)) {
                 $student = User::where('student_id', $studentId)->first();
-                
+
             } elseif (is_numeric($studentId)) {
                 $student = User::where('student_id', 'like', '%' . $studentId)->first();
 
@@ -737,10 +737,10 @@ class StudentFeeController extends Controller
             $dueFees = $fees->whereNotIn('id', $paidFees);
         } catch (\Exception $e) {
             // Handle any errors that might occur during the database queries
-            return response()->json([
-                'success' => false,
-                'message' => 'An error occurred while fetching data: ' . $e->getMessage()
-            ], 500);
+            // return response()->json([
+            //     'success' => false,
+            //     'message' => 'An error occurred while fetching data: ' . $e->getMessage()
+            // ], 500);
         }
 
         // Return the partial view with data
