@@ -62,6 +62,13 @@ class User extends Authenticatable
     {
         return $this->hasMany(StudentFeeWaiver::class, 'student_id');
     }
+    public function getFees()
+    {
+        return Fee::where('medium', $this->medium)  // Get the user's medium
+            ->whereJsonContains('class', $this->class)  // Get the user's class
+            ->where('status', 'active')  // Only active fees
+            ->get();
+    }
     public function paidFees()
     {
         return $this->hasMany(StudentFee::class, 'student_id');

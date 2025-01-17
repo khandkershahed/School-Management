@@ -93,6 +93,7 @@
                                 'admin.report.daily-transaction',
                                 'admin.report.daily-netincome',
                                 'admin.report.daily-ledger',
+                                'admin.report.monthlydue',
                                 'admin.report.studentinvoice',
                                 'admin.report.income',
                                 'admin.report.duefee',
@@ -121,8 +122,8 @@
                                 [
                                     'title' => 'Student Monthly Due Report',
                                     'permissions' => ['view report'],  // Permission for sub-menu
-                                    'routes' => ['admin.report.studentinvoice'],
-                                    'route' => 'admin.report.studentinvoice',
+                                    'routes' => ['admin.report.monthlydue'],
+                                    'route' => 'admin.report.monthlydue',
                                 ],
                                 [
                                     'title' => 'Student Invoice Report',

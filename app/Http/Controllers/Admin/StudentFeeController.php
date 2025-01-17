@@ -859,11 +859,25 @@ class StudentFeeController extends Controller
         //     ->where('status', 'active')
         //     ->where('fee_type', 'yearly')
         //     ->get();
-        $fees = Fee::where('medium', $student->medium)
-            ->whereJsonContains('class', $student->class)
-            ->where('status', 'active')
-            ->whereNot('fee_type', 'monthly')
-            ->get();
+        if ($student->student_type == 'old') {
+            // For old students
+            $fees = Fee::where('medium', $student->medium)
+                ->whereJsonContains('class', $student->class)
+                ->where('status', 'active')
+                ->where('fee_type', '!=', 'monthly')  // Exclude monthly fees
+                ->whereNotJsonContains('fee_package', 'admission_charge')  // Exclude 'admission_charge' from the fee_package
+                ->get();
+        } else {
+            // For new students
+            $fees = Fee::where('medium', $student->medium)
+                ->whereJsonContains('class', $student->class)
+                ->where('status', 'active')
+                ->where('fee_type', '!=', 'monthly')  // Exclude monthly fees
+                ->whereNotJsonContains('fee_package', 'session_charge')  // Exclude 'session_charge' from the fee_package
+                ->get();
+        }
+
+
         $monthly_fees = Fee::where('medium', $student->medium)
             ->whereJsonContains('class', $student->class)
             ->where('status', 'active')
@@ -891,6 +905,6 @@ class StudentFeeController extends Controller
         $dueFees = $fees->whereNotIn('id', $paidFees);
 
         // Return the partial view with data
-        return response()->view('admin.pages.studentFee.partial.studentFee', compact('student', 'dueFees', 'waiversLookup', 'paidFees','monthly_fees','studentpaidFees'));
+        return response()->view('admin.pages.studentFee.partial.studentFee', compact('student', 'dueFees', 'waiversLookup', 'paidFees', 'monthly_fees', 'studentpaidFees'));
     }
 }
