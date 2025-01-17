@@ -21,7 +21,7 @@
                                             <x-admin.select-option class="form-control-solid" id="class"
                                                 name="class" :allowClear="true">
                                                 <option value="">-- Select Class --</option>
-                                                @foreach (['nursery', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] as $classOption)
+                                                @foreach ([kg,0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] as $classOption)
                                                     <option value="{{ $classOption }}" @selected(old('class', $class) == $classOption)>
                                                         {{ ucfirst($classOption) }}
                                                     </option>
@@ -160,5 +160,5 @@
         </div>
     </div>
 
-    
+
 </x-admin-app-layout>

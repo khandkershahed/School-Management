@@ -28,6 +28,7 @@
                                             <x-admin.select-option class="form-control-solid" id="class"
                                                 name="class" :allowClear="true">
                                                 <option value=""></option>
+                                                <option value="kg" @selected(old('class', $class) == 'kg')>KG</option>
                                                 <option value="0" @selected(old('class', $class) == '0')>Nursery</option>
                                                 <option value="1" @selected(old('class', $class) == '1')>One</option>
                                                 <option value="2" @selected(old('class', $class) == '2')>Two</option>
