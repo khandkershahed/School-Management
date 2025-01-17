@@ -62,10 +62,7 @@ class StudentController extends Controller
                 return redirect()->back()->withInput();
             }
 
-            $code = strtoupper(substr($request->medium, 0, 1)) .
-                strtoupper(substr($request->group, 0, 1)) .
-                strtoupper($request->section) . '-' .
-                $request->year . $request->class . $request->roll;
+            $code = strtoupper(substr($request->gender, 0, 1)) . $request->year . $request->class . $request->roll;
 
             $files = [
                 'image' => $request->file('image'),
