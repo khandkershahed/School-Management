@@ -50,13 +50,14 @@
                                                 </td>
                                                 <td class="text-center">{{ optional($student)->medium }}</td>
                                                 <td class="text-center">
-                                                    @if ($student->class == '00')
+                                                    @if ((string) $student->class === '00')
                                                         Nursery
-                                                    @elseif ($student->class == '0')
+                                                    @elseif ((string) $student->class === '0')
                                                         KG
                                                     @else
                                                         {{ $student->class }}
                                                     @endif
+
                                                 </td>
                                                 <td class="text-center">{{ $student->roll }}</td>
                                                 <td class="text-center">
