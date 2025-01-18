@@ -91,45 +91,84 @@
                                     </div>
                                 @else
                                     <div class="container-fluid mt-3" id="printContainer">
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <table class="table table-striped">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>SL</th>
-                                                            <th>Student ID</th>
-                                                            <th>Fee Type</th>
-                                                            <th>Month</th>
-                                                            <th>Due Amount</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach ($monthly_dues as $monthly_due)
+                                        <div style="padding-left:35px;padding-right:35px;">
+                                            <div class="row">
+                                                <div style="width:100%; padding:0px; margin:0px;">
+                                                    <table
+                                                        style="width:100%; -webkit-print-color-adjust: exact !important; background-color: #f0f3f5 !important; border-radius: 10px; margin-bottom: 20px; padding: 10px;">
+                                                        <tbody>
                                                             <tr>
-                                                                <td>{{ $loop->iteration }}</td>
-                                                                <td>{{ $monthly_due['student_id'] }}</td>
-                                                                <td>{{ $monthly_due['fee_type'] }}</td>
-                                                                <td>{{  $monthly_due['months'] }}</td>
-                                                                <td>{{ number_format($monthly_due['total_due_amount'], 2) }}
+                                                                <td style="width:10%;text-align:center;border:0px;">
+                                                                    <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('images/logo_color_no_bg.png'))) }}"
+                                                                        alt="" height="80px" width="80px">
+                                                                </td>
+                                                                <td style="width:80%;text-align:center;border:0px;">
+                                                                    <span style="text-align: center;">
+                                                                        <div class="clearfix">&nbsp;</div>
+                                                                        <h4 class="text-muted"
+                                                                            style="margin:10px; font-size:20px">
+                                                                            <strong>Shamsul Hoque Khan School and
+                                                                                College</strong>
+                                                                        </h4>
+                                                                        <h6 class="text-muted"
+                                                                            style="margin:5px; font-size:12px">
+                                                                            Paradogair, Matuail, Demra Dhaka-1362
+                                                                        </h6>
+                                                                        <h5 class="head-title ptint-title text-info"
+                                                                            style="width:100%;margin:10px; font-size:24px; text-decoration:underline">
+
+                                                                            <small> Monthly Due Report</small>
+                                                                        </h5>
+                                                                        <div class="clearfix">&nbsp;</div>
+                                                                    </span>
+                                                                </td>
+                                                                <td style="width:10%;text-align:center;border:0px;">
                                                                 </td>
                                                             </tr>
-                                                        @endforeach
-                                                    </tbody>
-                                                    <tfoot>
-                                                        <tr>
-                                                            <td colspan="4" class="text-end"><strong>Total
-                                                                    Amount:</strong></td>
-                                                            <td>{{ number_format($grandTotalDueAmount, 2) }}</td>
-                                                        </tr>
-                                                    </tfoot>
-                                                </table>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-3">
+                                                <div class="col-12">
+                                                    <table class="table table-striped datatable">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>SL</th>
+                                                                <th>Student ID</th>
+                                                                <th>Fee Type</th>
+                                                                <th>Month</th>
+                                                                <th>Due Amount</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach ($monthly_dues as $monthly_due)
+                                                                <tr>
+                                                                    <td>{{ $loop->iteration }}</td>
+                                                                    <td>{{ $monthly_due['student_id'] }}</td>
+                                                                    <td>{{ $monthly_due['fee_type'] }}</td>
+                                                                    <td>{{ $monthly_due['months'] }}</td>
+                                                                    <td>{{ number_format($monthly_due['total_due_amount'], 2) }}
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+                                                        </tbody>
+                                                        <tfoot>
+                                                            <tr>
+                                                                <td colspan="4" class="text-end"><strong>Total
+                                                                        Amount:</strong></td>
+                                                                <td>{{ number_format($grandTotalDueAmount, 2) }}</td>
+                                                            </tr>
+                                                        </tfoot>
+                                                    </table>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="row mt-3">
-                                            <div class="col-4 offset-4 text-center">
-                                                <button class="btn btn-primary" onclick="printInvoice();"><i
-                                                        class="fa fa-print"></i> Print</button>
-                                            </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-4 offset-4 text-center">
+                                            <button class="btn btn-primary" onclick="printInvoice();"><i
+                                                    class="fa fa-print"></i> Print</button>
                                         </div>
                                     </div>
                                 @endif

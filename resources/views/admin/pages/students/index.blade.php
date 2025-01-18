@@ -10,8 +10,8 @@
                                     <h4 class="mb-0">Manage Student Lists</h4>
                                 </div>
                                 <div class="btn-group" role="group" aria-label="Basic outlined example">
-                                    <button type="button" data-bs-toggle="modal" data-bs-target="#excelImport" class="btn btn-outline-light toltip"
-                                        data-tooltip="Import Excel">
+                                    <button type="button" data-bs-toggle="modal" data-bs-target="#excelImport"
+                                        class="btn btn-outline-light toltip" data-tooltip="Import Excel">
                                         <i class="fa-solid fa-file-csv pe-2"></i> Import Excel
                                     </button>
                                     <a href="{{ route('admin.students.create') }}" class="btn btn-outline-light toltip"
@@ -22,7 +22,7 @@
                             </div>
                         </div>
                         <div class="card-body p-0">
-                            
+
                             <div class="table-responsive p-3 pt-1">
                                 <!-- Table -->
                                 <table class="table table-striped datatable" style="width:100%">
@@ -45,10 +45,19 @@
                                                 <td class="text-center">{{ $loop->iteration }}</td>
                                                 <td class="text-center">{{ $student->student_id }}</td>
                                                 <td class="text-center">
-                                                    <a href="{{ route('admin.students.show',$student->slug) }}">{{ $student->name }}</a>
+                                                    <a
+                                                        href="{{ route('admin.students.show', $student->slug) }}">{{ $student->name }}</a>
                                                 </td>
                                                 <td class="text-center">{{ optional($student)->medium }}</td>
-                                                <td class="text-center">{{ $student->class }}</td>
+                                                <td class="text-center">
+                                                    @if ($student->class == '00')
+                                                        Nursery
+                                                    @elseif ($student->class == '0')
+                                                        KG
+                                                    @else
+                                                        {{ $student->class }}
+                                                    @endif
+                                                </td>
                                                 <td class="text-center">{{ $student->roll }}</td>
                                                 <td class="text-center">
                                                     <span
@@ -56,8 +65,8 @@
                                                         {{ $student->status == 'active' ? 'Active' : 'InActive' }}</span>
                                                 </td>
                                                 <td class="text-end">
-                                                    <a href="{{ route('admin.students.edit',$student->slug) }}" class="btn btn-sm btn-primary toltip mb-2"
-                                                        data-tooltip="Edit">
+                                                    <a href="{{ route('admin.students.edit', $student->slug) }}"
+                                                        class="btn btn-sm btn-primary toltip mb-2" data-tooltip="Edit">
                                                         <i class="fa-solid fa-pen"></i>
                                                     </a>
                                                     {{-- <a href="{{ route('admin.students.show',$student->slug) }}"
@@ -65,7 +74,8 @@
                                                         data-tooltip="View">
                                                         <i class="fa-solid fa-expand"></i>
                                                     </a> --}}
-                                                    <a href="{{ route('admin.students.destroy',$student->id) }}" class="btn btn-sm btn-danger toltip mb-2 delete"
+                                                    <a href="{{ route('admin.students.destroy', $student->id) }}"
+                                                        class="btn btn-sm btn-danger toltip mb-2 delete"
                                                         data-tooltip="Delete">
                                                         <i class="fa-solid fa-trash"></i>
                                                     </a>
@@ -82,8 +92,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="excelImport" tabindex="-1" aria-labelledby="excelImportLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="excelImport" tabindex="-1" aria-labelledby="excelImportLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header bg-dark text-white">
@@ -91,13 +100,14 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="{{ route('admin.students.import') }}"
-                        enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('admin.students.import') }}" enctype="multipart/form-data">
                         @csrf
                         <div class="mb-3">
-                            <x-admin.label for="name" class="form-label">Select Excel File (.xlsx,.xls,.csv only): ( <a href="{{ asset('images/Demo Excel Student Import.xlsx') }}" download="" class="fw-bold">Download</a> demo format Excel)</x-admin.label>
-                            <x-admin.file-input class="form-control form-control-solid" :value="old('file')"
-                                id="file" name="file" required></x-admin.file-input>
+                            <x-admin.label for="name" class="form-label">Select Excel File (.xlsx,.xls,.csv only): (
+                                <a href="{{ asset('images/Demo Excel Student Import.xlsx') }}" download=""
+                                    class="fw-bold">Download</a> demo format Excel)</x-admin.label>
+                            <x-admin.file-input class="form-control form-control-solid" :value="old('file')" id="file"
+                                name="file" required></x-admin.file-input>
                         </div>
                         <x-admin.button type="submit" class="btn btn-white float-end">Submit</x-admin.button>
                     </form>

@@ -692,7 +692,7 @@ class ReportController extends Controller
                 foreach ($fees as $fee) {
                     $paidMonths = $student->studentFees
                         ->where('fee_id', $fee->id)
-                        ->pluck('paid_month')
+                        ->pluck('month')
                         ->map(function ($date) {
                             return Carbon::parse($date)->format('M');
                         });
