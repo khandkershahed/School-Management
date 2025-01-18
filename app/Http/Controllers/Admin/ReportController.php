@@ -508,6 +508,41 @@ class ReportController extends Controller
         // Return the view with the invoices data
         return view('admin.pages.report.dailynetIncome', compact('date', 'invoices'));
     }
+    // public function dailynetIncome(Request $request)
+    // {
+    //     try {
+    //         // Validate the request inputs
+    //         $validator = Validator::make($request->all(), [
+    //             'date' => 'nullable|date',
+    //         ]);
+
+    //         if ($validator->fails()) {
+    //             Session::flash('error', $validator->errors()->all());
+    //             return redirect()->back()->withErrors($validator)->withInput();
+    //         }
+
+    //         $date = $request->input('date');
+    //         $invoices = collect();
+
+    //         if ($date) {
+    //             $date = Carbon::parse($date)->format('Y-m-d');
+    //             Log::info('Formatted Date: ' . $date);
+    //             $invoices = DB::table('student_invoices')
+    //                 ->whereDate('student_invoices.generated_at', '=', $date)
+    //                 ->get();
+    //         } else {
+    //             $invoices = collect();  // Return empty collection if no date filter is applied
+    //         }
+    //         // dd($invoices);
+    //     } catch (\Exception $e) {
+    //         Log::error("Error in Daily Net Income query: " . $e->getMessage());
+    //         Session::flash('error', $e->getMessage());
+    //         return redirect()->back();
+    //     }
+
+    //     // Return the view with the invoices data
+    //     return view('admin.pages.report.dailynetIncome', compact('date', 'invoices'));
+    // }
 
     // public function dailyLedger(Request $request)
     // {

@@ -21,7 +21,7 @@ class StudentFeeWaiver extends Model
         return $this->belongsTo(Fee::class, 'fee_id');
     }
 
-    public function student()
+    public function student() 
     {
         return $this->belongsTo(User::class, 'student_id');
     }

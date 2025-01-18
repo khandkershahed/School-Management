@@ -93,28 +93,28 @@
                                                         <thead>
                                                             <tr>
                                                                 <th width="5%" class="text-center">SL</th>
-                                                                <th width="30%" class="text-center">Date</th>
+                                                                <th width="30%" class="text-center">Invoice Number
+                                                                </th>
                                                                 <th width="21%" class="text-center">Income</th>
                                                                 <th width="18%" class="text-center">Expense</th>
                                                                 <th width="26%" class="text-center">Net Income</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            {{-- @foreach ($invoices as $invoice) --}}
-                                                            <tr>
-                                                                <td class="text-center">1.</td>
-                                                                <td class="text-center">
-                                                                    {{ $date ? \Carbon\Carbon::parse($date)->format('d/m/Y') : 'No date provided' }}
-                                                                </td>
-                                                                <td class="text-center">
-                                                                    {{ number_format($invoices->sum('total_amount'), 2) }}
-                                                                </td>
-                                                                <td class="text-center">0</td>
-                                                                <td class="text-center">
-                                                                    {{ number_format($invoices->sum('total_amount'), 2) }}
-                                                                </td>
-                                                            </tr>
-                                                            {{-- @endforeach --}}
+                                                            @foreach ($invoices as $invoice)
+                                                                <tr>
+                                                                    <td class="text-center">{{ $loop->iteration }}</td>
+                                                                    <td class="text-center">
+                                                                        {{ $invoice->invoice_number }}</td>
+                                                                    <td class="text-center">
+                                                                        {{ number_format($invoice->total_amount, 2) }}
+                                                                    </td>
+                                                                    <td class="text-center">0</td>
+                                                                    <td class="text-center">
+                                                                        {{ number_format($invoice->total_amount, 2) }}
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
                                                         </tbody>
                                                         <tfoot>
                                                             <tr>

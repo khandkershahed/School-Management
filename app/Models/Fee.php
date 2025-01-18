@@ -30,7 +30,6 @@ class Fee extends Model
     {
         return $this->hasMany(StudentFee::class);
     }
-
     /**
      * Get the months the student has paid for this fee.
      *

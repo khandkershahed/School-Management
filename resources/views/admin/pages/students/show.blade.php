@@ -67,7 +67,7 @@
                                     <div class="row mb-5">
                                         <h5 class="fw-bold text-center mb-3">Paid Fees</h5>
                                         <div class="table-responsive">
-                                            <table class="table table-bordered table-striped">
+                                            <table class="table table-bordered datatable table-striped">
                                                 <thead>
                                                     <th>Fee Name</th>
                                                     <th>Payment Status</th>
@@ -79,11 +79,11 @@
                                                     @if ($student->paidFees->count() > 0)
                                                         @foreach ($student->paidFees as $feeId)
                                                             <tr>
-                                                                <td>{{ $fee->name }}</td>
-                                                                <td>{{ $studentFee->status }}</td>
-                                                                <td>{{ $studentFee->invoice_number }}</td>
-                                                                <td>{{ $fee->amount }}</td>
-                                                                <td>{{ $studentFee->paid_at }}</td>
+                                                                <td>{{ optional($feeId->fee)->name }}</td>
+                                                                <td>{{ $feeId->status }}</td>
+                                                                <td>{{ $feeId->invoice_number }}</td>
+                                                                <td>{{ $feeId->amount }}</td>
+                                                                <td>{{ $feeId->paid_at }}</td>
                                                             </tr>
                                                         @endforeach
                                                     @else
