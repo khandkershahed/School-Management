@@ -85,7 +85,7 @@
                     <div class="accordion-body">
                         <div class="row mb-3">
                             <div class="table-responsive">
-                                <table class="table table-striped datatable">
+                                <table class="table table-striped" id="datatable">
                                     <thead>
                                         <th>Fee Name</th>
                                         <th>Payment Status</th>
@@ -94,27 +94,19 @@
                                         <th>Paid at</th>
                                     </thead>
                                     <tbody>
-                                        @if ($studentpaidFees->count() > 0)
-                                            @foreach ($studentpaidFees as $paidFee)
-                                                <tr>
-                                                    <td>
-                                                        {{ optional($paidFee->fee)->name }} @if (optional($paidFee->fee)->fee_type == 'monthly')
-                                                            ({{ $paidFee->month }})
-                                                        @endif
-                                                    </td>
-                                                    <td>{{ $paidFee->status }}</td>
-                                                    <td>{{ $paidFee->invoice_number }}</td>
-                                                    <td>{{ optional($paidFee->fee)->amount }}</td>
-                                                    <td>{{ $paidFee->paid_at }}</td>
-                                                </tr>
-                                            @endforeach
-                                        @else
+                                        @foreach ($studentpaidFees as $paidFee)
                                             <tr>
-                                                <td colspan="5">
-                                                    <h6 class="text-center">No Paid Fees</h6>
+                                                <td>
+                                                    {{ optional($paidFee->fee)->name }} @if (optional($paidFee->fee)->fee_type == 'monthly')
+                                                        ({{ $paidFee->month }})
+                                                    @endif
                                                 </td>
+                                                <td>{{ $paidFee->status }}</td>
+                                                <td>{{ $paidFee->invoice_number }}</td>
+                                                <td>{{ optional($paidFee->fee)->amount }}</td>
+                                                <td>{{ $paidFee->paid_at }}</td>
                                             </tr>
-                                        @endif
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -389,7 +381,8 @@
                         </div>
                         <div class="row">
                             <div class="mb-3 d-flex justify-content-center">
-                                <a href="javascript:void(0)" class="btn btn-success" onclick="confirmPayment(event)">Pay Now</a>
+                                <a href="javascript:void(0)" class="btn btn-success"
+                                    onclick="confirmPayment(event)">Pay Now</a>
                             </div>
                         </div>
                     </div>
@@ -397,11 +390,8 @@
             </div>
         </div>
 
-
-
         <!-- Pay Now Button -->
 
     </form>
 </div>
-
 <!-- Scripts for dynamic updates -->
