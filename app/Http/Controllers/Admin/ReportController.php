@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\FacadesLog;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use App\Models\StudentFeeWaiver;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
@@ -693,6 +694,7 @@ class ReportController extends Controller
                     ->get();
 
                 foreach ($fees as $fee) {
+                    $waived_amount = StudentFeeWaiver::where('fee_id',$fee->id)->where('student_id',$student->id)->first(['amount']);
                     $paidMonths = $student->studentFees
                         ->where('fee_id', $fee->id)
                         ->pluck('month')
@@ -711,7 +713,7 @@ class ReportController extends Controller
                     $dueMonthsForFee = $allMonths->diff($paidMonths);
 
                     if ($dueMonthsForFee->isNotEmpty()) {
-                        $totalDueAmount += $fee->amount * $dueMonthsForFee->count();
+                        $totalDueAmount += ($fee->amount - $waived_amount) * $dueMonthsForFee->count();
                         $dueMonths[] = $dueMonthsForFee->join(', ');
                     }
                 }
