@@ -131,7 +131,7 @@
                                             </div>
                                             <div class="row mt-3">
                                                 <div class="col-12">
-                                                    <table class="table table-striped datatable">
+                                                    <table class="table table-striped" id="datatable">
                                                         <thead>
                                                             <tr>
                                                                 <th>SL</th>
