@@ -128,11 +128,22 @@ class StudentController extends Controller
     {
         try {
             $student = User::with('invoices', 'waivers', 'paidFees')->where('slug', $slug)->first();
-            $fees = Fee::where('medium', $student->medium)
+            $fees = collect(); // Initialize the collection
+
+            $fees[] = Fee::where('medium', $student->medium)
                 ->whereJsonContains('class', $student->class)
                 ->where('status', 'active')
-                ->where('fee_type', '!=' ,'yearly')
+                ->where('fee_type', '!=', 'yearly')
                 ->get();
+
+            $fees[] = Fee::where('status', 'active')
+                ->where('fee_type', 'yearly')
+                ->where('name', 'like', '%exam%')
+                ->get();
+
+            // Flatten the collection if needed
+            $fees = $fees->flatten();
+
             if ($student->student_type == 'old') {
                 $package_fees = Fee::where('medium', $student->medium)
                     ->whereJsonContains('class', $student->class)

@@ -5,13 +5,14 @@ namespace App\Http\Controllers\Admin;
 use Carbon\Carbon;
 use App\Models\Fee;
 use App\Models\User;
+use App\Models\StudentFee;
 use Illuminate\Http\Request;
 use App\Models\StudentInvoice;
+use App\Models\StudentFeeWaiver;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\FacadesLog;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use App\Models\StudentFeeWaiver;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
@@ -746,27 +747,27 @@ class ReportController extends Controller
             return redirect()->back()->withInput();
         }
     }
-    public function examDueFee(Request $request)
+    public function examDue(Request $request)
     {
         try {
             // Validate the inputs
             $validator = Validator::make($request->all(), [
                 'group' => 'nullable|string',
                 'class' => 'nullable|integer',
-                'from_month' => 'nullable|date_format:Y-m',
-                'to_month' => 'nullable|date_format:Y-m',
+                'fee_id' => 'nullable|integer',
             ]);
 
             if ($validator->fails()) {
                 Session::flash('error', $validator->errors()->all());
                 return redirect()->back()->withInput();
             }
-
-            // Get the filter inputs
+            $filter_fees = Fee::where('status', 'active')
+                ->where('fee_type', 'yearly')
+                ->where('name', 'like', '%exam%')
+                ->get();
             $group = $request->input('group');
+            $fee_id = $request->input('fee_id');
             $class = $request->input('class');
-            $fromMonth = $request->input('from_month') ? Carbon::parse($request->input('from_month'))->startOfMonth() : Carbon::now()->startOfMonth();
-            $toMonth = $request->input('to_month') ? Carbon::parse($request->input('to_month'))->endOfMonth() : Carbon::now()->endOfMonth();
 
             // Query the students based on filters
             $students = User::where('group', $group)->where('class', $class)->get();
@@ -774,57 +775,32 @@ class ReportController extends Controller
             $monthly_dues = [];
 
             foreach ($students as $student) {
-                $totalDueAmount = 0;
-                $dueMonths = [];
-
-                $fees = Fee::where('medium', $student->medium)
-                    ->whereJsonContains('class', $student->class)
-                    ->where('status', 'active')
-                    ->where('fee_type', 'monthly')
-                    ->get();
-
-                foreach ($fees as $fee) {
-                    $paidMonths = $student->studentFees
-                        ->where('fee_id', $fee->id)
-                        ->pluck('month')
-                        ->map(function ($date) {
-                            return Carbon::parse($date)->format('M');
-                        });
-
-                    $allMonths = collect();
-                    $currentMonth = $fromMonth->copy();
-
-                    while ($currentMonth->lte($toMonth)) {
-                        $allMonths->push($currentMonth->format('M'));
-                        $currentMonth->addMonth();
-                    }
-
-                    $dueMonthsForFee = $allMonths->diff($paidMonths);
-
-                    if ($dueMonthsForFee->isNotEmpty()) {
-                        $totalDueAmount += $fee->amount * $dueMonthsForFee->count();
-                        $dueMonths[] = $dueMonthsForFee->join(', ');
-                    }
-                }
-
-                if ($totalDueAmount > 0) {
+                $fee = Fee::findOrFail($fee_id);
+                $paid_check = StudentFee::where('fee_id', $fee_id)->where('student_id', $student->id)->first();
+                $waived_amount = StudentFeeWaiver::where('fee_id', $fee_id)
+                    ->where('student_id', $student->id)
+                    ->first(['amount']);
+                    // dd($paid_check);
+                $waived_amount = $waived_amount ? $waived_amount->amount : 0;
+                if ($paid_check) {
+                    exit;
+                }else{
                     $monthly_dues[] = [
                         'student_id' => $student->student_id,
-                        'fee_type' => 'Monthly Fee',
-                        'months' => implode(', ', $dueMonths),
-                        'total_due_amount' => $totalDueAmount,
+                        'fee_type' => $fee->name,
+                        'total_due_amount' => ($fee->amount - $waived_amount) ,
                     ];
                 }
             }
 
             $grandTotalDueAmount = array_sum(array_column($monthly_dues, 'total_due_amount'));
 
-            return view('admin.pages.report.monthlyDue', compact(
+            return view('admin.pages.report.examDue', compact(
                 'monthly_dues',
                 'grandTotalDueAmount',
-                'fromMonth',
-                'toMonth',
                 'group',
+                'fee_id',
+                'filter_fees',
                 'class'
             ));
         } catch (\Exception $e) {

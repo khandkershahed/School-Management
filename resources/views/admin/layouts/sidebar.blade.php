@@ -44,7 +44,14 @@
                             'title' => 'Fee Management',
                             'icon' => 'fa-solid fa-wallet text-info',
                             'permissions' => ['view fee'], // Add permissions for this menu item
-                            'routes' => ['admin.fees.index', 'admin.fees.create', 'admin.fees.edit'],
+                            'routes' => [
+                                'admin.fees.index',
+                                'admin.fees.create',
+                                'admin.fees.edit',
+                                'admin.student-fee.index',
+                                'admin.student-fee.create',
+                                'admin.student-fee.edit',
+                            ],
                             'subMenu' => [
                                 [
                                     'title' => 'All Fees',
@@ -90,6 +97,7 @@
                                 'admin.report.daily-netincome',
                                 'admin.report.daily-ledger',
                                 'admin.report.monthlydue',
+                                'admin.report.examdue',
                                 'admin.report.studentinvoice',
                                 'admin.report.income',
                                 'admin.report.duefee',
@@ -122,6 +130,12 @@
                                     'route' => 'admin.report.monthlydue',
                                 ],
                                 [
+                                    'title' => 'Student Exam Due Report',
+                                    'permissions' => ['view report'], // Permission for sub-menu
+                                    'routes' => ['admin.report.examdue'],
+                                    'route' => 'admin.report.examdue',
+                                ],
+                                [
                                     'title' => 'Student Invoice Report',
                                     'permissions' => ['view report'], // Permission for sub-menu
                                     'routes' => ['admin.report.studentinvoice'],
@@ -133,12 +147,12 @@
                                     'routes' => ['admin.report.accountingbalance'],
                                     'route' => 'admin.report.accountingbalance',
                                 ],
-                                [
-                                    'title' => 'Due Fee Report',
-                                    'permissions' => ['view report'], // Permission for sub-menu
-                                    'routes' => ['admin.report.duefee'],
-                                    'route' => 'admin.report.duefee',
-                                ],
+                                // [
+                                //     'title' => 'Due Fee Report',
+                                //     'permissions' => ['view report'], // Permission for sub-menu
+                                //     'routes' => ['admin.report.duefee'],
+                                //     'route' => 'admin.report.duefee',
+                                // ],
                                 [
                                     'title' => 'Custom Report',
                                     'permissions' => ['view report'], // Permission for sub-menu
