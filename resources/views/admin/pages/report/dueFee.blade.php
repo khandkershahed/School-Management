@@ -20,12 +20,22 @@
                                             <x-admin.label for="class" class="form-label">Class</x-admin.label>
                                             <x-admin.select-option class="form-control-solid" id="class"
                                                 name="class" :allowClear="true">
-                                                <option value="">-- Select Class --</option>
-                                                @foreach ([kg,0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] as $classOption)
-                                                    <option value="{{ $classOption }}" @selected(old('class', $class) == $classOption)>
-                                                        {{ ucfirst($classOption) }}
-                                                    </option>
-                                                @endforeach
+                                                <option value="">Select Class</option>
+                                                <option value="00" @selected(old('class') == '00')>Nursery</option>
+                                                <option value="0" @selected(old('class') == '0')>KG</option>
+                                                <option value="1" @selected(old('class') == '1')>One</option>
+                                                <option value="2" @selected(old('class') == '2')>Two</option>
+                                                <option value="3" @selected(old('class') == '3')>Three</option>
+                                                <option value="4" @selected(old('class') == '4')>Four</option>
+                                                <option value="5" @selected(old('class') == '5')>Five</option>
+                                                <option value="6" @selected(old('class') == '6')>Six</option>
+                                                <option value="7" @selected(old('class') == '7')>Seven</option>
+                                                <option value="8" @selected(old('class') == '8')>Eight</option>
+                                                <option value="9" @selected(old('class') == '9')>Nine</option>
+                                                <option value="10" @selected(old('class') == '10')>Ten</option>
+                                                <option value="11" @selected(old('class') == '11')>First Year</option>
+                                                <option value="12" @selected(old('class') == '12')>Second Year
+                                                </option>
                                             </x-admin.select-option>
                                         </div>
                                     </div>

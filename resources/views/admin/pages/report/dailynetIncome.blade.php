@@ -40,7 +40,7 @@
                                 </div>
                             </form>
                             @if (isset($date) && $date !== null)
-                                @if (isset($invoices) && $invoices->isNotEmpty())
+                                @if (isset($invoices) && $invoices->isEmpty())
                                     <div class="alert alert-warning text-center">
                                         <strong>No data found for the selected date ({{ $date }})</strong>
                                     </div>

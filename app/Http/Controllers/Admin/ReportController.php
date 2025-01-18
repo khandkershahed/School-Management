@@ -498,6 +498,7 @@ class ReportController extends Controller
             } else {
                 $invoices = collect();  // Return empty collection if no date filter is applied
             }
+            // dd($invoices);
         } catch (\Exception $e) {
             Log::error("Error in Daily Net Income query: " . $e->getMessage());
             Session::flash('error', $e->getMessage());
