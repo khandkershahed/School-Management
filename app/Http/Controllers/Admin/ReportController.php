@@ -303,7 +303,7 @@ class ReportController extends Controller
             $invoices->whereHas('student', function ($query) use ($class) {
                 $query->where('class', $class);
             });
-        }else{
+        } else {
             $students = User::latest('id')->where('status', 'active')->get();
         }
 
@@ -694,7 +694,10 @@ class ReportController extends Controller
                     ->get();
 
                 foreach ($fees as $fee) {
-                    $waived_amount = StudentFeeWaiver::where('fee_id',$fee->id)->where('student_id',$student->id)->first(['amount']);
+                    $waived_amount = StudentFeeWaiver::where('fee_id', $fee->id)
+                        ->where('student_id', $student->id)
+                        ->first(['amount']);
+                    $waived_amount = $waived_amount ? $waived_amount->amount : 0;
                     $paidMonths = $student->studentFees
                         ->where('fee_id', $fee->id)
                         ->pluck('month')
