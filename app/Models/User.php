@@ -77,4 +77,11 @@ class User extends Authenticatable
     {
         return $this->hasMany(StudentFee::class, 'student_id');
     }
+
+    public function fees()
+    {
+        return $this->belongsToMany(Fee::class, 'student_fees', 'student_id', 'fee_id')
+                    ->withPivot('amount', 'status', 'due_date') // Define additional fields in the pivot table
+                    ->withTimestamps();
+    }
 }

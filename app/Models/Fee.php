@@ -53,4 +53,11 @@ class Fee extends Model
 
         return $paidMonths;
     }
+
+    public function students()
+    {
+        return $this->belongsToMany(User::class, 'student_fees', 'fee_id', 'student_id')
+                    ->withPivot('amount', 'status', 'due_date') // Define additional fields in the pivot table
+                    ->withTimestamps();
+    }
 }

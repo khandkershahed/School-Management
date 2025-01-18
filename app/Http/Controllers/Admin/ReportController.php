@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\StudentInvoice;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\FacadesLog;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
@@ -76,7 +77,7 @@ class ReportController extends Controller
                     $query->whereDate('student_fees.paid_at', '<=', $to_date);
                 }
 
-                // Grouping logic based on user selection (daily, monthly, yearly)
+                // Groupinglogic based on user selection (daily, monthly, yearly)
                 if ($group_by == 'daily') {
                     $query->selectRaw("DATE(student_fees.paid_at) AS day")
                         ->groupBy(DB::raw("DATE(student_fees.paid_at), fees.name"));
@@ -95,7 +96,7 @@ class ReportController extends Controller
                 $totalAmount = $incomes->sum('amount');
             }
         } catch (\Exception $e) {
-            // Log the error for debugging
+            //Log the error for debugging
             Log::error("Error in custom report query: " . $e->getMessage());
 
             // Return a user-friendly message and redirect back
@@ -269,7 +270,7 @@ class ReportController extends Controller
             // Calculate total amount
             $totalAmount = $incomes->sum('amount');
         } catch (\Exception $e) {
-            // Log the error for debugging
+            //Log the error for debugging
             Log::error("Error in Accounting Balance report query: " . $e->getMessage());
 
             // Return a user-friendly message and redirect back
@@ -392,7 +393,7 @@ class ReportController extends Controller
                 $totalAmount = $incomes->sum('amount');
             }
         } catch (\Exception $e) {
-            // Log the error for debugging
+            //Log the error for debugging
             Log::error("Error in Accounting Balance report query: " . $e->getMessage());
 
             // Return a user-friendly message and redirect back
@@ -427,7 +428,7 @@ class ReportController extends Controller
             if ($date) {
                 // Ensure the date is formatted correctly as 'Y-m-d'
                 $date = Carbon::parse($date)->format('Y-m-d');
-                Log::info('Formatted Date: ' . $date);  // Log the formatted date for debugging
+                Log::info('Formatted Date: ' . $date);  //Log the formatted date for debugging
 
                 // Start the query builder
                 $query = DB::table('student_invoices')
@@ -459,10 +460,10 @@ class ReportController extends Controller
                 $incomes = collect();  // Empty collection if no date filter
             }
 
-            // Log the result to check if there is any data
+            //Log the result to check if there is any data
             Log::info('Incomes Data: ', $incomes->toArray());
         } catch (\Exception $e) {
-            // Log the error for debugging
+            //Log the error for debugging
             Log::error("Error in dailyTransaction query: " . $e->getMessage());
             Session::flash('error', $e->getMessage());
             // Return a user-friendly message and redirect back
@@ -526,7 +527,7 @@ class ReportController extends Controller
 
     //         if ($date) {
     //             $date = Carbon::parse($date)->format('Y-m-d');
-    //             Log::info('Formatted Date: ' . $date);
+    //            Log::info('Formatted Date: ' . $date);
     //             $invoices = DB::table('student_invoices')
     //                 ->whereDate('student_invoices.generated_at', '=', $date)
     //                 ->get();
@@ -535,7 +536,7 @@ class ReportController extends Controller
     //         }
     //         // dd($invoices);
     //     } catch (\Exception $e) {
-    //         Log::error("Error in Daily Net Income query: " . $e->getMessage());
+    //        Log::error("Error in Daily Net Income query: " . $e->getMessage());
     //         Session::flash('error', $e->getMessage());
     //         return redirect()->back();
     //     }
@@ -564,7 +565,7 @@ class ReportController extends Controller
     //         if ($date) {
     //             // Ensure the date is formatted correctly as 'Y-m-d'
     //             $date = Carbon::parse($date)->format('Y-m-d');
-    //             Log::info('Formatted Date: ' . $date);  // Log the formatted date for debugging
+    //            Log::info('Formatted Date: ' . $date);  //Log the formatted date for debugging
 
     //             // Fetch all fee types and their total amounts for the selected date
     //             $incomes = DB::table('student_invoices')
@@ -594,7 +595,7 @@ class ReportController extends Controller
     //             $incomes = collect();
     //         }
     //     } catch (\Exception $e) {
-    //         Log::error("Error in Ledger Report query: " . $e->getMessage());
+    //        Log::error("Error in Ledger Report query: " . $e->getMessage());
     //         Session::flash('error', $e->getMessage());
     //         return redirect()->back();
     //     }
@@ -621,7 +622,7 @@ class ReportController extends Controller
             if ($date) {
                 // Ensure the date is formatted correctly as 'Y-m-d'
                 $date = Carbon::parse($date)->format('Y-m-d');
-                Log::info('Formatted Date: ' . $date);  // Log the formatted date for debugging
+                Log::info('Formatted Date: ' . $date);  //Log the formatted date for debugging
 
                 // Fetch all fees from the fees table along with the total amount based on the selected date
                 $incomes = DB::table('fees')
@@ -670,98 +671,202 @@ class ReportController extends Controller
             // Get the filter inputs
             $group = $request->input('group');
             $class = $request->input('class');
-            $fromMonth = $request->input('from_month') ? Carbon::parse($request->input('from_month'))->startOfMonth() : null;
-            $toMonth = $request->input('to_month') ? Carbon::parse($request->input('to_month'))->endOfMonth() : null;
+            $fromMonth = $request->input('from_month') ? Carbon::parse($request->input('from_month'))->startOfMonth() : Carbon::now()->startOfMonth();
+            $toMonth = $request->input('to_month') ? Carbon::parse($request->input('to_month'))->endOfMonth() : Carbon::now()->endOfMonth();
 
-            // Default to current month if no range is provided
-            if (!$fromMonth) {
-                $fromMonth = Carbon::now()->startOfMonth();
-            }
-            if (!$toMonth) {
-                $toMonth = Carbon::now()->endOfMonth();
-            }
-
-            // Query the students based on filters (group and class)
+            // Query the students based on filters
             $students = User::where('group', $group)->where('class', $class)->get();
 
-            // Prepare data for monthly dues
             $monthly_dues = [];
 
             foreach ($students as $student) {
-                $dueMonths = [];
                 $totalDueAmount = 0;
+                $dueMonths = [];
 
-                $fees = Fee::where('medium', $student->medium)  // Filter by medium
-                    ->whereJsonContains('class', $student->class)  // Filter by class
-                    ->where('status', 'active')  // Only active fees
+                $fees = Fee::where('medium', $student->medium)
+                    ->whereJsonContains('class', $student->class)
+                    ->where('status', 'active')
+                    ->where('fee_type', 'monthly')
                     ->get();
 
-                // Step 2: Get the fee_ids that the student has already paid (from student_fees table)
-                $paidFees = $student->studentFees;  // Get the paid fees with months
-
-                // Step 3: Loop through each fee to determine if it's unpaid
                 foreach ($fees as $fee) {
-                    // Get the months the student has paid for this fee (only for monthly fees)
-                    $paidMonths = [];
-                    if ($fee->type == 'monthly') {
-                        // For monthly fees, we need to fetch all the months the student has paid for
-                        $paidFeesForFee = $paidFees->where('fee_id', $fee->id);
+                    $paidMonths = $student->studentFees
+                        ->where('fee_id', $fee->id)
+                        ->pluck('paid_month')
+                        ->map(function ($date) {
+                            return Carbon::parse($date)->format('M');
+                        });
 
-                        foreach ($paidFeesForFee as $paidFee) {
-                            // Collect the months the student has paid for this fee
-                            $paidMonths[] = Carbon::parse($paidFee->paid_month)->format('M');
-                        }
+                    $allMonths = collect();
+                    $currentMonth = $fromMonth->copy();
 
-                        // For each month from the start to the end of the selected period, check if the student has paid
-                        $allMonths = Carbon::parse($fromMonth)->to(Carbon::parse($toMonth))->months();
+                    while ($currentMonth->lte($toMonth)) {
+                        $allMonths->push($currentMonth->format('M'));
+                        $currentMonth->addMonth();
+                    }
 
-                        // Filter out months already paid for this fee
-                        $dueMonthsForFee = array_diff($allMonths, $paidMonths);
+                    $dueMonthsForFee = $allMonths->diff($paidMonths);
 
-                        // Step 4: Calculate the due amount for the unpaid months
-                        $feeAmountForStudent = 0;
-
-                        // For each due month, find the relevant invoice and subtract waivers
-                        foreach ($dueMonthsForFee as $dueMonth) {
-                            // Fetch the invoice for that month
-                            $invoice = $student->invoices()
-                                ->where('fee_id', $fee->id)
-                                ->whereMonth('generated_at', $dueMonth)
-                                ->first();
-
-                            if ($invoice) {
-                                $waiverAmount = $invoice->waivers->sum('amount');
-                                $feeAmountForStudent += $invoice->total_amount - $waiverAmount;  // Subtract waivers
-                            }
-                        }
-
-                        // If there is any due amount for the fee, add it to the total
-                        if ($feeAmountForStudent > 0) {
-                            $totalDueAmount += $feeAmountForStudent;
-                            $dueMonths[] = implode(', ', $dueMonthsForFee);
-                        }
+                    if ($dueMonthsForFee->isNotEmpty()) {
+                        $totalDueAmount += $fee->amount * $dueMonthsForFee->count();
+                        $dueMonths[] = $dueMonthsForFee->join(', ');
                     }
                 }
 
-                // Only include the student if they have a total due amount
                 if ($totalDueAmount > 0) {
                     $monthly_dues[] = [
                         'student_id' => $student->student_id,
-                        'fee_type' => $fee->name, // Assuming the last fee's name here, or you can aggregate multiple fees if needed
-                        'months' => $dueMonths,
+                        'fee_type' => 'Monthly Fee',
+                        'months' => implode(', ', $dueMonths),
                         'total_due_amount' => $totalDueAmount,
                     ];
                 }
             }
 
-            // Calculate grand total due amount
             $grandTotalDueAmount = array_sum(array_column($monthly_dues, 'total_due_amount'));
 
-            // Return the view with the filtered data
-            return view('admin.pages.report.monthlyDue', compact('monthly_dues', 'grandTotalDueAmount', 'fromMonth', 'toMonth', 'group', 'class'));
+            return view('admin.pages.report.monthlyDue', compact(
+                'monthly_dues',
+                'grandTotalDueAmount',
+                'fromMonth',
+                'toMonth',
+                'group',
+                'class'
+            ));
         } catch (\Exception $e) {
             Session::flash('error', $e->getMessage());
             return redirect()->back()->withInput();
         }
     }
+
+
+    // public function monthlyDue(Request $request)
+    // {
+    //     try {
+    //         // Validate the inputs
+    //         $validator = Validator::make($request->all(), [
+    //             'group' => 'nullable|string',
+    //             'class' => 'nullable|integer',
+    //             'from_month' => 'nullable|date_format:Y-m',
+    //             'to_month' => 'nullable|date_format:Y-m',
+    //         ]);
+
+    //         if ($validator->fails()) {
+    //             Session::flash('error', $validator->errors()->all());
+    //             return redirect()->back()->withInput();
+    //         }
+
+    //         // Get the filter inputs
+    //         $group = $request->input('group');
+    //         $class = $request->input('class');
+    //         $fromMonth = $request->input('from_month') ? Carbon::parse($request->input('from_month'))->startOfMonth() : null;
+    //         $toMonth = $request->input('to_month') ? Carbon::parse($request->input('to_month'))->endOfMonth() : null;
+
+    //         // Default to current month if no range is provided
+    //         if (!$fromMonth) {
+    //             $fromMonth = Carbon::now()->startOfMonth();
+    //         }
+    //         if (!$toMonth) {
+    //             $toMonth = Carbon::now()->endOfMonth();
+    //         }
+
+    //         // Query the students based on filters (group and class)
+    //         $students = User::where('group', $group)->where('class', $class)->get();
+
+    //         Log::info("Found " . $students->count() . " students matching the filter.");
+
+    //         // Prepare data for monthly dues
+    //         $monthly_dues = [];
+
+    //         foreach ($students as $student) {
+    //             // Reset variables for each student
+    //             $dueMonths = [];
+    //             $totalDueAmount = 0;
+
+    //             // Log: Entering the loop for this student
+    //             Log::info("Processing student: {$student->student_id}");
+
+    //             // Step 1: Get all active monthly fees for the student based on their medium and class
+    //             $fees = Fee::where('medium', $student->medium)
+    //                 ->whereJsonContains('class', $student->class)
+    //                 ->where('status', 'active')
+    //                 ->where('fee_type', 'monthly')
+    //                 ->get();
+
+    //             // Log: Check if fees were found for this student
+    //             Log::info("Fees found for student {$student->student_id}: " . $fees->count());
+
+    //             // Step 2: Get the fee_ids that the student has already paid (from student_fees table)
+    //             $paidFees = $student->studentFees;  // Get the paid fees with months
+    //             Log::info("Paid fees count for student {$student->student_id}: " . $paidFees->count());
+
+    //             // Step 3: Loop through each fee to determine if it's unpaid
+    //             foreach ($fees as $fee) {
+    //                 $paidMonths = [];
+    //                 if ($fee->fee_type == 'monthly') {
+    //                     // For monthly fees, we need to fetch all the months the student has paid for
+    //                     $paidFeesForFee = $paidFees->where('fee_id', $fee->id);
+
+    //                     foreach ($paidFeesForFee as $paidFee) {
+    //                         // Collect the months the student has paid for this fee
+    //                         $paidMonths[] = Carbon::parse($paidFee->paid_month)->format('M');
+    //                     }
+
+    //                     // For each month from the start to the end of the selected period, check if the student has paid
+    //                     $allMonths = collect();  // Initialize an empty collection
+    //                     $currentMonth = $fromMonth;
+    //                     $endMonth = $toMonth;
+
+    //                     while ($currentMonth->lte($endMonth)) {
+    //                         $allMonths->push($currentMonth->format('M'));  // Push month abbreviation (e.g., 'Jan', 'Feb')
+    //                         $currentMonth->addMonth();  // Increment by one month
+    //                     }
+
+    //                     // Filter out months already paid for this fee
+    //                     $dueMonthsForFee = $allMonths->diff($paidMonths);
+
+    //                     // Log: Check due months for this fee
+    //                     Log::info("Student {$student->student_id} - Due months for fee {$fee->id}: " . implode(', ', $dueMonthsForFee->toArray()));
+
+    //                     // Step 4: Calculate the due amount for the unpaid months
+    //                     $feeAmountForStudent = 0;
+    //                     foreach ($dueMonthsForFee as $dueMonth) {
+    //                         $feeAmountForStudent += $fee->amount;
+    //                     }
+
+    //                     // If there is any due amount for the fee, add it to the total
+    //                     if ($feeAmountForStudent > 0) {
+    //                         $totalDueAmount += $feeAmountForStudent;
+    //                         $dueMonths[] = implode(', ', $dueMonthsForFee->toArray()); // Convert Collection to Array
+    //                     }
+    //                 }
+    //             }
+
+    //             // Log: Check total due amount for this student
+    //             Log::info("Student {$student->student_id} - Total due amount: {$totalDueAmount}");
+
+    //             // Only include the student if they have a total due amount
+    //             if ($totalDueAmount > 0) {
+    //                 $monthly_dues[] = [
+    //                     'student_id' => $student->student_id,
+    //                     'fee_type' => 'Monthly Fee',
+    //                     'months' => $dueMonths,
+    //                     'total_due_amount' => $totalDueAmount,
+    //                 ];
+    //             }
+    //         }
+
+    //         // Log: Final check on all collected data
+    //         Log::info("Collected monthly dues: " . print_r($monthly_dues, true));
+
+    //         // Calculate grand total due amount
+    //         $grandTotalDueAmount = array_sum(array_column($monthly_dues, 'total_due_amount'));
+
+    //         // Return the view with the filtered data
+    //         return view('admin.pages.report.monthlyDue', compact('monthly_dues', 'grandTotalDueAmount', 'fromMonth', 'toMonth', 'group', 'class'));
+    //     } catch (\Exception $e) {
+    //         Session::flash('error', $e->getMessage());
+    //         return redirect()->back()->withInput();
+    //     }
+    // }
 }

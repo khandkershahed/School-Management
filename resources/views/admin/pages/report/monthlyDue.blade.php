@@ -38,8 +38,8 @@
                                                 <x-admin.select-option class="form-control-solid" id="class"
                                                     name="class" :allowClear="true" required>
                                                     <option value="">Select Class</option>
-                                                    <option value="00" @selected(old('class',$class) == '00')>Nursery</option>
-                                                    <option value="0" @selected(old('class',$class) == '0')>KG</option>
+                                                    <option value="00" @selected(old('class', $class) == '00')>Nursery</option>
+                                                    <option value="0" @selected(old('class', $class) == '0')>KG</option>
                                                     <option value="1" @selected(old('class', $class) == '1')>One</option>
                                                     <option value="2" @selected(old('class', $class) == '2')>Two</option>
                                                     <option value="3" @selected(old('class', $class) == '3')>Three</option>
@@ -107,10 +107,10 @@
                                                         @foreach ($monthly_dues as $monthly_due)
                                                             <tr>
                                                                 <td>{{ $loop->iteration }}</td>
-                                                                <td>{{ $monthly_due->student_id }}</td>
-                                                                <td>{{ $monthly_due->fee_type }}</td>
-                                                                <td>{{ implode(', ', $monthly_due->months) }}</td>
-                                                                <td>{{ number_format($monthly_due->total_due_amount, 2) }}
+                                                                <td>{{ $monthly_due['student_id'] }}</td>
+                                                                <td>{{ $monthly_due['fee_type'] }}</td>
+                                                                <td>{{  $monthly_due['months'] }}</td>
+                                                                <td>{{ number_format($monthly_due['total_due_amount'], 2) }}
                                                                 </td>
                                                             </tr>
                                                         @endforeach
@@ -138,6 +138,7 @@
                                     <strong>You have to input filters.</strong>
                                 </div>
                             @endif
+
                         </div>
                     </div>
                 </div>
