@@ -26,7 +26,7 @@
                                         <div class="mb-3">
                                             <x-admin.label for="class" class="form-label">Class</x-admin.label>
                                             <x-admin.select-option class="form-control-solid" id="class"
-                                                name="class" :allowClear="true">
+                                                name="class" :allowClear="true" onchange="this.form.submit()">
                                                 <option value=""></option>
                                                 <option value="00" @selected(old('class', $class) == '00')>Nursery</option>
                                                 <option value="0" @selected(old('class', $class) == '0')>KG</option>

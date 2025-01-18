@@ -290,17 +290,20 @@ class ReportController extends Controller
         $student_id = $request->input('student_id');
 
         // Retrieve students (active only)
-        $students = User::latest('id')->where('status', 'active')->get();
+
 
         // Start building the query for invoices
         $invoices = StudentInvoice::latest('id');
 
         // Apply filters if present
         if ($class) {
+            $students = User::latest('id')->where('class', $class)->where('status', 'active')->get();
             // Filter invoices based on student class using a relationship
             $invoices->whereHas('student', function ($query) use ($class) {
                 $query->where('class', $class);
             });
+        }else{
+            $students = User::latest('id')->where('status', 'active')->get();
         }
 
         if ($student_id) {
