@@ -138,7 +138,7 @@
                         <input type="hidden" name="month" value="{{ date('F') }}">
 
                         <!-- Due Fees Section -->
-                        <div class="row mb-5 gx-2">
+                        <div class="row mb-2 gx-2">
                             <!-- Monthly Fees Section -->
                             <div class="col-lg-8">
                                 <div class="card bg-light-primary mb-2">
