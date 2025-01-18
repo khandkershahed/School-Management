@@ -783,7 +783,7 @@ class ReportController extends Controller
                     // dd($paid_check);
                 $waived_amount = $waived_amount ? $waived_amount->amount : 0;
                 if ($paid_check) {
-                    exit;
+                    // exit;
                 }else{
                     $monthly_dues[] = [
                         'student_id' => $student->student_id,

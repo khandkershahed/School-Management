@@ -137,7 +137,7 @@
                 let paySlipHtml = '';
                 if (selectedFees.length > 0) {
                     paySlipHtml +=
-                        '<div class="card shadow-none mb-5"><div class="card-body"><h4 class="text-center mb-3">Payment Receipt</h4>';
+                        '<div class="card-body"><h4 class="text-center mb-3">Payment Receipt</h4>';
 
                     paySlipHtml += '<table class="table table-borderless">';
                     selectedFees.forEach(function(fee) {
@@ -148,7 +148,7 @@
 
                     // Add a total row
                     paySlipHtml +=
-                        `<tr style="border-top: 1px solid black;"><td style="text-align: right;"><strong>Total</strong></td><td style="text-align: right;"><strong>${totalAmount}</strong></td></tr></div></div>`;
+                        `<tr style="border-top: 1px solid black;"><td style="text-align: right;"><strong>Total</strong></td><td style="text-align: right;"><strong>${totalAmount}</strong></td></tr></div>`;
 
                     paySlipHtml += '</table>';
                 } else {

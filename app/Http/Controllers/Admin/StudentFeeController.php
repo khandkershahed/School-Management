@@ -723,12 +723,19 @@ class StudentFeeController extends Controller
                 ->where('status', 'active')
                 ->where('fee_type', 'monthly')
                 ->get();
+
             $recurring_fees = Fee::where('medium', $student->medium)
                 ->whereJsonContains('class', $student->class)
                 ->where('status', 'active')
                 ->where('fee_type', 'recurring')
                 ->get();
-            // dd($recurring_fees);
+            // Initialize the collection
+
+            $exam_fees = Fee::where('status', 'active')
+                ->where('fee_type', 'yearly')
+                ->where('name', 'like', '%exam%')
+                ->get();
+
             // Retrieve any waivers for the studentdd
             $waivers = DB::table('student_fee_waivers')
                 ->where('student_id', $student->id)
@@ -747,6 +754,7 @@ class StudentFeeController extends Controller
 
             // Exclude the paid fees from the list of available fees for the due fees section
             $dueFees = $fees->whereNotIn('id', $paidFees);
+            $examdueFees = $exam_fees->whereNotIn('id', $paidFees);
         } catch (\Exception $e) {
             // Handle any errors that might occur during the database queries
             return response()->json([
@@ -756,6 +764,6 @@ class StudentFeeController extends Controller
         }
 
         // Return the partial view with data
-        return response()->view('admin.pages.studentFee.partial.studentFee', compact('student', 'package_name', 'dueFees', 'recurring_fees', 'waiversLookup', 'paidFees', 'monthly_fees', 'studentpaidFees'));
+        return response()->view('admin.pages.studentFee.partial.studentFee', compact('student', 'package_name', 'examdueFees', 'exam_fees','dueFees', 'recurring_fees', 'waiversLookup', 'paidFees', 'monthly_fees', 'studentpaidFees'));
     }
 }
