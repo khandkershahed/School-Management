@@ -48,11 +48,17 @@
                                                         @if (is_array($classes))
                                                             @foreach ($classes as $item)
                                                                 <span class="px-2 badge bg-success text-white">
-                                                                    {{ $item }}
+                                                                    @if ($item == '00')
+                                                                        Nursery
+                                                                    @elseif ($item == '0')
+                                                                        KG
+                                                                    @else
+                                                                        {{ $item }}
+                                                                    @endif
                                                                 </span>
                                                             @endforeach
                                                         @else
-                                                            <span >No class selected</span>
+                                                            <span>No class selected</span>
                                                         @endif
                                                     @else
                                                         <span>No class selected</span>
