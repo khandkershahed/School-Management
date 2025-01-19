@@ -30,7 +30,7 @@
                         style="width: 600px;">
                 </div>
             </div> --}}
-            <div class="col-xl-6 col-lg-6 d-flex jutify-content-center align-items-center offset-lg-3" style="">
+            <div class="col-xl-6 col-lg-6 d-flex jutify-content-center align-items-center offset-lg-3 mt-lg-3" style="">
                 <div class="d-flex justify-content-center flex-column align-items-center w-100">
                     <a href="{{ route('admin.dashboard') }}" class="brand-link">
                         <img src="{{ !empty($site->site_black_logo) && file_exists(public_path('storage/webSetting/' . $site->site_black_logo)) ? asset('storage/webSetting/' . $site->site_black_logo) : asset('images/logo_color_no_bg.png') }}"
