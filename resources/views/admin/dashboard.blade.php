@@ -1,6 +1,15 @@
 <x-admin-app-layout>
     <div class="app-content pt-3">
         <div class="container-fluid">
+            <div class="bg-light p-3 d-flex mb-4 align-items-center justify-content-center rounded-3">
+                <div>
+                    <img src="{{ asset('images/logo_color_no_bg.png') }}" alt="FMS-SHKSC" class="FMS-SHKSC" width="120px" />
+                </div>
+                <div class="ms-4">
+                    <h2 class="m-0 p-0" style="color:#800505">Shamsul Hoque Khan School and College | (SHKSC)</h2>
+                    <h6 class="mb-0 mt-2 text-center" style="color:#051939" >Paradogair, Matuail, Demra Dhaka -1362</h6>
+                </div>
+            </div>
             <div class="row mb-4">
                 <div class="col-lg-3 col-6">
                     <div class="small-box py-3">
@@ -48,8 +57,7 @@
             <div class="row">
                 <div class="col-lg-4 col-4">
                     <a href="{{ route('admin.student-fee.index') }}">
-                        <button class="btn btn-app bg-info text-white w-100"
-                            style="border:none;">
+                        <button class="btn btn-app bg-info text-white w-100" style="border:none;">
                             <svg height="20" width="20" viewBox="0 0 640 512">
                                 <path fill="#ffffff"
                                     d="M337.8 5.4C327-1.8 313-1.8 302.2 5.4L166.3 96H48C21.5 96 0 117.5 0 144V464c0 26.5 21.5 48 48 48H256V416c0-35.3 28.7-64 64-64s64 28.7 64 64v96H592c26.5 0 48-21.5 48-48V144c0-26.5-21.5-48-48-48H473.7L337.8 5.4zM96 192h32c8.8 0 16 7.2 16 16v64c0 8.8-7.2 16-16 16H96c-8.8 0-16-7.2-16-16V208c0-8.8 7.2-16 16-16zm400 16c0-8.8 7.2-16 16-16h32c8.8 0 16 7.2 16 16v64c0 8.8-7.2 16-16 16H512c-8.8 0-16-7.2-16-16V208zM96 320h32c8.8 0 16 7.2 16 16v64c0 8.8-7.2 16-16 16H96c-8.8 0-16-7.2-16-16V336c0-8.8 7.2-16 16-16zm400 16c0-8.8 7.2-16 16-16h32c8.8 0 16 7.2 16 16v64c0 8.8-7.2 16-16 16H512c-8.8 0-16-7.2-16-16V336zM232 176a88 88 0 1 1 176 0 88 88 0 1 1 -176 0zm88-48c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16s-7.2-16-16-16H336V144c0-8.8-7.2-16-16-16z">
@@ -61,10 +69,11 @@
                 </div>
                 <div class="col-lg-4 col-4">
                     <a href="{{ route('admin.report.duefee') }}">
-                        <button class="btn btn-app bg-success text-white w-100"
-                            style="border:none;">
+                        <button class="btn btn-app bg-success text-white w-100" style="border:none;">
                             <svg height="20" width="20" viewBox="0 0 448 512">
-                                <path fill="#ffffff" d="M64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm64 192c17.7 0 32 14.3 32 32v96c0 17.7-14.3 32-32 32s-32-14.3-32-32V256c0-17.7 14.3-32 32-32zm64-64c0-17.7 14.3-32 32-32s32 14.3 32 32V352c0 17.7-14.3 32-32 32s-32-14.3-32-32V160zM320 288c17.7 0 32 14.3 32 32v32c0 17.7-14.3 32-32 32s-32-14.3-32-32V320c0-17.7 14.3-32 32-32z"></path>
+                                <path fill="#ffffff"
+                                    d="M64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm64 192c17.7 0 32 14.3 32 32v96c0 17.7-14.3 32-32 32s-32-14.3-32-32V256c0-17.7 14.3-32 32-32zm64-64c0-17.7 14.3-32 32-32s32 14.3 32 32V352c0 17.7-14.3 32-32 32s-32-14.3-32-32V160zM320 288c17.7 0 32 14.3 32 32v32c0 17.7-14.3 32-32 32s-32-14.3-32-32V320c0-17.7 14.3-32 32-32z">
+                                </path>
                             </svg>
                             <br>Student Due Report
                         </button>
@@ -72,8 +81,7 @@
                 </div>
                 <div class="col-lg-4 col-4">
                     <a href="{{ route('admin.report.duefee') }}">
-                        <button class="btn btn-app bg-danger text-white w-100"
-                            style="border:none;">
+                        <button class="btn btn-app bg-danger text-white w-100" style="border:none;">
                             <i class="fa-solid fa-chart-line"></i>
                             <br>Due Fee Report
                         </button>
