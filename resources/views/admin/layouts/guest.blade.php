@@ -9,14 +9,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="format-detection" content="telephone=no">
     {{-- <meta name="apple-mobile-web-app-capable" content="yes"> --}}
-    <meta name="title" content="{{ optional($setting)->site_title ?: config('app.name', 'School Management "|" Dashboard') }}" />
+    <meta name="title" content="{{ optional($setting)->site_title ?: config('app.name', 'FMS-SHKSC "|" Dashboard') }}" />
     <meta name="description" content="{{ optional($setting)->meta_description ?: config('app.name') }}" />
-
+    <link rel="shortcut icon" href="asset('images/logo_color_no_bg.png')" />
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="{{ optional($setting)->site_url ?: config('app.url') }}" />
     <meta property="og:title"
-        content="{{ optional($setting)->site_title ?: config('app.name', 'School Management "|" Dashboard') }}" />
+        content="{{ optional($setting)->site_title ?: config('app.name', 'FMS-SHKSC "|" Dashboard') }}" />
     <meta property="og:description" content="{{ optional($setting)->meta_description ?: config('app.name') }}" />
     <meta property="og:image"
         content="{{ optional($setting)->site_logo && file_exists(public_path('storage/' . $setting->site_logo)) ? asset('storage/' . $setting->site_logo) : asset('frontend/images/brandPage-logo-no-img(217-55).jpg') }}" />
@@ -25,12 +25,12 @@
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content="{{ optional($setting)->site_url ?: config('app.url') }}" />
     <meta property="twitter:title"
-        content="{{ optional($setting)->site_title ?: config('app.name', 'School Management "|" Dashboard') }}" />
+        content="{{ optional($setting)->site_title ?: config('app.name', 'FMS-SHKSC "|" Dashboard') }}" />
     <meta property="twitter:description" content="{{ optional($setting)->meta_description ?: config('app.name') }}" />
     <meta property="twitter:image"
         content="{{ optional($setting)->site_logo && file_exists(public_path('storage/' . $setting->site_logo)) ? asset('storage/' . $setting->site_logo) : asset('frontend/images/brandPage-logo-no-img(217-55).jpg') }}" />
 
-    <title>{{ optional($setting)->site_title ?: config('app.name', 'School Management "|" Dashboard') }}</title>
+    <title>{{ optional($setting)->site_title ?: config('app.name', 'FMS-SHKSC "|" Dashboard') }}</title>
 
     <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.2.0/css/all.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />

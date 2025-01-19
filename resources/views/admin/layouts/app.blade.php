@@ -13,7 +13,7 @@
     <!-- Meta Title and Description -->
     <meta name="title" content="{{ optional($setting)->site_title ?: config('app.name', 'AWS "|" Dashboard') }}">
     <meta name="description" content="{{ optional($setting)->meta_description ?: config('app.name') }}">
-
+    <link rel="shortcut icon" href="asset('images/logo_color_no_bg.png')" />
     <!-- Open Graph / Facebook Meta Tags -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ optional($setting)->site_url ?: config('app.url') }}">
