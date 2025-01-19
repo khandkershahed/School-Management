@@ -24,13 +24,13 @@
     </style>
     <div class="container-fluid">
         <div class="row d-flex align-items-center">
-            <div class="col-xl-6 col-lg-6 d-none d-lg-block ">
+            {{-- <div class="col-xl-6 col-lg-6 d-none d-lg-block ">
                 <div>
                     <img class="img-fluid w-100" src="{{ asset('images/animated-banner.gif') }}" alt=""
                         style="width: 600px;">
                 </div>
-            </div>
-            <div class="col-xl-6 col-lg-6 d-flex jutify-content-center align-items-center" style="">
+            </div> --}}
+            <div class="col-xl-6 col-lg-6 d-flex jutify-content-center align-items-center offset-lg-3" style="">
                 <div class="d-flex justify-content-center flex-column align-items-center w-100">
                     <a href="{{ route('admin.dashboard') }}" class="brand-link">
                         <img src="{{ !empty($site->site_black_logo) && file_exists(public_path('storage/webSetting/' . $site->site_black_logo)) ? asset('storage/webSetting/' . $site->site_black_logo) : asset('images/logo_color_no_bg.png') }}"
@@ -41,46 +41,7 @@
                         <p class="text-center " style="color: #2486d0;">Login To Continue</p>
                     </div>
                     <div class="row mt-3 bg-white p-4 py-5 rounded-3">
-                        {{-- <form action="{{ route('admin.login') }}" method="POST" id="kt_sign_in_form">
-                            @csrf
-                            <div class="input-group mb-3">
-                                <x-admin.input type="email" name="email" class="form-control form-control-solid" id="passwordField"
-                                    placeholder="Email" :value="old('email')" autocomplete="off"></x-admin.input>
-                                <div class="input-group-append">
-                                    <div class="input-group-text">
-                                        <span class="fas fa-envelope" style="color: #2486d0;"></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="input-group mb-3">
-                                <x-admin.input type="password" name="password" class="form-control form-control-solid"
-                                    placeholder="Password" :value="old('password')" autocomplete="off" onclick="togglePasswordVisibility()"></x-admin.input>
-                                <div class="input-group-append">
-                                    <div class="input-group-text">
-                                        <span id="eyeIcon" class="fa-solid fa-eye fs-2"
-                                            style="color: #2486d0;font-size: 25px !important;"></span>
-                                        <span class="fa-solid fa-eye d-none"
-                                            style="color: #2486d0; font-size: 25px !important;"></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-8">
-                                    <div class="icheck-primary">
-                                        <input id="remember_me" type="checkbox" value="1"
-                                            class="form-check-input me-3" name="remember">
-                                        <label for="remember_me"
-                                            class="form-check-label">{{ __('Remember me') }}</label>
 
-                                    </div>
-                                </div>
-                                <!-- /.col -->
-                                <div class="col-4">
-                                    <button type="submit" class="btn btn-primary btn-block">Sign In</button>
-                                </div>
-                                <!-- /.col -->
-                            </div>
-                        </form> --}}
                         <form action="{{ route('admin.login') }}" method="POST" id="kt_sign_in_form">
                             @csrf
                             <div class="input-group mb-4">
