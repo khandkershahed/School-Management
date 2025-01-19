@@ -300,7 +300,7 @@
                                                             <label class="form-check-label mt-2"
                                                                 for="fee_id_{{ $examdueFee->id }}">
                                                                 <input
-                                                                    class="form-check-input ms-3 mt-0 fee-checkbox fee-Package"
+                                                                    class="form-check-input ms-3 mt-0 fee-checkbox"
                                                                     type="checkbox" name="fee_id[]"
                                                                     onchange="updatePaySlip()"
                                                                     value="{{ $examdueFee->id }}"

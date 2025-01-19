@@ -37,7 +37,6 @@
                             alt="AdminLTE Logo" class="brand-image" style="width: 200px;" />
                     </a>
                     <div>
-                        <p class="text-center pt-4 fw-bold fs-4">Your Admin Account</p>
                         <p class="text-center " style="color: #2486d0;">Login To Continue</p>
                     </div>
                     <div class="row mt-3 bg-white p-4 py-5 rounded-3">
