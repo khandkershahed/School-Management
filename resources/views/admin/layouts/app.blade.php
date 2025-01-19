@@ -13,7 +13,7 @@
     <!-- Meta Title and Description -->
     <meta name="title" content="{{ optional($setting)->site_title ?: config('app.name', 'AWS "|" Dashboard') }}">
     <meta name="description" content="{{ optional($setting)->meta_description ?: config('app.name') }}">
-    <link rel="shortcut icon" href="asset('images/logo_color_no_bg.png')" />
+
     <!-- Open Graph / Facebook Meta Tags -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ optional($setting)->site_url ?: config('app.url') }}">
@@ -33,6 +33,8 @@
 
     <!-- Page Title -->
     <title>{{ optional($setting)->site_title ?: config('app.name', 'AWS "|" Dashboard') }}</title>
+    <link href="{{ asset('images/logo_color_no_bg.png') }}" rel="apple-touch-icon-precomposed">
+    <link href="{{ asset('images/logo_color_no_bg.png') }}" rel="shortcut icon" type="image/png">
 
     <!-- CSS Stylesheets -->
     <link rel="stylesheet" href="{{ asset('admin/assets/css/bootstrap.min.css') }}">

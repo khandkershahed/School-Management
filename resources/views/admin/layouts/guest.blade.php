@@ -11,7 +11,7 @@
     {{-- <meta name="apple-mobile-web-app-capable" content="yes"> --}}
     <meta name="title" content="{{ optional($setting)->site_title ?: config('app.name', 'FMS-SHKSC "|" Dashboard') }}" />
     <meta name="description" content="{{ optional($setting)->meta_description ?: config('app.name') }}" />
-    <link rel="shortcut icon" href="asset('images/logo_color_no_bg.png')" />
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="{{ optional($setting)->site_url ?: config('app.url') }}" />
@@ -31,7 +31,8 @@
         content="{{ optional($setting)->site_logo && file_exists(public_path('storage/' . $setting->site_logo)) ? asset('storage/' . $setting->site_logo) : asset('frontend/images/brandPage-logo-no-img(217-55).jpg') }}" />
 
     <title>{{ optional($setting)->site_title ?: config('app.name', 'FMS-SHKSC "|" Dashboard') }}</title>
-
+    <link href="{{ asset('images/logo_color_no_bg.png') }}" rel="apple-touch-icon-precomposed">
+    <link href="{{ asset('images/logo_color_no_bg.png') }}" rel="shortcut icon" type="image/png">
     <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.2.0/css/all.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/source-sans-3@5.0.12/index.css"
