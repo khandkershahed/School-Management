@@ -731,7 +731,9 @@ class StudentFeeController extends Controller
                 ->get();
             // Initialize the collection
 
-            $exam_fees = Fee::where('status', 'active')
+            $exam_fees = Fee::where('medium', $student->medium)
+                ->whereJsonContains('class', $student->class)
+                ->where('status', 'active')
                 ->where('fee_type', 'yearly')
                 ->where('name', 'like', '%exam%')
                 ->get();
@@ -764,6 +766,6 @@ class StudentFeeController extends Controller
         }
 
         // Return the partial view with data
-        return response()->view('admin.pages.studentFee.partial.studentFee', compact('student', 'package_name', 'examdueFees', 'exam_fees','dueFees', 'recurring_fees', 'waiversLookup', 'paidFees', 'monthly_fees', 'studentpaidFees'));
+        return response()->view('admin.pages.studentFee.partial.studentFee', compact('student', 'package_name', 'examdueFees', 'exam_fees', 'dueFees', 'recurring_fees', 'waiversLookup', 'paidFees', 'monthly_fees', 'studentpaidFees'));
     }
 }
