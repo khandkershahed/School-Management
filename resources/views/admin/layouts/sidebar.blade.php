@@ -214,12 +214,12 @@
                             'permissions' => ['view setup'], // Add permissions for this menu item
                             'routes' => ['admin.settings.index', 'admin.email-settings.index', 'admin.database.backup'],
                             'subMenu' => [
-                                [
-                                    'title' => 'Website Setting',
-                                    'permissions' => ['update setting'], // Permission for sub-menu
-                                    'routes' => ['admin.settings.index'],
-                                    'route' => 'admin.settings.index',
-                                ],
+                                // [
+                                //     'title' => 'Website Setting',
+                                //     'permissions' => ['update setting'], // Permission for sub-menu
+                                //     'routes' => ['admin.settings.index'],
+                                //     'route' => 'admin.settings.index',
+                                // ],
                                 [
                                     'title' => 'Database Backup',
                                     'permissions' => ['download backup'], // Permission for sub-menu
