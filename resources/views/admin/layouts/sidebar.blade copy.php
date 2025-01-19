@@ -2,7 +2,7 @@
     <div class="sidebar-brand">
         <a href="{{ route('admin.dashboard') }}"
             class="brand-link text-center d-flex align-items-center justify-content-center">
-            <img src="{{ asset('images/logo-color.png') }}" alt="AdminLTE Logo" class="brand-image" />
+            <img src="{{ asset('images/logo-color.png') }}" alt="FMS-SHKSC" class="brand-image" />
         </a>
     </div>
     <div class="sidebar-wrapper main-sidebar position-relative"> <!-- Added position-relative -->

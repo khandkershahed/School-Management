@@ -1,8 +1,9 @@
 <aside class="app-sidebar bg-body-secondary" data-bs-theme="dark">
-    <div class="sidebar-brand">
+    <div class="sidebar-brand" style="height: auto; padding:0.5rem">
         <a href="{{ route('admin.dashboard') }}"
             class="brand-link text-center d-flex align-items-center justify-content-center">
-            <img src="{{ asset('images/logo-color.png') }}" alt="AdminLTE Logo" class="brand-image" />
+            <h2 class="text-center" style="font-family: cursive;color: rgb(2 66 112);">FMS-SHKSC</h2>
+            {{-- <img src="{{ asset('images/logo-color.png') }}" alt="FMS-SHKSC" class="brand-image" /> --}}
         </a>
     </div>
     <div class="sidebar-wrapper main-sidebar position-relative"> <!-- Added position-relative -->

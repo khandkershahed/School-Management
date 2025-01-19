@@ -30,22 +30,23 @@
                         style="width: 600px;">
                 </div>
             </div> --}}
-            <div class="col-xl-6 col-lg-6 d-flex jutify-content-center align-items-center offset-lg-3 mt-lg-3" style="">
+            <div class="col-xl-6 col-lg-6 d-flex jutify-content-center align-items-center offset-lg-3 mt-lg-5"
+                style="">
                 <div class="d-flex justify-content-center flex-column align-items-center w-100">
                     <a href="{{ route('admin.dashboard') }}" class="brand-link">
                         <img src="{{ !empty($site->site_black_logo) && file_exists(public_path('storage/webSetting/' . $site->site_black_logo)) ? asset('storage/webSetting/' . $site->site_black_logo) : asset('images/logo_color_no_bg.png') }}"
-                            alt="AdminLTE Logo" class="brand-image" style="width: 200px;" />
+                            alt="FMS-SHKSC" class="brand-image" style="width: 120px;" />
                     </a>
                     <div>
-                        <p class="text-center " style="color: #2486d0;">Login To Continue</p>
+                        <h2 class="text-center my-4" style="color: #2486d0;">FMS-SHKSC</h2>
                     </div>
-                    <div class="row mt-3 bg-white p-4 py-5 rounded-3">
+                    <div class="row bg-white p-4 py-5 rounded-3">
 
                         <form action="{{ route('admin.login') }}" method="POST" id="kt_sign_in_form">
                             @csrf
                             <div class="input-group mb-4">
                                 <div class="form-floating">
-                                    <input type="email" name="email"
+                                    <input type="email" name="email" style="width: 300px"
                                         class="form-control form-control-solid login-form @error('email')is-invalid @enderror"
                                         placeholder="Enter your email address" value="{{ old('email') }}"
                                         autocomplete="off" />
@@ -64,19 +65,10 @@
                             <div class="input-group mb-4">
                                 <div class="form-floating">
 
-                                    <input type="password" name="password" id="passwordField"
+                                    <input type="password" name="password" id="passwordField" style="width: 300px"
                                         class="form-control form-control-lg form-control-solid login-form @error('password')is-invalid @enderror"
                                         placeholder="Enter your password" autocomplete="off" />
-                                    <span
-                                        class="btn btn-sm btn-icon border-0 bg-none shadow-none rounded-0 position-absolute translate-middle top-50 end-0 me-2 icons-eye"
-                                        style="@error('password')top: 34% !important; @enderror"
-                                        data-kt-password-meter-control="visibility"
-                                        onclick="togglePasswordVisibility()">
-                                        <i id="eyeIcon" class="fa-solid fa-eye fs-2"
-                                            style="color: #2486d0;font-size: 25px !important;"></i>
-                                        <i class="fa-solid fa-eye d-none"
-                                            style="color: #2486d0; font-size: 25px !important;"></i>
-                                    </span>
+
                                     <label for="passwordField"
                                         class="form-label fw-bolder text-dark fs-6 mb-0">{{ __('Password') }}</label>
                                     @error('password')
@@ -85,8 +77,11 @@
                                         </div>
                                     @enderror
                                 </div>
-                                <div class="input-group-text"> <span class="bi bi-lock-fill"
-                                        style="color: #2486d0;"></span> </div>
+                                <div class="input-group-text">
+                                    <span class="fa-solid fa-eye" style="color: #2486d0;" id="eyeIcon"
+                                        onclick="togglePasswordVisibility()">
+                                    </span>
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-12 d-inline-flex align-items-center">
@@ -120,12 +115,12 @@
                 const eyeIcon = document.getElementById('eyeIcon');
                 if (passwordField.type === 'password') {
                     passwordField.type = 'text';
-                    eyeIcon.classList.remove('bi-eye');
-                    eyeIcon.classList.add('bi-eye-slash');
+                    eyeIcon.classList.remove('fa-eye');
+                    eyeIcon.classList.add('fa-eye-slash');
                 } else {
                     passwordField.type = 'password';
-                    eyeIcon.classList.remove('bi-eye-slash');
-                    eyeIcon.classList.add('bi-eye');
+                    eyeIcon.classList.remove('fa-eye-slash');
+                    eyeIcon.classList.add('fa-eye');
                 }
             }
         </script>
