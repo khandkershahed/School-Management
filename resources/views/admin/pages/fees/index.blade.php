@@ -48,9 +48,9 @@
                                                         @if (is_array($classes))
                                                             @foreach ($classes as $item)
                                                                 <span class="px-2 badge bg-success text-white">
-                                                                    @if ((string) $item->class === '00')
+                                                                    @if ($item === '00')
                                                                         Nursery
-                                                                    @elseif ((string) $item->class === '0')
+                                                                    @elseif ($item === '0')
                                                                         KG
                                                                     @else
                                                                         {{ $item }}
