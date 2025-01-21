@@ -156,7 +156,7 @@
                                         <div class="mb-3">
                                             <!-- form -->
                                             <div class="form-group">
-                                                <x-admin.label for="guardian_name" class="form-label">Father's
+                                                <x-admin.label for="guardian_name" class="form-label">Guardian's
                                                     Name <span class="text-danger">*</span></x-admin.label>
                                                 <div class="input-group input-group-sm">
                                                     <x-admin.input id="guardian_name" type="text"
@@ -172,7 +172,7 @@
                                         <div class="mb-3">
                                             <!-- form -->
                                             <div class="form-group">
-                                                <x-admin.label for="guardian_contact" class="form-label">Father's
+                                                <x-admin.label for="guardian_contact" class="form-label">Guardian's
                                                     Contact Number <span class="text-danger">*</span></x-admin.label>
                                                 <div class="input-group input-group-sm">
                                                     <x-admin.input id="guardian_contact" type="text"

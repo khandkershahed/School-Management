@@ -46,12 +46,12 @@
                     </div>
                     <div class="col-lg-6 col-md-12 mb-4">
                         <div class="border p-3 rounded" style="border-color: #eee;">
-                            <h6><strong>Father's Name:</strong> {{ $student->guardian_name }}</h6>
+                            <h6><strong>Guardian's Name:</strong> {{ $student->guardian_name }}</h6>
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-12 mb-4">
                         <div class="border p-3 rounded" style="border-color: #eee;">
-                            <h6><strong>Father's Number:</strong> {{ $student->guardian_contact }}</h6>
+                            <h6><strong>Guardian's Number:</strong> {{ $student->guardian_contact }}</h6>
                         </div>
                     </div>
                 </div>

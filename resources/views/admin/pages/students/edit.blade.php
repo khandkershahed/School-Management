@@ -144,7 +144,7 @@
                                     <div class="col-lg-3 col-md-6">
                                         <div class="mb-3">
                                             <div class="form-group">
-                                                <x-admin.label for="guardian_name" class="form-label">Father's
+                                                <x-admin.label for="guardian_name" class="form-label">Guardian's
                                                     Name <span class="text-danger">*</span></x-admin.label>
                                                 <div class="input-group input-group-sm">
                                                     <x-admin.input id="guardian_name" type="text" name="guardian_name"

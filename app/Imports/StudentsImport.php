@@ -49,8 +49,8 @@ class StudentsImport implements ToModel, WithHeadingRow
     //         'name'             => $row['student_name'], // Student Name
     //         // 'slug'             => $student_id, // Slug (Optional)
     //         'gender'           => $row['gender'],       // Gender
-    //         'guardian_name'    => $row['fathers_name'], // Father's name (Guardian)
-    //         'guardian_contact' => $row['fathers_number'], // Father's contact number
+    //         'guardian_name'    => $row['guardian_name'], // guardian's name (Guardian)
+    //         'guardian_contact' => $row['guardian_number'], // guardian's contact number
     //         'class'            => $row['class'],        // Class
     //         'section'          => $section,             // Section
     //         'year'             => $year,               // Year
@@ -108,8 +108,8 @@ class StudentsImport implements ToModel, WithHeadingRow
                 'roll'             => $roll,
                 'name'             => $row['student_name'],
                 'gender'           => $row['gender'],
-                'guardian_name'    => $row['fathers_name'],
-                'guardian_contact' => $row['fathers_number'],
+                'guardian_name'    => $row['guardian_name'],
+                'guardian_contact' => $row['guardian_number'],
                 'student_type'     => $row['student_type_oldnew'],
                 'class'            => $row['class'],
                 'section'          => $section,

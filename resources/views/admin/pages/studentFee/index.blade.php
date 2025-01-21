@@ -42,7 +42,7 @@
                                     </div>
                                     <div class="col-lg-4 col-md-6">
                                         <div class="mb-3">
-                                            <x-admin.label for="guardian_contact" class="form-label">Father's Number
+                                            <x-admin.label for="guardian_contact" class="form-label">Guardian's Number
                                             </x-admin.label>
                                             <x-admin.input type="number" :value="old('guardian_contact')" id="guardian_contact"
                                                 name="guardian_contact" required></x-admin.input>

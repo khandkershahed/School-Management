@@ -31,8 +31,8 @@
                             <strong></i> Guardian Information</strong>
 
                             <p class="text-muted">
-                                <strong>Father's Name :</strong>{{ $student->guardian_name }}; <br>
-                                <strong>Father's Contact Number :</strong> {{ $student->guardian_contact }};
+                                <strong>Guardian's Name :</strong>{{ $student->guardian_name }}; <br>
+                                <strong>Guardian's Contact Number :</strong> {{ $student->guardian_contact }};
                             </p>
                             <hr>
                         </div>
