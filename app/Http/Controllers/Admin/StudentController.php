@@ -215,7 +215,7 @@ class StudentController extends Controller
             'name'          => 'required|string|max:255',
             // 'phone'         => 'required|string|max:20|min:3',
             // 'email'         => 'nullable|email|max:255|min:3|unique:users,email,' . $client->id,
-            'company_name'  => 'nullable|string|max:100|min:2',
+            // 'company_name'  => 'nullable|string|max:100|min:2',
             'address'       => 'nullable|string|max:255',
         ]);
         try {

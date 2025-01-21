@@ -145,7 +145,7 @@
                                         <div class="mb-3">
                                             <div class="form-group">
                                                 <x-admin.label for="guardian_name" class="form-label">Guardian's
-                                                    Name <span class="text-danger">*</span></x-admin.label>
+                                                    Name </x-admin.label>
                                                 <div class="input-group input-group-sm">
                                                     <x-admin.input id="guardian_name" type="text" name="guardian_name"
                                                         :value="old('guardian_name', $student->guardian_name)" class="form-control" autofocus>
@@ -158,7 +158,7 @@
                                     <div class="col-lg-3 col-md-6">
                                         <div class="mb-3">
                                             <div class="form-group">
-                                                <x-admin.label for="guardian_contact" class="form-label">Contact Number <span class="text-danger">*</span></x-admin.label>
+                                                <x-admin.label for="guardian_contact" class="form-label">Contact Number </x-admin.label>
                                                 <div class="input-group input-group-sm">
                                                     <x-admin.input id="guardian_contact" type="text" name="guardian_contact"
                                                         :value="old('guardian_contact', $student->guardian_contact)" class="form-control" autofocus>
