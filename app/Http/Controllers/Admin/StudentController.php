@@ -324,7 +324,7 @@ class StudentController extends Controller
             if (!$student) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'No student found with the provided student_id.'
+                    'message' => 'No student found with the provided Student ID. Try again with the correct ID.'
                 ], 404);
             }
         } elseif (is_numeric($studentId)) {
@@ -335,7 +335,7 @@ class StudentController extends Controller
             if (!$student) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'No student found with the provided numeric part of student_id.'
+                    'message' => 'No student found with the provided Student ID. Try again with the correct ID'
                 ], 404);
             }
         }

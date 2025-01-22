@@ -97,12 +97,14 @@
                             document.getElementById('roll').value = student.roll;
                             document.getElementById('guardian_contact').value = student.guardian_contact;
                         } else {
-                            alert(data.message);
+                            alert('No Data Found for the provided Student ID. Try again with the correct ID');
+                            // alert(data.message);
+                            // alert(data.message);
                         }
                     })
                     .catch(error => {
                         console.error('Error:', error);
-                        alert('There was an error fetching the data.');
+                        // alert('No Data Found for the provided Student ID. Try again with the correct ID');
                     });
             });
         </script>
@@ -192,7 +194,8 @@
                     data: formData, // Send serialized form data
                     success: function(response) {
                         if (response.error) {
-                            alert(response.error);
+                            alert('No Data Found for the provided Student ID. Try again with the correct ID');
+                            // alert(response.error);
                         } else {
                             $('#studentFeeContainer').html(response);
 
@@ -200,7 +203,7 @@
                     },
                     error: function(xhr, status, error) {
                         console.error("Error in AJAX request:", status, error);
-                        alert('Error fetching data');
+                        // alert('No Data Found for the provided Student ID. Try again with the correct ID');
                     }
                 });
             }
@@ -267,7 +270,8 @@
             function downloadFile(url, filename) {
                 const a = document.createElement("a");
                 a.href = url;
-                a.download = filename;
+                // a.download = filename;
+                a.print = filename;
                 a.click();
             }
         </script>

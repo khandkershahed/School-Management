@@ -650,7 +650,7 @@ class StudentFeeController extends Controller
                 if (!$student) {
                     return response()->json([
                         'success' => false,
-                        'message' => 'No student found with the provided student_id.'
+                        'message' => 'No student found with the Student ID. Try again with the correct ID'
                     ], 404);
                 }
             } elseif (is_numeric($studentId)) {
@@ -661,7 +661,7 @@ class StudentFeeController extends Controller
                 if (!$student) {
                     return response()->json([
                         'success' => false,
-                        'message' => 'No student found with the provided numeric part of student_id.'
+                        'message' => 'No student found with the provided Student ID. Try again with the correct ID'
                     ], 404);
                 }
             }
@@ -761,7 +761,8 @@ class StudentFeeController extends Controller
             // Handle any errors that might occur during the database queries
             return response()->json([
                 'success' => false,
-                'message' => 'An error occurred while fetching data: ' . $e->getMessage()
+                'message' => 'No student found with the provided Student ID. Try again with the correct ID',
+                // 'message' => 'An error occurred while fetching data: ' . $e->getMessage()
             ], 500);
         }
 
