@@ -267,11 +267,33 @@
             }
 
             // Function to trigger file download
+            // function downloadFile(url, filename) {
+            //     const a = document.createElement("a");
+            //     a.href = url;
+            //     // a.download = filename;
+            //     a.print = filename;
+            //     a.click();
+            // }
             function downloadFile(url, filename) {
+                // Create an invisible iframe to trigger printing
+                const iframe = document.createElement("iframe");
+                iframe.style.position = "absolute";
+                iframe.style.width = "0";
+                iframe.style.height = "0";
+                iframe.style.border = "none";
+                document.body.appendChild(iframe);
+
+                iframe.src = url;
+
+                // Once the PDF is loaded in the iframe, trigger the print dialog
+                iframe.onload = function() {
+                    iframe.contentWindow.print(); // Trigger print dialog
+                };
+
+                // Trigger download of the PDF (optional, if you still want to download the file)
                 const a = document.createElement("a");
                 a.href = url;
-                // a.download = filename;
-                a.print = filename;
+                a.download = filename;
                 a.click();
             }
         </script>
