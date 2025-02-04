@@ -6,43 +6,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Payment Receipt(Student Copy)</title>
     <style>
+        /* Set A5 paper size (portrait) and ensure content fits well */
+        @page {
+            size: 148mm 210mm;  /* A5 size in portrait */
+            margin: 5mm;         /* Adjust margin for A5 layout */
+        }
+
+        /* General body styles */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            font-size: 10px; /* Reduce font size to 10px */
+            font-size: 10px; /* Set font size to 10px */
+            line-height: 1.4;
         }
 
         .container {
             padding: 10px;
             border: 1px solid #000;
             width: 100%;
-            margin: auto;
-            font-size: 10px; /* Set font size for the entire document */
-            page-break-before: always;
+            font-size: 10px; /* Apply 10px font size throughout */
+            margin: 0;
         }
 
-        /* Paper size and orientation */
-        @page {
-            size: A5;
-            margin: 10mm;
-        }
-
-        /* Use a table for header layout */
+        /* Header layout */
         .header-table {
             width: 100%;
             border: none;
             margin-bottom: 10px;
         }
 
-        /* Center logo and text vertically using table cells */
         .header-table td {
             vertical-align: middle;
             padding: 0;
         }
 
+        /* Logo size adjusted for A5 */
         .logo {
-            width: 80px; /* Reduce logo size */
+            width: 80px; /* Reduced logo size for A5 */
             height: auto;
         }
 
@@ -58,9 +59,10 @@
 
         .header-text p {
             margin: 5px 0;
-            font-size: 10px; /* Adjust text size */
+            font-size: 10px; /* Smaller font for header text */
         }
 
+        /* Info table */
         .info-table,
         .details-table {
             width: 100%;
@@ -71,7 +73,7 @@
         .info-table td,
         .details-table td,
         .details-table th {
-            padding: 3px; /* Reduce padding for smaller font size */
+            padding: 3px;
             border: 1px solid #959595;
         }
 
@@ -81,24 +83,27 @@
 
         .details-table th {
             text-align: left;
-            font-size: 10px; /* Adjust header text size */
+            font-size: 10px; /* Ensure consistent font size for table headers */
         }
 
+        /* Footer */
         .footer {
             margin-top: 10px;
+            font-size: 10px;
         }
 
         .footer p {
             margin: 0;
-            font-size: 10px;
+            text-align: center;
+            text-transform: capitalize;
         }
 
+        /* Signature styles */
         .signature {
             margin-top: 30px;
             text-align: right;
         }
 
-        /* Adjust signature style */
         .signature p {
             border-top: 1px dashed #bababa;
             width: 100px;
@@ -179,13 +184,12 @@
 
         <!-- Footer -->
         <div class="footer">
-            <p style="margin-top: 10px; margin-bottom: 10px; text-align: center; text-transform: capitalize;"><strong>In
-                    Words:</strong> {{ $amount_in_words }} Taka only</p>
+            <p><strong>In Words:</strong> {{ $amount_in_words }} Taka only</p>
         </div>
 
         <!-- Signature -->
-        <div class="signature" style="text-align: right; margin-top: 30px;">
-            <p style="border-top: 1px dashed #bababa; width: 100px; display: inline-block;">Accounts Officer</p>
+        <div class="signature">
+            <p style="border-top: 1px dashed #bababa;">Accounts Officer</p>
         </div>
 
     </div>

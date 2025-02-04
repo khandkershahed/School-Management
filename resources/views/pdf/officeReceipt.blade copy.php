@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payment Receipt</title>
+    <title>Payment Receipt(Office Copy)</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -102,31 +102,38 @@
                 <td class="header-text">
                     <h1>Shamsul Hoque Khan School and College</h1>
                     <p>Paradogair, Matuail, Demra Dhaka -1362</p>
-                    <p>Email: info.shksc@gmail.com | Website: www.shksc.edu.bd/</p>
-                    <h2>PAYMENT RECEIPT</h2>
+                    <p>Email: info.shksc@gmail.com | Website: www.shksc.edu.bd</p>
+                    <h2>PAYMENT RECEIPT (OFFICE COPY)</h2>
                 </td>
             </tr>
         </table>
 
         <!-- Receipt Info -->
-        <table class="info-table">
+        {{-- <table class="info-table">
             <tr>
                 <td><strong>Receipt SN:</strong> #{{ $invoiceNumber }}</td>
-                <td><strong>Payment Received:</strong> {{ date('d M, Y') }}</td>
+                <td><strong>Student ID:</strong> {{ $student->student_id }}</td>
             </tr>
             <tr>
                 <td><strong>Receipt Created:</strong> {{ date('d M, Y') }}</td>
             </tr>
-        </table>
+        </table> --}}
 
         <!-- Student Info -->
         <table class="info-table" style="margin-top: 10px;">
+            <tr>
+                <td><strong>Receipt SN:</strong> #{{ $invoiceNumber }}</td>
+                <td><strong>Student ID:</strong> {{ $student->student_id }}</td>
+            </tr>
+            <tr>
+                <td><strong>Receipt Created:</strong> {{ date('d M, Y') }}</td>
+            </tr>
             <tr>
                 <td><strong>Name:</strong> {{ $student->name }}</td>
                 <td><strong>Roll:</strong> {{ $student->roll }}</td>
             </tr>
             <tr>
-                <td><strong>Section:</strong> {{ $student->medium }}</td>
+                <td><strong>Medium:</strong> {{ $student->medium }}</td>
                 <td><strong>Class:</strong> {{ $student->class }}</td>
             </tr>
             <tr>
@@ -150,8 +157,8 @@
                 @foreach ($feeDetails as $key => $detail)
                     <tr>
                         <td>{{ $key + 1 }}</td>
-                        <td>{{ $detail['fee']->name }}</td>
-                        <td>{{ $detail['fee']->amount }} Taka</td>
+                        <td>{{ $detail['fee'] }}</td>
+                        <td>{{ $detail['amount'] }} Taka</td>
                         <td> @if (($detail['waiverAmount']) >0) {{ $detail['waiverAmount'] }} Taka @else N/A @endif</td>
                         <td>{{ $detail['finalAmount'] }} Taka</td>
                     </tr>
