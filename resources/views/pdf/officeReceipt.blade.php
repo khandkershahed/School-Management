@@ -25,9 +25,9 @@
 
         /* Container should fit within the page */
         .container {
-            width: 138mm;
+            width: 138mm !important; 
             /* Adjusted to fit the A5 width */
-            padding: 5mm;
+            padding: 2mm;
             box-sizing: border-box;
         }
 
