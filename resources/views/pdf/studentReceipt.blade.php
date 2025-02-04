@@ -6,10 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Payment Receipt(Student Copy)</title>
     <style>
-        /* Set A5 paper size (portrait) and ensure content fits well */
+        /* Set A5 page size */
         @page {
-            size: 148mm 210mm;  /* A5 size in portrait */
-            margin: 5mm;         /* Adjust margin for A5 layout */
+            size: 148mm 210mm;
+            /* A5 portrait */
+            margin: 5mm;
+            /* Reduced margin to prevent overflow */
         }
 
         /* General body styles */
@@ -17,16 +19,18 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            font-size: 10px; /* Set font size to 10px */
+            font-size: 10px;
+            /* Set font size to 10px */
             line-height: 1.4;
         }
 
+        /* Container should fit within the page */
         .container {
-            padding: 10px;
-            border: 1px solid #000;
+            padding: 5mm;
             width: 100%;
-            font-size: 10px; /* Apply 10px font size throughout */
-            margin: 0;
+            font-size: 10px;
+            /* Consistent font size throughout */
+            box-sizing: border-box;
         }
 
         /* Header layout */
@@ -43,7 +47,8 @@
 
         /* Logo size adjusted for A5 */
         .logo {
-            width: 80px; /* Reduced logo size for A5 */
+            width: 70px;
+            /* Reduced logo size further */
             height: auto;
         }
 
@@ -59,10 +64,10 @@
 
         .header-text p {
             margin: 5px 0;
-            font-size: 10px; /* Smaller font for header text */
+            font-size: 10px;
         }
 
-        /* Info table */
+        /* Info table - make sure tables fit within page */
         .info-table,
         .details-table {
             width: 100%;
@@ -70,11 +75,14 @@
             margin-top: 10px;
         }
 
+        /* Ensure tables are within the page width */
         .info-table td,
         .details-table td,
         .details-table th {
             padding: 3px;
             border: 1px solid #959595;
+            word-wrap: break-word;
+            text-align: left;
         }
 
         .info-table td {
@@ -82,11 +90,11 @@
         }
 
         .details-table th {
-            text-align: left;
-            font-size: 10px; /* Ensure consistent font size for table headers */
+            font-size: 10px;
+            /* Table header font size */
         }
 
-        /* Footer */
+        /* Footer styling */
         .footer {
             margin-top: 10px;
             font-size: 10px;
@@ -98,7 +106,7 @@
             text-transform: capitalize;
         }
 
-        /* Signature styles */
+        /* Signature styling */
         .signature {
             margin-top: 30px;
             text-align: right;
@@ -109,7 +117,6 @@
             width: 100px;
             display: inline-block;
         }
-
     </style>
 </head>
 
@@ -171,7 +178,13 @@
                         <td>{{ $key + 1 }}</td>
                         <td>{{ $detail['fee'] }}</td>
                         <td>{{ $detail['amount'] }} Taka</td>
-                        <td> @if (($detail['waiverAmount']) >0) {{ $detail['waiverAmount'] }} Taka @else N/A @endif</td>
+                        <td>
+                            @if ($detail['waiverAmount'] > 0)
+                                {{ $detail['waiverAmount'] }} Taka
+                            @else
+                                N/A
+                            @endif
+                        </td>
                         <td>{{ $detail['finalAmount'] }} Taka</td>
                     </tr>
                 @endforeach
