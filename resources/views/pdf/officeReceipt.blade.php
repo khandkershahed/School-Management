@@ -23,6 +23,7 @@
 
         /* Container should fit within the page */
         .container {
+            width: 138mm;
             padding: 5mm;
             width: 100%;
             font-size: 10px; /* Consistent font size throughout */
