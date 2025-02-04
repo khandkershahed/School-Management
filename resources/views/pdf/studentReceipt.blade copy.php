@@ -10,7 +10,6 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            font-size: 10px; /* Reduce font size to 10px */
         }
 
         .container {
@@ -18,14 +17,7 @@
             border: 1px solid #000;
             width: 100%;
             margin: auto;
-            font-size: 10px; /* Set font size for the entire document */
-            page-break-before: always;
-        }
-
-        /* Paper size and orientation */
-        @page {
-            size: A5;
-            margin: 10mm;
+            font-size: 12px;
         }
 
         /* Use a table for header layout */
@@ -42,13 +34,13 @@
         }
 
         .logo {
-            width: 80px; /* Reduce logo size */
+            width: 120px;
             height: auto;
         }
 
         .header-text {
             text-align: center;
-            font-size: 12px;
+            font-size: 14px;
         }
 
         .header-text h1,
@@ -58,7 +50,7 @@
 
         .header-text p {
             margin: 5px 0;
-            font-size: 10px; /* Adjust text size */
+            font-size: 12px;
         }
 
         .info-table,
@@ -71,7 +63,7 @@
         .info-table td,
         .details-table td,
         .details-table th {
-            padding: 3px; /* Reduce padding for smaller font size */
+            padding: 4px;
             border: 1px solid #959595;
         }
 
@@ -81,7 +73,6 @@
 
         .details-table th {
             text-align: left;
-            font-size: 10px; /* Adjust header text size */
         }
 
         .footer {
@@ -90,21 +81,12 @@
 
         .footer p {
             margin: 0;
-            font-size: 10px;
         }
 
         .signature {
             margin-top: 30px;
             text-align: right;
         }
-
-        /* Adjust signature style */
-        .signature p {
-            border-top: 1px dashed #bababa;
-            width: 100px;
-            display: inline-block;
-        }
-
     </style>
 </head>
 
@@ -125,6 +107,18 @@
                 </td>
             </tr>
         </table>
+
+        <!-- Receipt Info -->
+        {{-- <table class="info-table">
+            <tr>
+                <td><strong>Receipt SN:</strong> #{{ $invoiceNumber }}</td>
+                <td><strong>Student ID:</strong> {{ $student->student_id }}</td>
+            </tr>
+            <tr>
+                <td><strong>Receipt Created:</strong> {{ date('d M, Y') }}</td>
+            </tr>
+
+        </table> --}}
 
         <!-- Student Info -->
         <table class="info-table" style="margin-top: 10px;">
@@ -185,7 +179,7 @@
 
         <!-- Signature -->
         <div class="signature" style="text-align: right; margin-top: 30px;">
-            <p style="border-top: 1px dashed #bababa; width: 100px; display: inline-block;">Accounts Officer</p>
+            <p style="border-top: 1px dashed #bababa; width: 120px; display: inline-block;">Accounts Officer</p>
         </div>
 
     </div>
