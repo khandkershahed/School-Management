@@ -9,9 +9,7 @@
         /* Set A5 page size */
         @page {
             size: 148mm 210mm;
-            /* A5 portrait */
-            margin: 5mm;
-            /* Reduced margin to prevent overflow */
+            margin: 5mm; /* Reduced margin to prevent overflow */
         }
 
         /* General body styles */
@@ -19,18 +17,14 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            font-size: 10px;
-            /* Set font size to 10px */
+            font-size: 9px; /* Reduce font size to 9px for smaller content */
             line-height: 1.4;
         }
 
         /* Container should fit within the page */
         .container {
-            width: 138mm;
+            width: 138mm; /* Adjusted to fit the A5 width */
             padding: 5mm;
-            width: 100%;
-            font-size: 10px;
-            /* Consistent font size throughout */
             box-sizing: border-box;
         }
 
@@ -48,14 +42,13 @@
 
         /* Logo size adjusted for A5 */
         .logo {
-            width: 70px;
-            /* Reduced logo size further */
+            width: 60px; /* Further reduced logo size */
             height: auto;
         }
 
         .header-text {
             text-align: center;
-            font-size: 12px;
+            font-size: 10px; /* Slightly smaller font for header */
         }
 
         .header-text h1,
@@ -64,8 +57,8 @@
         }
 
         .header-text p {
-            margin: 5px 0;
-            font-size: 10px;
+            margin: 3px 0;
+            font-size: 9px; /* Smaller font for text */
         }
 
         /* Info table - make sure tables fit within page */
@@ -73,7 +66,7 @@
         .details-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 10px;
+            margin-top: 5px;
         }
 
         /* Ensure tables are within the page width */
@@ -84,6 +77,7 @@
             border: 1px solid #959595;
             word-wrap: break-word;
             text-align: left;
+            font-size: 9px; /* Smaller font size for tables */
         }
 
         .info-table td {
@@ -91,14 +85,13 @@
         }
 
         .details-table th {
-            font-size: 10px;
-            /* Table header font size */
+            font-size: 9px; /* Smaller font size for table headers */
         }
 
         /* Footer styling */
         .footer {
-            margin-top: 10px;
-            font-size: 10px;
+            margin-top: 5px;
+            font-size: 9px;
         }
 
         .footer p {
@@ -109,13 +102,13 @@
 
         /* Signature styling */
         .signature {
-            margin-top: 30px;
+            margin-top: 25px;
             text-align: right;
         }
 
         .signature p {
             border-top: 1px dashed #bababa;
-            width: 100px;
+            width: 90px;
             display: inline-block;
         }
     </style>
@@ -140,7 +133,7 @@
         </table>
 
         <!-- Student Info -->
-        <table class="info-table" style="margin-top: 10px;">
+        <table class="info-table" style="margin-top: 5px;">
             <tr>
                 <td><strong>Receipt SN:</strong> #{{ $invoiceNumber }}</td>
                 <td><strong>Student ID:</strong> {{ $student->student_id }}</td>
