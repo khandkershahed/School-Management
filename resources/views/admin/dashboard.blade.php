@@ -4,7 +4,7 @@
             <div class="bg-light p-3 d-flex mb-4 align-items-center justify-content-center rounded-3">
                 <div>
                     <img src="{{ asset('images/logo_color_no_bg.png') }}" alt="FMS-SHKSC" class="FMS-SHKSC"
-                        width="120px" />
+                        width="90px" />
                 </div>
                 <div class="ms-4">
                     <h2 class="m-0 p-0" style="color:#800505">Shamsul Hoque Khan School and College | (SHKSC)</h2>
@@ -12,7 +12,7 @@
                 </div>
             </div>
             <div class="row mb-4">
-                <div class="col-lg-3 col-6">
+                <div class="col-lg-4 col-6">
                     <div class="small-box py-3">
                         <div class="inner">
                             <h4>{{ $total_student }}</h4>
@@ -33,7 +33,7 @@
                         </svg> --}}
                     </div>
                 </div>
-                <div class="col-lg-3 col-6">
+                <div class="col-lg-4 col-6">
                     <div class="small-box py-3">
                         <div class="inner">
                             <h5>{{ $currentMonthIncome }} Taka</h5>
@@ -59,7 +59,7 @@
                         </svg> --}}
                     </div>
                 </div>
-                <div class="col-lg-3 col-6">
+                <div class="col-lg-4 col-6">
                     <div class="small-box py-3">
                         <div class="inner">
                             <h5>{{ $currentYearIncome }} Taka</h5>
