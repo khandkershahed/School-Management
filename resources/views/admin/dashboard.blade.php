@@ -13,7 +13,7 @@
             </div>
             <div class="row mb-4">
                 <div class="col-lg-4 col-6">
-                    <a href="{{ route('admin.students.index') }}">
+                    <a href="{{ route('admin.students.index') }}" style="color: black; text-decoration:none;">
                         <div class="small-box py-3">
                             <div class="inner">
                                 <h4>{{ $total_student }}</h4>
@@ -36,7 +36,7 @@
                     </a>
                 </div>
                 <div class="col-lg-4 col-6">
-                    <a href="{{ route('admin.report.income') }}">
+                    <a href="{{ route('admin.report.income') }}" style="color: black; text-decoration:none;">
                         <div class="small-box py-3">
                             <div class="inner">
                                 <h5>{{ $currentMonthIncome }} Taka</h5>
@@ -64,7 +64,7 @@
                     </a>
                 </div>
                 <div class="col-lg-4 col-6">
-                    <a href="{{ route('admin.report.accountingbalance') }}">
+                    <a href="{{ route('admin.report.accountingbalance') }}" style="color: black; text-decoration:none;">
                         <div class="small-box py-3">
                             <div class="inner">
                                 <h5>{{ $currentYearIncome }} Taka</h5>
