@@ -244,8 +244,11 @@
                                     Swal.fire("Paid!", "Your payment has been processed successfully.", "success")
                                         .then(() => {
                                             // First, trigger both PDF downloads
+                                            autoPrintReceipt(data.studentPdfUrl, "student_receipt.pdf");
+                                            autoPrintReceipt(data.officePdfUrl, "office_receipt.pdf");
                                             downloadFile(data.studentPdfUrl, "student_receipt.pdf");
                                             downloadFile(data.officePdfUrl, "office_receipt.pdf");
+
                                             setTimeout(function() {
                                                 location
                                                     .reload(); // Reload the page after a brief delay
@@ -295,6 +298,24 @@
                 a.href = url;
                 a.download = filename;
                 a.click();
+            }
+
+            function autoPrintReceipt(pdfUrl) {
+                // Create an invisible iframe to load the PDF and trigger printing
+                const iframe = document.createElement("iframe");
+                iframe.style.position = "absolute";
+                iframe.style.width = "0";
+                iframe.style.height = "0";
+                iframe.style.border = "none";
+                document.body.appendChild(iframe);
+
+                // Set the iframe source to the PDF URL
+                iframe.src = pdfUrl;
+
+                // Once the PDF is loaded in the iframe, trigger the print dialog
+                iframe.onload = function() {
+                    iframe.contentWindow.print(); // Trigger the browser's print dialog for the loaded PDF
+                };
             }
         </script>
         <script>
