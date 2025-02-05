@@ -252,7 +252,7 @@
                                             setTimeout(function() {
                                                 location
                                                     .reload(); // Reload the page after a brief delay
-                                            }, 4000);
+                                            }, 8000);
                                         });
 
 
