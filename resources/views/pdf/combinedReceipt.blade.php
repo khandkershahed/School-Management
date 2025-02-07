@@ -28,7 +28,7 @@
         .header-table {
             width: 100%;
             border: none;
-            margin-bottom: 10px;
+            margin-bottom: 7px;
         }
 
         .header-table td {
@@ -46,13 +46,20 @@
             font-size: 10px;
         }
 
+        .header-text h1{
+            font-size: 14px;
+        }
+
+        .header-text h2 {
+            font-size: 13px;
+        }
         .header-text h1,
         .header-text h2 {
             margin: 0;
         }
 
         .header-text p {
-            margin: 3px 0;
+            margin: 2px 0;
             font-size: 9px;
         }
 
@@ -66,8 +73,8 @@
         .info-table td,
         .details-table td,
         .details-table th {
-            padding: 3px;
-            border: 1px solid #959595;
+            padding: 2px;
+            border: 1px solid #bababa;
             word-wrap: break-word;
             text-align: left;
             font-size: 9px;
@@ -93,7 +100,7 @@
         }
 
         .signature {
-            margin-top: 25px;
+            margin-top: 20px;
             text-align: right;
         }
 
