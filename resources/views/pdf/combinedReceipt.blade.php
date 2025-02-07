@@ -51,7 +51,7 @@
         }
 
         .header-text h2 {
-            font-size: 13px;
+            font-size: 11px;
         }
         .header-text h1,
         .header-text h2 {
