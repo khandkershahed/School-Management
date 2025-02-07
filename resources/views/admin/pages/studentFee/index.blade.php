@@ -252,7 +252,7 @@
                                             setTimeout(function() {
                                                 location
                                                     .reload(); // Reload the page after a brief delay
-                                            }, 8000);
+                                            }, 10000);
                                         });
 
 
@@ -324,7 +324,7 @@
                         } catch (err) {
                             console.error("Printing failed: ", err);
                         }
-                    }, 500); // Delay of 500ms; adjust if necessary
+                    }, 300); // Delay of 500ms; adjust if necessary
                 };
             }
         </script>
