@@ -146,7 +146,7 @@
                 <td><strong>Roll:</strong> {{ $student->roll }}</td>
             </tr>
             <tr>
-                <td><strong>Medium:</strong> {{ $student->medium }}</td>
+                <td><strong>Version:</strong> {{ $student->medium }}</td>
                 <td><strong>Class:</strong> {{ $student->class }}</td>
             </tr>
             <tr>

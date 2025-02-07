@@ -328,6 +328,80 @@
                 };
             }
         </script> --}}
+        {{-- <script>
+            function confirmPayment(event) {
+                event.preventDefault();
+
+                var form = document.getElementById("paymentForm");
+                var payURL = form.getAttribute("action");
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "You won't be able to revert this!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Yes, Pay Now!",
+                    cancelButtonText: "No, cancel!",
+                    buttonsStyling: false,
+                    customClass: {
+                        confirmButton: "btn btn-danger",
+                        cancelButton: "btn btn-success",
+                    },
+                }).then(function(result) {
+                    if (result.isConfirmed) {
+                        // If confirmed, send the form via AJAX
+                        var formData = new FormData(form); // Gather the form data
+                        fetch(payURL, {
+                                method: 'POST',
+                                body: formData,
+                                headers: {
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                                        'content')
+                                },
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    Swal.fire("Paid!", "Your payment has been processed successfully.", "success")
+                                        .then(() => {
+                                            // Trigger the PDF downloads and print
+                                            autoPrintReceipt(data.studentPdfUrl, "student_receipt.pdf");
+                                            autoPrintReceipt(data.officePdfUrl, "office_receipt.pdf");
+                                            setTimeout(function() {
+                                                location
+                                            .reload(); // Reload the page after a brief delay
+                                            }, 5000);
+                                        });
+                                } else {
+                                    Swal.fire("Error!", data.message);
+                                }
+                            })
+                            .catch(error => {
+                                Swal.fire("Error!", "An error occurred while processing the payment.", "error");
+                            });
+                    } else {
+                        Swal.fire("Cancelled", "Your payment has been cancelled :)", "error");
+                    }
+                });
+            }
+
+            function autoPrintReceipt(pdfUrl, fileName) {
+                // Log the PDF URL for debugging purposes
+                console.log("PDF URL: ", pdfUrl);
+
+                // Open the PDF in a new window (trigger the print dialog)
+                const printWindow = window.open(pdfUrl, '_blank');
+
+                printWindow.onload = function() {
+                    setTimeout(function() {
+                        try {
+                            printWindow.print();
+                        } catch (err) {
+                            console.error("Printing failed: ", err);
+                        }
+                    }, 500);
+                };
+            }
+        </script> --}}
         <script>
             function confirmPayment(event) {
                 event.preventDefault();
@@ -367,11 +441,10 @@
                                             autoPrintReceipt(data.studentPdfUrl, "student_receipt.pdf");
                                             autoPrintReceipt(data.officePdfUrl, "office_receipt.pdf");
 
-                                            // Delay the reload after printing has started (5000ms)
+                                            // Reload the page after a brief delay
                                             setTimeout(function() {
-                                                location
-                                            .reload(); // Reload the page after a brief delay
-                                            }, 5000);
+                                                location.reload();
+                                            }, 8000); // 6 seconds to ensure the print dialogs were triggered
                                         });
                                 } else {
                                     Swal.fire("Error!", data.message);
