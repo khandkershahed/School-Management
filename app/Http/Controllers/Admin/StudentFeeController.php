@@ -51,24 +51,31 @@ class StudentFeeController extends Controller
 
 
 
+
+
     // public function store(Request $request)
     // {
     //     // Start a transaction to ensure atomicity
     //     DB::beginTransaction();
-    //     dd($request->all());
     //     try {
     //         // Validate the incoming request
-    //         $request->validate([
+    //         $validator = Validator::make($request->all(), [
     //             'student_id' => 'required|exists:users,id',
-    //             'fee_id' => 'required|array',
-    //             'fee_id.*' => 'exists:fees,id',
-    //             'waiver_amount' => 'nullable|array',
-    //             'waiver_amount.*' => 'numeric|min:0',
-    //             'month' => 'required|string',
     //             'year' => 'required|string',
+    //             'month' => 'required|string',
+    //             'fee_id' => 'nullable|array', // For non-monthly fees
+    //             'fee_id.*' => 'exists:fees,id',
     //             'months' => 'nullable|array', // For monthly fees
+    //             'months.*' => 'nullable|array', // For selecting months per fee
+    //             'waiver_amount' => 'nullable|array',
+    //             'waiver_amount.*' => 'numeric',
     //         ]);
-
+    //         if ($validator->fails()) {
+    //             // Flash only the error messages
+    //             // Session::flash('error', $validator->errors()->all());
+    //             return response()->json(['success' => false, 'message' =>  $validator->errors()->all()]);
+    //             // return redirect()->back()->withErrors($validator)->withInput();
+    //         }
     //         // Get the student
     //         $student = User::findOrFail($request->student_id);
 
@@ -95,198 +102,27 @@ class StudentFeeController extends Controller
     //         $totalAmount = 0;
     //         $feeDetails = []; // Collect fee details to pass to the PDF
 
-    //         foreach ($request->fee_id as $index => $feeId) {
-    //             $fee = Fee::findOrFail($feeId);
+    //         // Handle non-monthly fees (fee_id is provided directly)
+    //         if ($request->has('fee_id')) {
+    //             foreach ($request->fee_id as $feeId) {
+    //                 $fee = Fee::findOrFail($feeId);
 
-    //             // Check if there's a waiver for this fee
-    //             $waiverAmount = isset($request->waiver_amount[$feeId]) ? $request->waiver_amount[$feeId] : 0;
+    //                 // Get the waiver if available
+    //                 $waiverAmount = isset($request->waiver_amount[$feeId]) ? $request->waiver_amount[$feeId] : 0;
 
-    //             // Calculate the final amount after applying any waivers
-    //             $finalAmount = $fee->amount - $waiverAmount;
-    //             $finalAmount = max(0, $finalAmount); // Ensure the amount doesn't go negative
+    //                 // Calculate the final amount after applying any waivers
+    //                 $finalAmount = $fee->amount - $waiverAmount;
+    //                 $finalAmount = max(0, $finalAmount); // Ensure the amount doesn't go negative
 
-    //             // Add the fee details to the collection for PDF
-    //             $feeDetails[] = [
-    //                 'fee' => $fee,
-    //                 'waiverAmount' => $waiverAmount,
-    //                 'finalAmount' => $finalAmount
-    //             ];
+    //                 // Add the fee details to the collection for PDF
+    //                 $feeDetails[] = [
+    //                     'fee' => $fee->name,
+    //                     'amount' => $fee->amount,
+    //                     'waiverAmount' => $waiverAmount,
+    //                     'finalAmount' => $finalAmount
+    //                 ];
 
-    //             // Handle Monthly Fees
-    //             if ($fee->fee_type === 'monthly') {
-    //                 // Get the selected months from the request (if any)
-    //                 $selectedMonths = isset($request->months[$feeId]) ? $request->months[$feeId] : [];
-
-    //                 foreach ($selectedMonths as $month) {
-    //                     // Create student fee record for each selected month
-    //                     StudentFee::create([
-    //                         'student_id' => $student->id,
-    //                         'fee_id' => $fee->id,
-    //                         'amount' => $finalAmount,
-    //                         'invoice_number' => $invoiceNumber,
-    //                         'month' => Carbon::create()->month($month)->format('F'),  // Convert month number to month name
-    //                         'year' => $request->year,
-    //                         'status' => $finalAmount > 0 ? 'Paid' : 'Unpaid',
-    //                         'paid_at' => $finalAmount > 0 ? Carbon::now() : null,
-    //                     ]);
-
-    //                     // Add to the total amount
-    //                     $totalAmount += $finalAmount;
-    //                 }
-    //             }
-    //         }
-
-    //         // Prepare receipt data
-    //         $receiptData = [
-    //             'student'         => $student,
-    //             'feeDetails'      => $feeDetails,  // Pass fee details with waiver amount to PDF
-    //             'totalAmount'     => $totalAmount,
-    //             'invoiceNumber'   => $invoiceNumber,
-    //             'year'            => $request->year,
-    //             'month'           => $request->month,
-    //             'amount_in_words' => SpellNumber::value($totalAmount)->locale('en')->toLetters(),
-    //         ];
-
-    //         // Generate PDFs using your PDF methods
-    //         $studentpdf = $this->generateStudentReceiptPDF($receiptData);
-    //         $officepdf = $this->generateOfficeReceiptPDF($receiptData);
-
-    //         // Generate file paths for storing the PDFs
-    //         $studentPdfPath = 'receipts/student_copy_' . $student->id . '_' . time() . '.pdf';
-    //         $officePdfPath = 'receipts/office_copy_' . $student->id . '_' . time() . '.pdf';
-
-    //         // Save the PDF files to storage
-    //         Storage::disk('public')->put($studentPdfPath, $studentpdf->output());
-    //         Storage::disk('public')->put($officePdfPath, $officepdf->output());
-
-    //         // Store the student invoice record in `student_invoices`
-    //         StudentInvoice::create([
-    //             'student_id' => $student->id,
-    //             'invoice_number' => $invoiceNumber,
-    //             'month' => $request->month,
-    //             'year' => $request->year,
-    //             'total_amount' => $totalAmount,
-    //             'generated_at' => Carbon::now(),
-    //             'invoice' => $studentPdfPath, // Path to student copy
-    //         ]);
-
-    //         // Store the office invoice record in `office_invoices`
-    //         OfficeInvoice::create([
-    //             'student_id' => $student->id,
-    //             'invoice_number' => $invoiceNumber,
-    //             'month' => $request->month,
-    //             'year' => $request->year,
-    //             'total_amount' => $totalAmount,
-    //             'generated_at' => Carbon::now(),
-    //             'invoice' => $officePdfPath, // Path to office copy
-    //         ]);
-
-    //         // Commit the transaction after successful creation
-    //         DB::commit();
-
-    //         // Return URLs for the generated PDFs
-    //         return response()->json([
-    //             'success' => true,
-    //             'studentPdfUrl' => Storage::url($studentPdfPath),
-    //             'officePdfUrl' => Storage::url($officePdfPath),
-    //         ]);
-    //     } catch (\Exception $e) {
-    //         // Rollback the transaction if any error occurs
-    //         DB::rollBack();
-
-    //         // Log the error for debugging
-    //         Log::error('Error storing payment data: ', ['error' => $e->getMessage()]);
-
-    //         // Return a generic error message
-    //         return response()->json(['success' => false, 'message' => 'There was an error processing the payment.']);
-    //     }
-    // }
-
-    // public function store(Request $request)
-    // {
-    //     // Start a transaction to ensure atomicity
-    //     DB::beginTransaction();
-    //     dd($request->all());
-    //     try {
-    //         // Validate the incoming request
-    //         $request->validate([
-    //             'student_id' => 'required|exists:users,id',
-    //             'fee_id' => 'required|array',
-    //             'fee_id.*' => 'exists:fees,id',
-    //             'waiver_amount' => 'nullable|array',
-    //             'waiver_amount.*' => 'numeric|min:0',
-    //             'month' => 'required|string',
-    //             'year' => 'required|string',
-    //             'months' => 'nullable|array', // For monthly fees
-    //         ]);
-
-    //         // Get the student
-    //         $student = User::findOrFail($request->student_id);
-
-    //         // Generate the date portion of the invoice number (YYYYMMDD)
-    //         $currentDate = Carbon::now();
-    //         $datePortion = $currentDate->format('Ymd'); // Format: 20250107
-
-    //         // Get the latest invoice number for today (if any)
-    //         $latestInvoice = StudentInvoice::whereDate('generated_at', $currentDate->toDateString())
-    //             ->orderBy('invoice_number', 'desc')
-    //             ->first();
-
-    //         // Determine the next sequential number
-    //         $nextNumber = 1; // Default to 1 if no invoices were generated today
-    //         if ($latestInvoice) {
-    //             // Increment the last invoice number by 1
-    //             $nextNumber = (int)substr($latestInvoice->invoice_number, -3) + 1;
-    //         }
-
-    //         // Format the invoice number as YYYYMMDDNumber (e.g., 202501071, 202501072)
-    //         $invoiceNumber = $datePortion . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
-
-    //         // Store the student fee entries and calculate total amount
-    //         $totalAmount = 0;
-    //         $feeDetails = []; // Collect fee details to pass to the PDF
-
-
-    //         foreach ($request->fee_id as $index => $feeId) {
-    //             $fee = Fee::findOrFail($feeId);
-
-    //             // Check if there's a waiver for this fee
-    //             $waiverAmount = isset($request->waiver_amount[$feeId]) ? $request->waiver_amount[$feeId] : 0;
-
-    //             // Calculate the final amount after applying any waivers
-    //             $finalAmount = $fee->amount - $waiverAmount;
-    //             $finalAmount = max(0, $finalAmount); // Ensure the amount doesn't go negative
-
-    //             // Add the fee details to the collection for PDF
-    //             $feeDetails[] = [
-    //                 'fee' => $fee,
-    //                 'waiverAmount' => $waiverAmount,
-    //                 'finalAmount' => $finalAmount
-    //             ];
-
-    //             // Handle Monthly Fees
-    //             if ($fee->fee_type === 'monthly') {
-    //                 // Get the selected months from the request (if any)
-    //                 $selectedMonths = isset($request->months[$feeId]) ? $request->months[$feeId] : [];
-
-    //                 foreach ($selectedMonths as $month) {
-    //                     // Create student fee record for each selected month
-    //                     StudentFee::create([
-    //                         'student_id' => $student->id,
-    //                         'fee_id' => $fee->id,
-    //                         'amount' => $finalAmount,
-    //                         'invoice_number' => $invoiceNumber,
-    //                         'month' => Carbon::create()->month($month)->format('F'),  // Convert month number to month name
-    //                         'year' => $request->year,
-    //                         'status' => $finalAmount > 0 ? 'Paid' : 'Unpaid',
-    //                         'paid_at' => $finalAmount > 0 ? Carbon::now() : null,
-    //                     ]);
-
-    //                     // Add to the total amount
-    //                     $totalAmount += $finalAmount;
-    //                 }
-    //             } else {
-    //                 // For non-monthly fees, store as a single fee record
+    //                 // Store the non-monthly fee record
     //                 StudentFee::create([
     //                     'student_id' => $student->id,
     //                     'fee_id' => $fee->id,
@@ -303,6 +139,46 @@ class StudentFeeController extends Controller
     //             }
     //         }
 
+    //         // Handle monthly fees (months[fee_id] is provided)
+    //         if ($request->has('months')) {
+    //             foreach ($request->months as $feeId => $selectedMonths) {
+    //                 $fee = Fee::findOrFail($feeId);
+
+    //                 // Get the waiver if available
+    //                 $waiverAmount = isset($request->waiver_amount[$feeId]) ? $request->waiver_amount[$feeId] : 0;
+
+    //                 // Calculate the final amount after applying any waivers
+    //                 $finalAmount = $fee->amount - $waiverAmount;
+    //                 $finalAmount = max(0, $finalAmount); // Ensure the amount doesn't go negative
+
+
+
+    //                 // For each month selected, store the fee record
+    //                 foreach ($selectedMonths as $month) {
+    //                     $fee_name = $fee->name . " (" . Carbon::create()->month($month)->format('F') . ")";
+    //                     $feeDetails[] = [
+    //                         'fee' => $fee_name,
+    //                         'amount' => $fee->amount,
+    //                         'waiverAmount' => $waiverAmount,
+    //                         'finalAmount' => $finalAmount
+    //                     ];
+    //                     StudentFee::create([
+    //                         'student_id' => $student->id,
+    //                         'fee_id' => $fee->id,
+    //                         'amount' => $finalAmount,
+    //                         'invoice_number' => $invoiceNumber,
+    //                         'month' => Carbon::create()->month($month)->format('F'),  // Convert month number to month name
+    //                         'year' => $request->year,
+    //                         'status' => $finalAmount > 0 ? 'Paid' : 'Unpaid',
+    //                         'paid_at' => $finalAmount > 0 ? Carbon::now() : null,
+    //                     ]);
+
+    //                     // Add to the total amount for monthly fees
+    //                     $totalAmount += $finalAmount;
+    //                 }
+    //             }
+    //         }
+
     //         // Prepare receipt data
     //         $receiptData = [
     //             'student'         => $student,
@@ -311,8 +187,8 @@ class StudentFeeController extends Controller
     //             'invoiceNumber'   => $invoiceNumber,
     //             'year'            => $request->year,
     //             'month'           => $request->month,
-    //             'amount_in_words' => 'yugfauysdagsfdsadfsa',
-    //             // 'amount_in_words' => SpellNumber::value($totalAmount)->locale('en')->toLetters(),
+    //             'amount_in_words' => SpellNumber::value($totalAmount)->locale('en')->toLetters(),
+    //             // 'amount_in_words' => "hdnvdddfdsdsfdsfvd",
     //         ];
 
     //         // Generate PDFs using your PDF methods
@@ -329,24 +205,24 @@ class StudentFeeController extends Controller
 
     //         // Store the student invoice record in `student_invoices`
     //         StudentInvoice::create([
-    //             'student_id' => $student->id,
+    //             'student_id'     => $student->id,
     //             'invoice_number' => $invoiceNumber,
-    //             'month' => $request->month,
-    //             'year' => $request->year,
-    //             'total_amount' => $totalAmount,
-    //             'generated_at' => Carbon::now(),
-    //             'invoice' => $studentPdfPath, // Path to student copy
+    //             'month'          => $request->month,
+    //             'year'           => $request->year,
+    //             'total_amount'   => $totalAmount,
+    //             'generated_at'   => Carbon::now(),
+    //             'invoice'        => $studentPdfPath, // Path to student copy
     //         ]);
 
     //         // Store the office invoice record in `office_invoices`
     //         OfficeInvoice::create([
-    //             'student_id' => $student->id,
+    //             'student_id'     => $student->id,
     //             'invoice_number' => $invoiceNumber,
-    //             'month' => $request->month,
-    //             'year' => $request->year,
-    //             'total_amount' => $totalAmount,
-    //             'generated_at' => Carbon::now(),
-    //             'invoice' => $officePdfPath, // Path to office copy
+    //             'month'          => $request->month,
+    //             'year'           => $request->year,
+    //             'total_amount'   => $totalAmount,
+    //             'generated_at'   => Carbon::now(),
+    //             'invoice'        => $officePdfPath, // Path to office copy
     //         ]);
 
     //         // Commit the transaction after successful creation
@@ -366,8 +242,47 @@ class StudentFeeController extends Controller
     //         Log::error('Error storing payment data: ', ['error' => $e->getMessage()]);
 
     //         // Return a generic error message
-    //         return response()->json(['success' => false, 'message' => $e->getMessage()]);
+    //         return response()->json(['success' => false, 'message' =>  $e->getMessage()]);
     //     }
+    // }
+
+
+
+    // public function generateStudentReceiptPDF($data)
+    // {
+    //     // Set up Dompdf options
+    //     $options = new Options();
+    //     $options->set('isHtml5ParserEnabled', true);
+    //     $options->set('isPhpEnabled', true);
+
+    //     // Load view to generate the PDF content
+    //     $pdf = Pdf::loadView('pdf.studentReceipt', $data);
+
+    //     // Set paper size to one-fourth of A4 paper (105mm x 148.5mm)
+    //     // $pdf->setPaper('A4'); // Custom size (width, height)
+
+    //     // Render PDF (first pass)
+    //     $pdf->render();
+
+    //     // Return the generated PDF
+    //     return $pdf;
+    // }
+    // public function generateOfficeReceiptPDF($data)
+    // {
+    //     // Set up Dompdf options
+    //     $options = new Options();
+    //     $options->set('isHtml5ParserEnabled', true);
+    //     $options->set('isPhpEnabled', true);
+
+    //     // Load view to generate the PDF content
+    //     $pdf = Pdf::loadView('pdf.officeReceipt', $data);
+
+
+    //     // Render PDF (first pass)
+    //     $pdf->render();
+
+    //     // Return the generated PDF
+    //     return $pdf;
     // }
 
     public function store(Request $request)
@@ -388,11 +303,9 @@ class StudentFeeController extends Controller
                 'waiver_amount.*' => 'numeric',
             ]);
             if ($validator->fails()) {
-                // Flash only the error messages
-                // Session::flash('error', $validator->errors()->all());
                 return response()->json(['success' => false, 'message' =>  $validator->errors()->all()]);
-                // return redirect()->back()->withErrors($validator)->withInput();
             }
+
             // Get the student
             $student = User::findOrFail($request->student_id);
 
@@ -408,7 +321,6 @@ class StudentFeeController extends Controller
             // Determine the next sequential number
             $nextNumber = 1; // Default to 1 if no invoices were generated today
             if ($latestInvoice) {
-                // Increment the last invoice number by 1
                 $nextNumber = (int)substr($latestInvoice->invoice_number, -3) + 1;
             }
 
@@ -423,15 +335,9 @@ class StudentFeeController extends Controller
             if ($request->has('fee_id')) {
                 foreach ($request->fee_id as $feeId) {
                     $fee = Fee::findOrFail($feeId);
-
-                    // Get the waiver if available
                     $waiverAmount = isset($request->waiver_amount[$feeId]) ? $request->waiver_amount[$feeId] : 0;
+                    $finalAmount = max(0, $fee->amount - $waiverAmount);
 
-                    // Calculate the final amount after applying any waivers
-                    $finalAmount = $fee->amount - $waiverAmount;
-                    $finalAmount = max(0, $finalAmount); // Ensure the amount doesn't go negative
-
-                    // Add the fee details to the collection for PDF
                     $feeDetails[] = [
                         'fee' => $fee->name,
                         'amount' => $fee->amount,
@@ -439,7 +345,6 @@ class StudentFeeController extends Controller
                         'finalAmount' => $finalAmount
                     ];
 
-                    // Store the non-monthly fee record
                     StudentFee::create([
                         'student_id' => $student->id,
                         'fee_id' => $fee->id,
@@ -451,7 +356,6 @@ class StudentFeeController extends Controller
                         'paid_at' => $finalAmount > 0 ? Carbon::now() : null,
                     ]);
 
-                    // Add to the total amount for non-monthly fees
                     $totalAmount += $finalAmount;
                 }
             }
@@ -460,17 +364,9 @@ class StudentFeeController extends Controller
             if ($request->has('months')) {
                 foreach ($request->months as $feeId => $selectedMonths) {
                     $fee = Fee::findOrFail($feeId);
-
-                    // Get the waiver if available
                     $waiverAmount = isset($request->waiver_amount[$feeId]) ? $request->waiver_amount[$feeId] : 0;
+                    $finalAmount = max(0, $fee->amount - $waiverAmount);
 
-                    // Calculate the final amount after applying any waivers
-                    $finalAmount = $fee->amount - $waiverAmount;
-                    $finalAmount = max(0, $finalAmount); // Ensure the amount doesn't go negative
-
-
-
-                    // For each month selected, store the fee record
                     foreach ($selectedMonths as $month) {
                         $fee_name = $fee->name . " (" . Carbon::create()->month($month)->format('F') . ")";
                         $feeDetails[] = [
@@ -484,13 +380,12 @@ class StudentFeeController extends Controller
                             'fee_id' => $fee->id,
                             'amount' => $finalAmount,
                             'invoice_number' => $invoiceNumber,
-                            'month' => Carbon::create()->month($month)->format('F'),  // Convert month number to month name
+                            'month' => Carbon::create()->month($month)->format('F'),
                             'year' => $request->year,
                             'status' => $finalAmount > 0 ? 'Paid' : 'Unpaid',
                             'paid_at' => $finalAmount > 0 ? Carbon::now() : null,
                         ]);
 
-                        // Add to the total amount for monthly fees
                         $totalAmount += $finalAmount;
                     }
                 }
@@ -499,28 +394,24 @@ class StudentFeeController extends Controller
             // Prepare receipt data
             $receiptData = [
                 'student'         => $student,
-                'feeDetails'      => $feeDetails,  // Pass fee details with waiver amount to PDF
+                'feeDetails'      => $feeDetails,
                 'totalAmount'     => $totalAmount,
                 'invoiceNumber'   => $invoiceNumber,
                 'year'            => $request->year,
                 'month'           => $request->month,
                 'amount_in_words' => SpellNumber::value($totalAmount)->locale('en')->toLetters(),
-                // 'amount_in_words' => "hdnvdddfdsdsfdsfvd",
             ];
 
-            // Generate PDFs using your PDF methods
-            $studentpdf = $this->generateStudentReceiptPDF($receiptData);
-            $officepdf = $this->generateOfficeReceiptPDF($receiptData);
+            // Generate the PDFs for both student and office receipt
+            $pdf = $this->generateReceiptPDF($receiptData); // This method will generate both receipts in one PDF
 
             // Generate file paths for storing the PDFs
-            $studentPdfPath = 'receipts/student_copy_' . $student->id . '_' . time() . '.pdf';
-            $officePdfPath = 'receipts/office_copy_' . $student->id . '_' . time() . '.pdf';
+            $pdfPath = 'receipts/combined_' . $student->id . '_' . time() . '.pdf';
 
-            // Save the PDF files to storage
-            Storage::disk('public')->put($studentPdfPath, $studentpdf->output());
-            Storage::disk('public')->put($officePdfPath, $officepdf->output());
+            // Save the combined PDF to storage
+            Storage::disk('public')->put($pdfPath, $pdf->output());
 
-            // Store the student invoice record in `student_invoices`
+            // Store the invoice record
             StudentInvoice::create([
                 'student_id'     => $student->id,
                 'invoice_number' => $invoiceNumber,
@@ -528,10 +419,8 @@ class StudentFeeController extends Controller
                 'year'           => $request->year,
                 'total_amount'   => $totalAmount,
                 'generated_at'   => Carbon::now(),
-                'invoice'        => $studentPdfPath, // Path to student copy
+                'invoice'        => $pdfPath, // Path to the combined PDF
             ]);
-
-            // Store the office invoice record in `office_invoices`
             OfficeInvoice::create([
                 'student_id'     => $student->id,
                 'invoice_number' => $invoiceNumber,
@@ -539,65 +428,42 @@ class StudentFeeController extends Controller
                 'year'           => $request->year,
                 'total_amount'   => $totalAmount,
                 'generated_at'   => Carbon::now(),
-                'invoice'        => $officePdfPath, // Path to office copy
+                'invoice'        => $pdfPath, // Path to office copy
             ]);
-
-            // Commit the transaction after successful creation
+            // Commit the transaction
             DB::commit();
 
-            // Return URLs for the generated PDFs
+            // Return the URL for the generated combined PDF
             return response()->json([
-                'success' => true,
-                'studentPdfUrl' => Storage::url($studentPdfPath),
-                'officePdfUrl' => Storage::url($officePdfPath),
+                'success'    => true,
+                'student_id' => $student->id,
+                'pdfUrl'     => Storage::url($pdfPath),
             ]);
         } catch (\Exception $e) {
-            // Rollback the transaction if any error occurs
+            // Rollback if anything goes wrong
             DB::rollBack();
 
-            // Log the error for debugging
             Log::error('Error storing payment data: ', ['error' => $e->getMessage()]);
 
-            // Return a generic error message
             return response()->json(['success' => false, 'message' =>  $e->getMessage()]);
         }
     }
 
-
-
-    public function generateStudentReceiptPDF($data)
+    public function generateReceiptPDF($data)
     {
         // Set up Dompdf options
         $options = new Options();
         $options->set('isHtml5ParserEnabled', true);
         $options->set('isPhpEnabled', true);
 
-        // Load view to generate the PDF content
-        $pdf = Pdf::loadView('pdf.studentReceipt', $data);
+        // Create a new PDF instance for combined receipts
+        $pdf = Pdf::loadView('pdf.studentReceipt', $data); // Generate the first page (student receipt)
 
-        // Set paper size to one-fourth of A4 paper (105mm x 148.5mm)
-        // $pdf->setPaper('A4'); // Custom size (width, height)
+        // Add a new page for the office receipt
+        $pdf->addPage(); // Adds a new page
+        $pdf->loadView('pdf.officeReceipt', $data); // Generate the second page (office receipt)
 
-        // Render PDF (first pass)
-        $pdf->render();
-
-        // Return the generated PDF
-        return $pdf;
-    }
-    public function generateOfficeReceiptPDF($data)
-    {
-        // Set up Dompdf options
-        $options = new Options();
-        $options->set('isHtml5ParserEnabled', true);
-        $options->set('isPhpEnabled', true);
-
-        // Load view to generate the PDF content
-        $pdf = Pdf::loadView('pdf.officeReceipt', $data);
-
-        // Set paper size to one-fourth of A4 paper (105mm x 148.5mm)
-        $pdf->setPaper('A4'); // Custom size (width, height)
-
-        // Render PDF (first pass)
+        // Render PDF
         $pdf->render();
 
         // Return the generated PDF

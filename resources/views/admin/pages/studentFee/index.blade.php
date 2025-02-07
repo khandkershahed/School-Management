@@ -438,8 +438,7 @@
                                     Swal.fire("Paid!", "Your payment has been processed successfully.", "success")
                                         .then(() => {
                                             // Open both windows at the same time
-                                            studentPrintReceipt(data.studentPdfUrl, "student_receipt.pdf", data
-                                                .officePdfUrl);
+                                            studentPrintReceipt(data.pdfUrl, 'Fee_receipt_' + data.student_id + '.pdf');
                                             // Reload the page after a brief delay
                                             setTimeout(function() {
                                                 location.reload();
@@ -458,14 +457,41 @@
                 });
             }
 
-            function studentPrintReceipt(pdfUrl, fileName, officePdfUrl) {
+            // function studentPrintReceipt(pdfUrl, fileName, officePdfUrl) {
+            //     console.log("Student PDF URL: ", pdfUrl);
+
+            //     // Open the student PDF in a new window
+            //     const studentPrintWindow = window.open(pdfUrl, '_blank');
+            //     // Open the office PDF in a new window simultaneously
+            //     const officePrintWindow = window.open(officePdfUrl, '_blank');
+
+            //     // Trigger print dialog for student PDF after a slight delay
+            //     studentPrintWindow.onload = function() {
+            //         setTimeout(function() {
+            //             try {
+            //                 studentPrintWindow.print(); // Trigger the print dialog for the student window
+            //             } catch (err) {
+            //                 console.error("Printing student receipt failed: ", err);
+            //             }
+            //         }, 500); // Small delay to allow PDF to load
+            //     };
+
+            //     // Trigger print dialog for office PDF after a slight delay
+            //     officePrintWindow.onload = function() {
+            //         setTimeout(function() {
+            //             try {
+            //                 officePrintWindow.print(); // Trigger the print dialog for the office window
+            //             } catch (err) {
+            //                 console.error("Printing office receipt failed: ", err);
+            //             }
+            //         }, 500); // Small delay to allow PDF to load
+            //     };
+            // }
+            function studentPrintReceipt(pdfUrl, fileName) {
                 console.log("Student PDF URL: ", pdfUrl);
 
                 // Open the student PDF in a new window
                 const studentPrintWindow = window.open(pdfUrl, '_blank');
-                // Open the office PDF in a new window simultaneously
-                const officePrintWindow = window.open(officePdfUrl, '_blank');
-
                 // Trigger print dialog for student PDF after a slight delay
                 studentPrintWindow.onload = function() {
                     setTimeout(function() {
@@ -477,16 +503,6 @@
                     }, 500); // Small delay to allow PDF to load
                 };
 
-                // Trigger print dialog for office PDF after a slight delay
-                officePrintWindow.onload = function() {
-                    setTimeout(function() {
-                        try {
-                            officePrintWindow.print(); // Trigger the print dialog for the office window
-                        } catch (err) {
-                            console.error("Printing office receipt failed: ", err);
-                        }
-                    }, 500); // Small delay to allow PDF to load
-                };
             }
         </script>
 
