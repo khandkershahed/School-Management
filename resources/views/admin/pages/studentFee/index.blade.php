@@ -246,8 +246,8 @@
                                             // First, trigger both PDF downloads
                                             autoPrintReceipt(data.studentPdfUrl, "student_receipt.pdf");
                                             autoPrintReceipt(data.officePdfUrl, "office_receipt.pdf");
-                                            downloadFile(data.studentPdfUrl, "student_receipt.pdf");
-                                            downloadFile(data.officePdfUrl, "office_receipt.pdf");
+                                            // downloadFile(data.studentPdfUrl, "student_receipt.pdf");
+                                            // downloadFile(data.officePdfUrl, "office_receipt.pdf");
 
                                             setTimeout(function() {
                                                 location
