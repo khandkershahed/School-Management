@@ -277,30 +277,33 @@
             //     a.print = filename;
             //     a.click();
             // }
-            function downloadFile(url, filename) {
-                // Create an invisible iframe to trigger printing
-                const iframe = document.createElement("iframe");
-                iframe.style.position = "absolute";
-                iframe.style.width = "0";
-                iframe.style.height = "0";
-                iframe.style.border = "none";
-                document.body.appendChild(iframe);
+            // function downloadFile(url, filename) {
+            //     // Create an invisible iframe to trigger printing
+            //     const iframe = document.createElement("iframe");
+            //     iframe.style.position = "absolute";
+            //     iframe.style.width = "0";
+            //     iframe.style.height = "0";
+            //     iframe.style.border = "none";
+            //     document.body.appendChild(iframe);
 
-                iframe.src = url;
+            //     iframe.src = url;
 
-                // Once the PDF is loaded in the iframe, trigger the print dialog
-                iframe.onload = function() {
-                    iframe.contentWindow.print(); // Trigger print dialog
-                };
+            //     // Once the PDF is loaded in the iframe, trigger the print dialog
+            //     iframe.onload = function() {
+            //         iframe.contentWindow.print(); // Trigger print dialog
+            //     };
 
-                // Trigger download of the PDF (optional, if you still want to download the file)
-                const a = document.createElement("a");
-                a.href = url;
-                a.download = filename;
-                a.click();
-            }
+            //     // Trigger download of the PDF (optional, if you still want to download the file)
+            //     const a = document.createElement("a");
+            //     a.href = url;
+            //     a.download = filename;
+            //     a.click();
+            // }
 
-            function autoPrintReceipt(pdfUrl) {
+            function autoPrintReceipt(pdfUrl, fileName) {
+                // Log the PDF URL for debugging purposes
+                console.log("PDF URL: ", pdfUrl);
+
                 // Create an invisible iframe to load the PDF and trigger printing
                 const iframe = document.createElement("iframe");
                 iframe.style.position = "absolute";
@@ -312,9 +315,16 @@
                 // Set the iframe source to the PDF URL
                 iframe.src = pdfUrl;
 
-                // Once the PDF is loaded in the iframe, trigger the print dialog
+                // Add a small delay before printing (to ensure the PDF is fully loaded)
                 iframe.onload = function() {
-                    iframe.contentWindow.print(); // Trigger the browser's print dialog for the loaded PDF
+                    // Set a slight delay before printing to make sure everything is ready
+                    setTimeout(function() {
+                        try {
+                            iframe.contentWindow.print(); // Trigger the browser's print dialog
+                        } catch (err) {
+                            console.error("Printing failed: ", err);
+                        }
+                    }, 500); // Delay of 500ms; adjust if necessary
                 };
             }
         </script>
