@@ -478,50 +478,39 @@
             //     };
             // }
             function studentPrintReceipt(pdfUrl, fileName) {
-                console.log("PDF URL for printing: ", pdfUrl);
-                if (!pdfUrl) {
-                    console.error("Invalid PDF URL.");
-                    return;
-                }
-                const iframe = document.createElement("iframe");
-                iframe.style.position = "absolute";
-                iframe.style.width = "0";
-                iframe.style.height = "0";
-                iframe.style.border = "none";
-                document.body.appendChild(iframe);
+                console.log("PDF URL: ", pdfUrl);
 
-                // Set the iframe source to the PDF URL
-                iframe.src = pdfUrl;
+                // Open the PDF in a new window (trigger the print dialog)
+                const printWindow = window.open(pdfUrl, '_blank');
 
-                // Once the PDF is loaded in the iframe, trigger the print dialog
-                iframe.onload = function() {
-                    iframe.contentWindow.focus(); // Focus the iframe before printing
-                    iframe.contentWindow.print(); // Trigger the print dialog automatically
-                    document.body.removeChild(iframe); // Remove the iframe after printing
+                printWindow.onload = function() {
+                    // Small delay before triggering the print dialog
+                    setTimeout(function() {
+                        try {
+                            printWindow.print(); // Trigger the print dialog for the opened window
+                        } catch (err) {
+                            console.error("Printing failed: ", err);
+                        }
+                    }, 500); // Allow a slight delay for the PDF to load
                 };
             }
+
             function oficePrintReceipt(pdfUrl, fileName) {
-                console.log("PDF URL for printing: ", pdfUrl);
-                if (!pdfUrl) {
-                    console.error("Invalid PDF URL.");
-                    return;
-                }
-                const iframe = document.createElement("iframe");
-                iframe.style.position = "absolute";
-                iframe.style.width = "0";
-                iframe.style.height = "0";
-                iframe.style.border = "none";
-                document.body.appendChild(iframe);
+                    console.log("PDF URL: ", pdfUrl);
 
-                // Set the iframe source to the PDF URL
-                iframe.src = pdfUrl;
+                    // Open the PDF in a new window (trigger the print dialog)
+                    const printWindow = window.open(pdfUrl, '_blank');
 
-                // Once the PDF is loaded in the iframe, trigger the print dialog
-                iframe.onload = function() {
-                    iframe.contentWindow.focus(); // Focus the iframe before printing
-                    iframe.contentWindow.print(); // Trigger the print dialog automatically
-                    document.body.removeChild(iframe); // Remove the iframe after printing
-                };
+                    printWindow.onload = function() {
+                        // Small delay before triggering the print dialog
+                        setTimeout(function() {
+                            try {
+                                printWindow.print(); // Trigger the print dialog for the opened window
+                            } catch (err) {
+                                console.error("Printing failed: ", err);
+                            }
+                        }, 500); // Allow a slight delay for the PDF to load
+                    };
             }
         </script>
 
