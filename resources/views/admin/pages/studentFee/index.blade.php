@@ -438,13 +438,14 @@
                                     Swal.fire("Paid!", "Your payment has been processed successfully.", "success")
                                         .then(() => {
                                             // Trigger the PDF downloads and print
+                                            // Open both windows at the same time
                                             studentPrintReceipt(data.studentPdfUrl, "student_receipt.pdf");
                                             oficePrintReceipt(data.officePdfUrl, "office_receipt.pdf");
 
                                             // Reload the page after a brief delay
                                             setTimeout(function() {
                                                 location.reload();
-                                            }, 8000); // 6 seconds to ensure the print dialogs were triggered
+                                            }, 8000); // 8 seconds to ensure the print dialogs were triggered
                                         });
                                 } else {
                                     Swal.fire("Error!", data.message);
@@ -459,32 +460,13 @@
                 });
             }
 
-            // function autoPrintReceipt(pdfUrl, fileName) {
-            //     // Log the PDF URL for debugging purposes
-            //     console.log("PDF URL: ", pdfUrl);
-
-            //     // Open the PDF in a new window (trigger the print dialog)
-            //     const printWindow = window.open(pdfUrl, '_blank');
-
-            //     printWindow.onload = function() {
-            //         // Small delay before triggering the print dialog
-            //         setTimeout(function() {
-            //             try {
-            //                 printWindow.print(); // Trigger the print dialog for the opened window
-            //             } catch (err) {
-            //                 console.error("Printing failed: ", err);
-            //             }
-            //         }, 500); // Allow a slight delay for the PDF to load
-            //     };
-            // }
             function studentPrintReceipt(pdfUrl, fileName) {
-                console.log("PDF URL: ", pdfUrl);
+                console.log("Student PDF URL: ", pdfUrl);
 
-                // Open the PDF in a new window (trigger the print dialog)
+                // Open the PDF in a new window and trigger the print dialog
                 const printWindow = window.open(pdfUrl, '_blank');
 
                 printWindow.onload = function() {
-                    // Small delay before triggering the print dialog
                     setTimeout(function() {
                         try {
                             printWindow.print(); // Trigger the print dialog for the opened window
@@ -496,23 +478,23 @@
             }
 
             function oficePrintReceipt(pdfUrl, fileName) {
-                    console.log("PDF URL: ", pdfUrl);
+                console.log("Office PDF URL: ", pdfUrl);
 
-                    // Open the PDF in a new window (trigger the print dialog)
-                    const printWindow = window.open(pdfUrl, '_blank');
+                // Open the PDF in a new window and trigger the print dialog
+                const printWindow = window.open(pdfUrl, '_blank');
 
-                    printWindow.onload = function() {
-                        // Small delay before triggering the print dialog
-                        setTimeout(function() {
-                            try {
-                                printWindow.print(); // Trigger the print dialog for the opened window
-                            } catch (err) {
-                                console.error("Printing failed: ", err);
-                            }
-                        }, 500); // Allow a slight delay for the PDF to load
-                    };
+                printWindow.onload = function() {
+                    setTimeout(function() {
+                        try {
+                            printWindow.print(); // Trigger the print dialog for the opened window
+                        } catch (err) {
+                            console.error("Printing failed: ", err);
+                        }
+                    }, 500); // Allow a slight delay for the PDF to load
+                };
             }
         </script>
+
 
         <script>
             function toggleFeeCheckboxes(checkbox) {
