@@ -62,6 +62,7 @@
         }
 
         .header-text p {
+            margin: 0px;
             margin-bottom: 1px;
             font-size: 9px;
         }
