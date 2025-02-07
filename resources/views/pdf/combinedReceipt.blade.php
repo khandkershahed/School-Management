@@ -48,18 +48,21 @@
 
         .header-text h1{
             font-size: 14px;
+            margin-bottom: 1px;
         }
 
         .header-text h2 {
             font-size: 9px;
+            margin-top: 1px;
         }
         .header-text h1,
         .header-text h2 {
             margin: 0;
+
         }
 
         .header-text p {
-            margin: 2px 0;
+            margin-bottom: 1px;
             font-size: 9px;
         }
 
