@@ -155,7 +155,15 @@
             </tr>
             <tr>
                 <td><strong>Version:</strong> {{ $student->medium }}</td>
-                <td><strong>Class:</strong> {{ $student->class }}</td>
+                <td><strong>Class:</strong>
+                    @if ((string) $student->class === '00')
+                        Nursery
+                    @elseif ((string) $student->class === '0')
+                        KG
+                    @else
+                        {{ $student->class }}
+                    @endif
+                </td>
             </tr>
             <tr>
                 <td><strong>Guardian Name:</strong> {{ $student->guardian_name }}</td>
