@@ -459,22 +459,41 @@
                 });
             }
 
+            // function autoPrintReceipt(pdfUrl, fileName) {
+            //     // Log the PDF URL for debugging purposes
+            //     console.log("PDF URL: ", pdfUrl);
+
+            //     // Open the PDF in a new window (trigger the print dialog)
+            //     const printWindow = window.open(pdfUrl, '_blank');
+
+            //     printWindow.onload = function() {
+            //         // Small delay before triggering the print dialog
+            //         setTimeout(function() {
+            //             try {
+            //                 printWindow.print(); // Trigger the print dialog for the opened window
+            //             } catch (err) {
+            //                 console.error("Printing failed: ", err);
+            //             }
+            //         }, 500); // Allow a slight delay for the PDF to load
+            //     };
+            // }
             function autoPrintReceipt(pdfUrl, fileName) {
-                // Log the PDF URL for debugging purposes
-                console.log("PDF URL: ", pdfUrl);
+                // Create an invisible iframe to load the PDF and trigger printing
+                const iframe = document.createElement("iframe");
+                iframe.style.position = "absolute";
+                iframe.style.width = "0";
+                iframe.style.height = "0";
+                iframe.style.border = "none";
+                document.body.appendChild(iframe);
 
-                // Open the PDF in a new window (trigger the print dialog)
-                const printWindow = window.open(pdfUrl, '_blank');
+                // Set the iframe source to the PDF URL
+                iframe.src = pdfUrl;
 
-                printWindow.onload = function() {
-                    // Small delay before triggering the print dialog
-                    setTimeout(function() {
-                        try {
-                            printWindow.print(); // Trigger the print dialog for the opened window
-                        } catch (err) {
-                            console.error("Printing failed: ", err);
-                        }
-                    }, 500); // Allow a slight delay for the PDF to load
+                // Once the PDF is loaded in the iframe, trigger the print dialog
+                iframe.onload = function() {
+                    iframe.contentWindow.focus(); // Focus the iframe before printing
+                    iframe.contentWindow.print(); // Trigger the print dialog automatically
+                    document.body.removeChild(iframe); // Remove the iframe after printing
                 };
             }
         </script>
