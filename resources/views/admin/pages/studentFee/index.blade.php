@@ -437,11 +437,9 @@
                                 if (data.success) {
                                     Swal.fire("Paid!", "Your payment has been processed successfully.", "success")
                                         .then(() => {
-                                            // Trigger the PDF downloads and print
                                             // Open both windows at the same time
-                                            studentPrintReceipt(data.studentPdfUrl, "student_receipt.pdf", officePdfUrl);
-                                            // oficePrintReceipt(data.officePdfUrl, "office_receipt.pdf");
-
+                                            studentPrintReceipt(data.studentPdfUrl, "student_receipt.pdf", data
+                                                .officePdfUrl);
                                             // Reload the page after a brief delay
                                             setTimeout(function() {
                                                 location.reload();
@@ -463,37 +461,35 @@
             function studentPrintReceipt(pdfUrl, fileName, officePdfUrl) {
                 console.log("Student PDF URL: ", pdfUrl);
 
-                // Open the PDF in a new window and trigger the print dialog
-                const printWindow = window.open(pdfUrl, '_blank');
-                oficePrintReceipt(officePdfUrl, "office_receipt.pdf");
-                printWindow.onload = function() {
+                // Open the student PDF in a new window
+                const studentPrintWindow = window.open(pdfUrl, '_blank');
+                // Open the office PDF in a new window simultaneously
+                const officePrintWindow = window.open(officePdfUrl, '_blank');
+
+                // Trigger print dialog for student PDF after a slight delay
+                studentPrintWindow.onload = function() {
                     setTimeout(function() {
                         try {
-                            printWindow.print(); // Trigger the print dialog for the opened window
+                            studentPrintWindow.print(); // Trigger the print dialog for the student window
                         } catch (err) {
-                            console.error("Printing failed: ", err);
+                            console.error("Printing student receipt failed: ", err);
                         }
-                    }, 500); // Allow a slight delay for the PDF to load
+                    }, 500); // Small delay to allow PDF to load
                 };
-            }
 
-            function oficePrintReceipt(pdfUrl, fileName) {
-                console.log("Office PDF URL: ", pdfUrl);
-
-                // Open the PDF in a new window and trigger the print dialog
-                const printWindow = window.open(pdfUrl, '_blank');
-
-                printWindow.onload = function() {
+                // Trigger print dialog for office PDF after a slight delay
+                officePrintWindow.onload = function() {
                     setTimeout(function() {
                         try {
-                            printWindow.print(); // Trigger the print dialog for the opened window
+                            officePrintWindow.print(); // Trigger the print dialog for the office window
                         } catch (err) {
-                            console.error("Printing failed: ", err);
+                            console.error("Printing office receipt failed: ", err);
                         }
-                    }, 500); // Allow a slight delay for the PDF to load
+                    }, 500); // Small delay to allow PDF to load
                 };
             }
         </script>
+
 
 
         <script>
