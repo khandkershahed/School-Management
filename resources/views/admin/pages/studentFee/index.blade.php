@@ -208,7 +208,7 @@
                 });
             }
         </script>
-        <script>
+        {{-- <script>
             function confirmPayment(event) {
                 event.preventDefault();
 
@@ -327,7 +327,85 @@
                     }, 300); // Delay of 500ms; adjust if necessary
                 };
             }
+        </script> --}}
+        <script>
+            function confirmPayment(event) {
+                event.preventDefault();
+
+                var form = document.getElementById("paymentForm");
+                var payURL = form.getAttribute("action");
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "You won't be able to revert this!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Yes, Pay Now!",
+                    cancelButtonText: "No, cancel!",
+                    buttonsStyling: false,
+                    customClass: {
+                        confirmButton: "btn btn-danger",
+                        cancelButton: "btn btn-success",
+                    },
+                }).then(function(result) {
+                    if (result.isConfirmed) {
+                        // If confirmed, send the form via AJAX
+                        var formData = new FormData(form); // Gather the form data
+                        fetch(payURL, {
+                                method: 'POST',
+                                body: formData,
+                                headers: {
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                                        'content')
+                                },
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    Swal.fire("Paid!", "Your payment has been processed successfully.", "success")
+                                        .then(() => {
+                                            // Trigger the PDF downloads and print
+                                            autoPrintReceipt(data.studentPdfUrl, "student_receipt.pdf");
+                                            autoPrintReceipt(data.officePdfUrl, "office_receipt.pdf");
+
+                                            // Delay the reload after printing has started (5000ms)
+                                            setTimeout(function() {
+                                                location
+                                            .reload(); // Reload the page after a brief delay
+                                            }, 5000);
+                                        });
+                                } else {
+                                    Swal.fire("Error!", data.message);
+                                }
+                            })
+                            .catch(error => {
+                                Swal.fire("Error!", "An error occurred while processing the payment.", "error");
+                            });
+                    } else {
+                        Swal.fire("Cancelled", "Your payment has been cancelled :)", "error");
+                    }
+                });
+            }
+
+            function autoPrintReceipt(pdfUrl, fileName) {
+                // Log the PDF URL for debugging purposes
+                console.log("PDF URL: ", pdfUrl);
+
+                // Open the PDF in a new window (trigger the print dialog)
+                const printWindow = window.open(pdfUrl, '_blank');
+
+                printWindow.onload = function() {
+                    // Small delay before triggering the print dialog
+                    setTimeout(function() {
+                        try {
+                            printWindow.print(); // Trigger the print dialog for the opened window
+                        } catch (err) {
+                            console.error("Printing failed: ", err);
+                        }
+                    }, 500); // Allow a slight delay for the PDF to load
+                };
+            }
         </script>
+
         <script>
             function toggleFeeCheckboxes(checkbox) {
                 var isChecked = checkbox.checked;
