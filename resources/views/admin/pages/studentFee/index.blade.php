@@ -438,8 +438,8 @@
                                     Swal.fire("Paid!", "Your payment has been processed successfully.", "success")
                                         .then(() => {
                                             // Trigger the PDF downloads and print
-                                            autoPrintReceipt(data.studentPdfUrl, "student_receipt.pdf");
-                                            autoPrintReceipt(data.officePdfUrl, "office_receipt.pdf");
+                                            studentPrintReceipt(data.studentPdfUrl, "student_receipt.pdf");
+                                            oficePrintReceipt(data.officePdfUrl, "office_receipt.pdf");
 
                                             // Reload the page after a brief delay
                                             setTimeout(function() {
@@ -477,8 +477,35 @@
             //         }, 500); // Allow a slight delay for the PDF to load
             //     };
             // }
-            function autoPrintReceipt(pdfUrl, fileName) {
-                // Create an invisible iframe to load the PDF and trigger printing
+            function studentPrintReceipt(pdfUrl, fileName) {
+                console.log("PDF URL for printing: ", pdfUrl);
+                if (!pdfUrl) {
+                    console.error("Invalid PDF URL.");
+                    return;
+                }
+                const iframe = document.createElement("iframe");
+                iframe.style.position = "absolute";
+                iframe.style.width = "0";
+                iframe.style.height = "0";
+                iframe.style.border = "none";
+                document.body.appendChild(iframe);
+
+                // Set the iframe source to the PDF URL
+                iframe.src = pdfUrl;
+
+                // Once the PDF is loaded in the iframe, trigger the print dialog
+                iframe.onload = function() {
+                    iframe.contentWindow.focus(); // Focus the iframe before printing
+                    iframe.contentWindow.print(); // Trigger the print dialog automatically
+                    document.body.removeChild(iframe); // Remove the iframe after printing
+                };
+            }
+            function oficePrintReceipt(pdfUrl, fileName) {
+                console.log("PDF URL for printing: ", pdfUrl);
+                if (!pdfUrl) {
+                    console.error("Invalid PDF URL.");
+                    return;
+                }
                 const iframe = document.createElement("iframe");
                 iframe.style.position = "absolute";
                 iframe.style.width = "0";
