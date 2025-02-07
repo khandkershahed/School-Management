@@ -457,11 +457,11 @@ class StudentFeeController extends Controller
         $options->set('isPhpEnabled', true);
 
         // Create a new PDF instance for combined receipts
-        $pdf = Pdf::loadView('pdf.studentReceipt', $data); // Generate the first page (student receipt)
+        $pdf = Pdf::loadView('pdf.combinedReceipt', $data); // Generate the first page (student receipt)
 
         // Add a new page for the office receipt
-        $pdf->addPage(); // Adds a new page
-        $pdf->loadView('pdf.officeReceipt', $data); // Generate the second page (office receipt)
+        // $pdf->addPage(); // Adds a new page
+        // $pdf->loadView('pdf.officeReceipt', $data);
 
         // Render PDF
         $pdf->render();
