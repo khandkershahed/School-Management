@@ -8,8 +8,8 @@
     <style>
         /* Set A5 page size */
         @page {
-            size: 148mm 210mm;
-            margin: 5mm;
+            size: 139mm 203mm;
+            margin: 3mm;
             /* Reduced margin to prevent overflow */
         }
 
@@ -25,7 +25,7 @@
 
         /* Container should fit within the page */
         .container {
-            width: 138mm !important; 
+            width: 128mm !important;
             /* Adjusted to fit the A5 width */
             padding: 2mm;
             box-sizing: border-box;
@@ -45,7 +45,7 @@
 
         /* Logo size adjusted for A5 */
         .logo {
-            width: 60px;
+            width: 50px;
             /* Further reduced logo size */
             height: auto;
         }
