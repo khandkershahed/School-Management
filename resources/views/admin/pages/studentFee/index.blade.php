@@ -439,8 +439,8 @@
                                         .then(() => {
                                             // Trigger the PDF downloads and print
                                             // Open both windows at the same time
-                                            studentPrintReceipt(data.studentPdfUrl, "student_receipt.pdf");
-                                            oficePrintReceipt(data.officePdfUrl, "office_receipt.pdf");
+                                            studentPrintReceipt(data.studentPdfUrl, "student_receipt.pdf", officePdfUrl);
+                                            // oficePrintReceipt(data.officePdfUrl, "office_receipt.pdf");
 
                                             // Reload the page after a brief delay
                                             setTimeout(function() {
@@ -460,12 +460,12 @@
                 });
             }
 
-            function studentPrintReceipt(pdfUrl, fileName) {
+            function studentPrintReceipt(pdfUrl, fileName, officePdfUrl) {
                 console.log("Student PDF URL: ", pdfUrl);
 
                 // Open the PDF in a new window and trigger the print dialog
                 const printWindow = window.open(pdfUrl, '_blank');
-
+                oficePrintReceipt(officePdfUrl, "office_receipt.pdf");
                 printWindow.onload = function() {
                     setTimeout(function() {
                         try {
