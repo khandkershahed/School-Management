@@ -576,7 +576,7 @@ class StudentFeeController extends Controller
         $pdf = Pdf::loadView('pdf.studentReceipt', $data);
 
         // Set paper size to one-fourth of A4 paper (105mm x 148.5mm)
-        $pdf->setPaper('A4'); // Custom size (width, height)
+        // $pdf->setPaper('A4'); // Custom size (width, height)
 
         // Render PDF (first pass)
         $pdf->render();

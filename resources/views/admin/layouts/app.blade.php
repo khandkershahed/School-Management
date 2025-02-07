@@ -10,27 +10,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="format-detection" content="telephone=no">
 
-    <!-- Meta Title and Description -->
-    <meta name="title" content="{{ optional($setting)->site_title ?: config('app.name', 'AWS "|" Dashboard') }}">
-    <meta name="description" content="{{ optional($setting)->meta_description ?: config('app.name') }}">
-
-    <!-- Open Graph / Facebook Meta Tags -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="{{ optional($setting)->site_url ?: config('app.url') }}">
-    <meta property="og:title" content="{{ optional($setting)->site_title ?: config('app.name', 'AWS "|" Dashboard') }}">
-    <meta property="og:description" content="{{ optional($setting)->meta_description ?: config('app.name') }}">
-    <meta property="og:image"
-        content="{{ optional($setting)->site_black_logo && file_exists(public_path('storage/' . $setting->site_black_logo)) ? asset('storage/' . $setting->site_black_logo) : asset('frontend/images/brandPage-logo-no-img(217-55).jpg') }}" />
-
-    <!-- Twitter Meta Tags -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="{{ optional($setting)->site_url ?: config('app.url') }}">
-    <meta property="twitter:title"
-        content="{{ optional($setting)->site_title ?: config('app.name', 'AWS "|" Dashboard') }}">
-    <meta property="twitter:description" content="{{ optional($setting)->meta_description ?: config('app.name') }}">
-    <meta property="twitter:image"
-        content="{{ optional($setting)->site_black_logo && file_exists(public_path('storage/' . $setting->site_black_logo)) ? asset('storage/' . $setting->site_black_logo) : asset('frontend/images/brandPage-logo-no-img(217-55).jpg') }}" />
-
     <!-- Page Title -->
     <title>{{ optional($setting)->site_title ?: config('app.name', 'AWS "|" Dashboard') }}</title>
     <link href="{{ asset('images/logo_color_no_bg.png') }}" rel="apple-touch-icon-precomposed">
@@ -54,6 +33,9 @@
     <style>
         th {
             font-size: 0.9rem;
+        }
+        .small-box-icon{
+            opacity: 0.9;
         }
     </style>
 </head>
