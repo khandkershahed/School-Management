@@ -226,13 +226,7 @@
         <table class="header-table">
             <tr>
                 <td>
-                    @php
-                        $imagePath = public_path('images/logo_color_no_bg.png');
-                        $imageData = base64_encode(file_get_contents($imagePath));
-                        $imageSrc = "data:image/png;base64,$imageData";
-                    @endphp
-                    <img src="{{ $imageSrc }}" alt="Logo" class="logo">
-                    {{-- <img src="{{ asset('images/logo_color_no_bg.png') }}" alt="Logo" class="logo"> --}}
+                    <img src="{{ asset('images/logo_color_no_bg.png') }}" alt="Logo" class="logo">
                     {{-- <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('images/logo_color_no_bg.png'))) }}"
                         alt="Logo" class="logo"> --}}
                 </td>
