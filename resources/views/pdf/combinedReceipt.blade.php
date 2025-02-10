@@ -15,7 +15,7 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            font-size: 9px;
+            font-size: 11px;
             line-height: 1.4;
         }
 
@@ -37,7 +37,7 @@
         }
 
         .logo {
-            width: 50px;
+            width: 60px;
             height: auto;
         }
 
@@ -47,12 +47,12 @@
         }
 
         .header-text h1{
-            font-size: 14px;
+            font-size: 15px;
             margin-bottom: 1px;
         }
 
         .header-text h2 {
-            font-size: 9px;
+            font-size: 13px;
             margin-top: 1px;
         }
         .header-text h1,
@@ -64,7 +64,7 @@
         .header-text p {
             margin: 0px;
             margin-bottom: 1px;
-            font-size: 9px;
+            font-size: 11px;
         }
 
         .info-table,
@@ -81,7 +81,7 @@
             border: 1px solid #bababa;
             word-wrap: break-word;
             text-align: left;
-            font-size: 9px;
+            font-size: 10px;
         }
 
         .info-table td {
@@ -89,12 +89,12 @@
         }
 
         .details-table th {
-            font-size: 9px;
+            font-size: 11px;
         }
 
         .footer {
             margin-top: 5px;
-            font-size: 9px;
+            font-size: 11px;
         }
 
         .footer p {
