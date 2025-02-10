@@ -63,7 +63,8 @@
 
         .header-text p {
             margin: 3px 0;
-            font-size: 11px; /* Smaller font for text */
+            font-size: 11px;
+            /* Smaller font for text */
         }
 
         .info-table,
@@ -128,7 +129,6 @@
             <tr>
                 <td>
                     <img src="{{ asset('images/logo_color_no_bg.png') }}" alt="Logo" class="logo">
-
                     {{-- <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('images/logo_color_no_bg.png'))) }}"
                         alt="Logo" class="logo"> --}}
                 </td>
@@ -156,13 +156,15 @@
             </tr>
             <tr>
                 <td><strong>Version:</strong> {{ $student->medium }}</td>
-                <td><strong>Class:</strong> @if ((string) $student->class === '00')
-                    Nursery
-                @elseif ((string) $student->class === '0')
-                    KG
-                @else
-                    {{ $student->class }}
-                @endif</td>
+                <td><strong>Class:</strong>
+                    @if ((string) $student->class === '00')
+                        Nursery
+                    @elseif ((string) $student->class === '0')
+                        KG
+                    @else
+                        {{ $student->class }}
+                    @endif
+                </td>
             </tr>
             <tr>
                 <td><strong>Guardian Name:</strong> {{ $student->guardian_name }}</td>
@@ -224,7 +226,13 @@
         <table class="header-table">
             <tr>
                 <td>
-                    <img src="{{ asset('images/logo_color_no_bg.png') }}" alt="Logo" class="logo">
+                    @php
+                        $imagePath = public_path('images/logo_color_no_bg.png');
+                        $imageData = base64_encode(file_get_contents($imagePath));
+                        $imageSrc = "data:image/png;base64,$imageData";
+                    @endphp
+                    <img src="{{ $imageSrc }}" alt="Logo" class="logo">
+                    {{-- <img src="{{ asset('images/logo_color_no_bg.png') }}" alt="Logo" class="logo"> --}}
                     {{-- <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('images/logo_color_no_bg.png'))) }}"
                         alt="Logo" class="logo"> --}}
                 </td>
