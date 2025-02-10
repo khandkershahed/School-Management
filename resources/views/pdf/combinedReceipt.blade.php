@@ -46,15 +46,15 @@
             font-size: 10px;
         }
 
-        .header-text h1{
-            font-size: 15px;
+        /* .header-text h1{
+            font-size: 14px;
             margin-bottom: 1px;
         }
 
         .header-text h2 {
             font-size: 13px;
             margin-top: 1px;
-        }
+        } */
         .header-text h1,
         .header-text h2 {
             margin: 0;
@@ -62,9 +62,8 @@
         }
 
         .header-text p {
-            margin: 0px;
-            margin-bottom: 1px;
-            font-size: 11px;
+            margin: 3px 0;
+            font-size: 11px; /* Smaller font for text */
         }
 
         .info-table,
@@ -77,7 +76,7 @@
         .info-table td,
         .details-table td,
         .details-table th {
-            padding: 2px;
+            padding: 3px;
             border: 1px solid #bababa;
             word-wrap: break-word;
             text-align: left;
