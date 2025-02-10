@@ -127,7 +127,7 @@
         <table class="header-table">
             <tr>
                 <td>
-                    <img src="data:image/png;base64,{{ base64_encode(asset('images/logo_color_no_bg.png')) }}"
+                    <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('images/logo_color_no_bg.png'))) }}"
                         alt="Logo" class="logo">
                 </td>
                 <td class="header-text">
@@ -222,7 +222,7 @@
         <table class="header-table">
             <tr>
                 <td>
-                    <img src="data:image/png;base64,{{ base64_encode(asset('images/logo_color_no_bg.png')) }}"
+                    <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('images/logo_color_no_bg.png'))) }}"
                         alt="Logo" class="logo">
                 </td>
                 <td class="header-text">
