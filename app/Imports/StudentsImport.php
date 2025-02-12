@@ -4,7 +4,10 @@ namespace App\Imports;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
+use function PHPUnit\Framework\isNull;
 use Maatwebsite\Excel\Concerns\ToModel;
+
+use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class StudentsImport implements ToModel, WithHeadingRow
@@ -59,17 +62,36 @@ class StudentsImport implements ToModel, WithHeadingRow
     //         'status'           => 'active',             // Status, set to 'active'
     //     ]);
     // }
-
+    // public function bindValue($cell, $value)
+    // {
+    //     // Force 'class' to be treated as a string
+    //     if ($cell->getColumn() == 'F') {  // Assuming 'class' is column F
+    //         $cell->setValueExplicit($value, DataType::TYPE_STRING);
+    //     } else {
+    //         $cell->setValueExplicit($value, DataType::TYPE_STRING);
+    //     }
+    // }
     public function model(array $row)
     {
         // \Log::info('Importing Row:', $row);
-        // dd($row);
+        // Force 'class' to be a string to preserve the leading zeros
         $medium = isset($row['medium']) ? $row['medium'] : null;
         $group = isset($row['group']) ? $row['group'] : null;
         $section = isset($row['section']) ? $row['section'] : null;
         $year = isset($row['year']) ? $row['year'] : null;
         $roll = isset($row['roll']) ? $row['roll'] : null;
         $class = isset($row['class']) ? $row['class'] : null;
+        $class = trim($class, '"');
+        if ($class === "00") {
+            $class = '00';
+        }
+        elseif ($class === "0") {
+            $class = '0';
+        }else {
+            $class =  $class ;
+
+        }
+// dd($class);
         $gender = isset($row['gender']) ? $row['gender'] : null;
         $errors = [];
 
@@ -85,11 +107,12 @@ class StudentsImport implements ToModel, WithHeadingRow
             $errors[] = 'roll is required for student at row: ' . json_encode($row);
 
         }
-        if (empty($class)) {
-            $errors[] = 'class is required for student at row: ' . json_encode($row);
-
+        if ($class === null || $class === "") {
+            $errors[] = 'Class is required for student at row: ' . json_encode($row);
         }
-        // dd(count($errors));
+
+        // dd($row);
+        // dd($errors);
 
         if (count($errors) > 0) {
             return null;
@@ -111,7 +134,7 @@ class StudentsImport implements ToModel, WithHeadingRow
                 'guardian_name'    => $row['guardian_name'],
                 'guardian_contact' => $row['guardian_number'],
                 'student_type'     => $row['student_type_oldnew'],
-                'class'            => $row['class'],
+                'class'            => $class,
                 'section'          => $section,
                 'year'             => $year,
                 'medium'           => $medium,
