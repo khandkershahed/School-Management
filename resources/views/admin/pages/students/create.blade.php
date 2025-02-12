@@ -87,7 +87,7 @@
                                                 name="section" :allowClear="true" required>
                                                 <option value="">Select Section</option>
                                                 @php
-                                                    $alphabetSections = [];
+                                                    // $alphabetSections = [];
                                                     // $alphabetSections = range('A', 'N');
                                                     $customSections = [
                                                         'Magpie',
@@ -104,10 +104,10 @@
                                                         'Sunflower',
                                                         'Marigold',
                                                     ];
-                                                    $sections = array_merge($alphabetSections, $customSections); // Combine both arrays
+                                                    // $sections = array_merge($alphabetSections, $customSections); // Combine both arrays
                                                 @endphp
 
-                                                @foreach ($sections as $section)
+                                                @foreach ($customSections as $section)
                                                     <option value="{{ $section }}" @selected(old('section') == $section)>
                                                         {{ $section }}</option>
                                                 @endforeach

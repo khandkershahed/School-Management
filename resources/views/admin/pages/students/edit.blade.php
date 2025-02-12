@@ -78,7 +78,6 @@
 
                                                 @php
                                                     // $alphabetSections = range('A', 'N');
-                                                    $alphabetSections = [];
                                                     $customSections = [
                                                         'Magpie',
                                                         'Skylark',
@@ -94,10 +93,10 @@
                                                         'Sunflower',
                                                         'Marigold',
                                                     ];
-                                                    $sections = array_merge($alphabetSections, $customSections);
+                                                    // $sections = array_merge($alphabetSections, $customSections);
                                                 @endphp
 
-                                                @foreach ($sections as $section)
+                                                @foreach ($customSections as $section)
                                                     <option value="{{ $section }}" @selected(old('section', $student->section) == $section)>
                                                         {{ $section }}</option>
                                                 @endforeach
