@@ -81,17 +81,34 @@
                                     </div>
                                     <div class="col-lg-2 col-md-6">
                                         <div class="mb-3">
-                                            <x-admin.label for="section" class="form-label">Section <span class="text-danger">*</span></x-admin.label>
-                                            <x-admin.select-option class="form-control-solid" id="section" name="section" :allowClear="true" required>
+                                            <x-admin.label for="section" class="form-label">Section <span
+                                                    class="text-danger">*</span></x-admin.label>
+                                            <x-admin.select-option class="form-control-solid" id="section"
+                                                name="section" :allowClear="true" required>
                                                 <option value="">Select Section</option>
                                                 @php
-                                                    $alphabetSections = range('A', 'N'); // Sections from A to N
-                                                    $customSections = ['Magpie', 'Skylark', 'Kingfisher', 'Flamingo', 'Albatross', 'Lily', 'Magnolia', 'Gladiolus', 'Daisy', 'Aster', 'Rose', 'Sunflower', 'Marigold'];
+                                                    // $alphabetSections = range('A', 'N'); 
+                                                    $customSections = [
+                                                        'Magpie',
+                                                        'Skylark',
+                                                        'Kingfisher',
+                                                        'Flamingo',
+                                                        'Albatross',
+                                                        'Lily',
+                                                        'Magnolia',
+                                                        'Gladiolus',
+                                                        'Daisy',
+                                                        'Aster',
+                                                        'Rose',
+                                                        'Sunflower',
+                                                        'Marigold',
+                                                    ];
                                                     $sections = array_merge($alphabetSections, $customSections); // Combine both arrays
                                                 @endphp
 
                                                 @foreach ($sections as $section)
-                                                    <option value="{{ $section }}" @selected(old('section') == $section)>{{ $section }}</option>
+                                                    <option value="{{ $section }}" @selected(old('section') == $section)>
+                                                        {{ $section }}</option>
                                                 @endforeach
                                             </x-admin.select-option>
                                         </div>
@@ -102,7 +119,8 @@
                                             <x-admin.label for="student_type" class="form-label">Student Type <span
                                                     class="text-danger">*</span></x-admin.label>
                                             <x-admin.select-option class="form-control-solid" id="student_type"
-                                                name="student_type" data-placeholder="Select Student Type" :allowClear="true" required>
+                                                name="student_type" data-placeholder="Select Student Type"
+                                                :allowClear="true" required>
                                                 <option value="old" @selected(old('student_type') == 'old')>Old</option>
                                                 <option value="new" @selected(old('student_type') == 'new')>New</option>
                                             </x-admin.select-option>

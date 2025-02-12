@@ -77,7 +77,7 @@
                                                 <option value="">Select Section</option>
 
                                                 @php
-                                                    $alphabetSections = range('A', 'N');
+                                                    // $alphabetSections = range('A', 'N');
                                                     $customSections = [
                                                         'Magpie',
                                                         'Skylark',
