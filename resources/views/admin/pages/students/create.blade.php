@@ -87,7 +87,8 @@
                                                 name="section" :allowClear="true" required>
                                                 <option value="">Select Section</option>
                                                 @php
-                                                    // $alphabetSections = range('A', 'N'); 
+                                                    $alphabetSections = [];
+                                                    // $alphabetSections = range('A', 'N');
                                                     $customSections = [
                                                         'Magpie',
                                                         'Skylark',

@@ -78,6 +78,7 @@
 
                                                 @php
                                                     // $alphabetSections = range('A', 'N');
+                                                    $alphabetSections = [];
                                                     $customSections = [
                                                         'Magpie',
                                                         'Skylark',
