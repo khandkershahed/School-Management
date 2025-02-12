@@ -46,8 +46,8 @@
                                         <div class="mb-3">
                                             <x-admin.label for="class" class="form-label">Class <span
                                                     class="text-danger">*</span></x-admin.label>
-                                            <x-admin.select-option class="form-control-solid" id="class" name="class" :allowClear="true"
-                                                required>
+                                            <x-admin.select-option class="form-control-solid" id="class"
+                                                name="class" :allowClear="true" required>
                                                 <option value=""></option>
                                                 <option value="00" @selected(old('class', $student->class) == '00')>Nursery</option>
                                                 <option value="0" @selected(old('class', $student->class) == '0')>KG</option>
@@ -62,18 +62,43 @@
                                                 <option value="9" @selected(old('class', $student->class) == '9')>Nine</option>
                                                 <option value="10" @selected(old('class', $student->class) == '10')>Ten</option>
                                                 <option value="11" @selected(old('class', $student->class) == '11')>First Year</option>
-                                                <option value="12" @selected(old('class', $student->class) == '12')>Second Year</option>
+                                                <option value="12" @selected(old('class', $student->class) == '12')>Second Year
+                                                </option>
                                             </x-admin.select-option>
                                         </div>
                                     </div>
 
                                     <div class="col-lg-2 col-md-6">
                                         <div class="mb-3">
-                                            <x-admin.label for="section" class="form-label">Section <span class="text-danger">*</span></x-admin.label>
-                                            <x-admin.select-option class="form-control-solid" id="section" name="section" :allowClear="true" required>
+                                            <x-admin.label for="section" class="form-label">Section <span
+                                                    class="text-danger">*</span></x-admin.label>
+                                            <x-admin.select-option class="form-control-solid" id="section"
+                                                name="section" :allowClear="true" required>
                                                 <option value="">Select Section</option>
-                                                @foreach (range('A', 'N') as $section)
-                                                    <option value="{{ $section }}" @selected(old('section', $student->section) == $section)>{{ $section }}</option>
+
+                                                @php
+                                                    $alphabetSections = range('A', 'N');
+                                                    $customSections = [
+                                                        'Magpie',
+                                                        'Skylark',
+                                                        'Kingfisher',
+                                                        'Flamingo',
+                                                        'Albatross',
+                                                        'Lily',
+                                                        'Magnolia',
+                                                        'Gladiolus',
+                                                        'Daisy',
+                                                        'Aster',
+                                                        'Rose',
+                                                        'Sunflower',
+                                                        'Marigold',
+                                                    ];
+                                                    $sections = array_merge($alphabetSections, $customSections);
+                                                @endphp
+
+                                                @foreach ($sections as $section)
+                                                    <option value="{{ $section }}" @selected(old('section', $student->section) == $section)>
+                                                        {{ $section }}</option>
                                                 @endforeach
                                             </x-admin.select-option>
                                         </div>
@@ -86,8 +111,8 @@
                                             <x-admin.select-option class="form-control-solid" id="student_type"
                                                 name="student_type" :allowClear="true" required>
                                                 <option value="">Select student type</option>
-                                                <option value="old" @selected(old('student_type',$student->student_type) == 'old')>Old</option>
-                                                <option value="new" @selected(old('student_type',$student->student_type) == 'new')>New</option>
+                                                <option value="old" @selected(old('student_type', $student->student_type) == 'old')>Old</option>
+                                                <option value="new" @selected(old('student_type', $student->student_type) == 'new')>New</option>
                                             </x-admin.select-option>
                                         </div>
                                     </div>
@@ -95,8 +120,8 @@
                                         <div class="mb-3">
                                             <x-admin.label for="gender" class="form-label">Gender <span
                                                     class="text-danger">*</span></x-admin.label>
-                                            <x-admin.select-option class="form-control-solid" id="gender" name="gender" :allowClear="true"
-                                                required>
+                                            <x-admin.select-option class="form-control-solid" id="gender"
+                                                name="gender" :allowClear="true" required>
                                                 <option value=""></option>
                                                 <option value="Male" @selected(old('gender', $student->gender) == 'Male')>Male</option>
                                                 <option value="Female" @selected(old('gender', $student->gender) == 'Female')>Female</option>
@@ -126,7 +151,8 @@
                                                 required>
                                                 <option value="Science" @selected(old('group', $student->group) == 'Science')>Science</option>
                                                 <option value="Arts" @selected(old('group', $student->group) == 'Arts')>Arts</option>
-                                                <option value="Commerce" @selected(old('group', $student->group) == 'Commerce')>Commerce</option>
+                                                <option value="Commerce" @selected(old('group', $student->group) == 'Commerce')>Commerce
+                                                </option>
                                                 <option value="Day" @selected(old('group', $student->group) == 'Day')>Day</option>
                                                 <option value="Morning" @selected(old('group', $student->group) == 'Morning')>Morning</option>
                                             </x-admin.select-option>
@@ -147,8 +173,9 @@
                                                 <x-admin.label for="guardian_name" class="form-label">Guardian's
                                                     Name </x-admin.label>
                                                 <div class="input-group input-group-sm">
-                                                    <x-admin.input id="guardian_name" type="text" name="guardian_name"
-                                                        :value="old('guardian_name', $student->guardian_name)" class="form-control" autofocus>
+                                                    <x-admin.input id="guardian_name" type="text"
+                                                        name="guardian_name" :value="old('guardian_name', $student->guardian_name)" class="form-control"
+                                                        autofocus>
                                                     </x-admin.input>
                                                 </div>
                                             </div>
@@ -158,10 +185,12 @@
                                     <div class="col-lg-3 col-md-6">
                                         <div class="mb-3">
                                             <div class="form-group">
-                                                <x-admin.label for="guardian_contact" class="form-label">Contact Number </x-admin.label>
+                                                <x-admin.label for="guardian_contact" class="form-label">Contact
+                                                    Number </x-admin.label>
                                                 <div class="input-group input-group-sm">
-                                                    <x-admin.input id="guardian_contact" type="text" name="guardian_contact"
-                                                        :value="old('guardian_contact', $student->guardian_contact)" class="form-control" autofocus>
+                                                    <x-admin.input id="guardian_contact" type="text"
+                                                        name="guardian_contact" :value="old('guardian_contact', $student->guardian_contact)"
+                                                        class="form-control" autofocus>
                                                     </x-admin.input>
                                                 </div>
                                             </div>
@@ -172,9 +201,11 @@
                                         <div class="mb-3">
                                             <x-admin.label for="status" class="form-label">Status <span
                                                     class="text-danger">*</span></x-admin.label>
-                                            <x-admin.select-option id="status" name="status" :allowClear="true" required>
+                                            <x-admin.select-option id="status" name="status" :allowClear="true"
+                                                required>
                                                 <option value="active" @selected(old('status', $student->status) == 'active')>Active</option>
-                                                <option value="inactive" @selected(old('status', $student->status) == 'inactive')>Inactive</option>
+                                                <option value="inactive" @selected(old('status', $student->status) == 'inactive')>Inactive
+                                                </option>
                                             </x-admin.select-option>
                                         </div>
                                     </div>
@@ -182,7 +213,8 @@
                                     <div class="col-lg-12">
                                         <div class="mb-3">
                                             <x-admin.textarea class="form-control text-area-input"
-                                                placeholder="Write Here" id="address" name="address" rows="3">
+                                                placeholder="Write Here" id="address" name="address"
+                                                rows="3">
                                                 {{ old('address', $student->address) }}
                                             </x-admin.textarea>
                                         </div>
