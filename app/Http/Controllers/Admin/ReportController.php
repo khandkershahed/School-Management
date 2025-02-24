@@ -663,7 +663,7 @@ class ReportController extends Controller
             // Validate the inputs
             $validator = Validator::make($request->all(), [
                 'group' => 'nullable|string',
-                'class' => 'nullable|integer',
+                'class' => 'nullable',
                 'from_month' => 'nullable|date_format:Y-m',
                 'to_month' => 'nullable|date_format:Y-m',
             ]);
@@ -753,7 +753,7 @@ class ReportController extends Controller
             // Validate the inputs
             $validator = Validator::make($request->all(), [
                 'group' => 'nullable|string',
-                'class' => 'nullable|integer',
+                'class' => 'nullable',
                 'fee_id' => 'nullable|integer',
             ]);
 

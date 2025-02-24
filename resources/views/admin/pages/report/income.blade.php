@@ -90,7 +90,7 @@
                                         <div class="row">
                                             <div style="width:100%; padding:0px; margin:0px;">
                                                 <table
-                                                    style=" width:100%; -webkit-print-color-adjust: exact !important; background-color: #f0f3f5 !important; border-radius: 10px; margin-bottom: 20px; padding: 10px;">
+                                                    style="width:100%; -webkit-print-color-adjust: exact !important; background-color: #f0f3f5 !important; border-radius: 10px; margin-bottom: 20px; padding: 10px;">
                                                     <tbody>
                                                         <tr>
                                                             <td style="width:10%;text-align:center;border:0px;">
@@ -98,26 +98,26 @@
                                                                     alt="" height="80px" width="80px">
                                                             </td>
                                                             <td style="width:80%;text-align:center;border:0px;">
-                                                                <span style="text-align: center ;">
+                                                                <span style="text-align: center;">
                                                                     <div class="clearfix">&nbsp;</div>
-                                                                    <h4 class="text-muted" style="margin-top:10px;">
+                                                                    <h4 class="text-muted"
+                                                                        style="margin:10px; font-size:20px">
                                                                         <strong>Shamsul Hoque Khan School and
                                                                             College</strong>
                                                                     </h4>
-                                                                    <h6 class="text-muted" style="margin-top:10px;">
-                                                                        Paradogair, Matuail, Demra
-                                                                        Dhaka-1362
+                                                                    <h6 class="text-muted"
+                                                                        style="margin:5px; font-size:12px">
+                                                                        Paradogair, Matuail, Demra Dhaka-1362
                                                                     </h6>
                                                                     <h5 class="head-title ptint-title text-info"
-                                                                        style="width: 100%;margin-top:10px;">
-                                                                        <i class="fa fa-bar-chart"></i>
+                                                                        style="width:100%;margin:10px; font-size:24px; text-decoration:underline">
                                                                         <small> Income Report</small>
                                                                     </h5>
                                                                     <div class="clearfix">&nbsp;</div>
-                                                                    {{-- <div>Academic Year: {{ old('year', $year) }}</div> --}}
                                                                 </span>
                                                             </td>
-                                                            <td style="width:10%;text-align:center;border:0px;"> </td>
+                                                            <td style="width:10%;text-align:center;border:0px;">
+                                                            </td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
